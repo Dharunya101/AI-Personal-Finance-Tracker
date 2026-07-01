@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+venv/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Python environment
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Model cache
+*.log
+
+# MongoDB
+*.lock
+
+# Temporary files
+*.tmp
