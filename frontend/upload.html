@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Upload Statement</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>💰 Finance Tracker</h2>
+
+    <ul>
+
+        <li><a href="dashboard.html">🏠 Dashboard</a></li>
+        <li><a href="budget.html">🎯 Budgets</a></li>
+        <li><a href="insights.html">💡 Insights</a></li>
+        <li><a href="report.html">📄 Reports</a></li>
+        <li><a href="upload.html">📤 Upload Statement</a></li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <h1>Upload Bank Statement</h1>
+
+    <div class="section">
+
+        <input
+            type="file"
+            id="csvFile"
+            accept=".csv">
+
+        <br><br>
+
+        <button onclick="uploadCSV()">
+
+            Upload CSV
+
+        </button>
+
+        <br><br>
+
+        <p id="status"></p>
+
+    </div>
+
+</div>
+
+<script src="js/upload.js"></script>
+
+</body>
+
+</html>

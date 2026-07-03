@@ -1,8 +1,16 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
 
-client = MongoClient("mongodb://localhost:27017")
+load_dotenv()
 
-db = client["finance_tracker"]
-budgets_collection = db["budgets"]
+MONGO_URI = os.getenv("MONGO_URI")
+DATABASE_NAME = os.getenv("DATABASE_NAME")
+
+client = MongoClient(MONGO_URI)
+
+db = client[DATABASE_NAME]
 
 transactions_collection = db["transactions"]
+budgets_collection = db["budget"]
+users_collection = db["user"]

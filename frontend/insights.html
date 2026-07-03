@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Insights</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h2>💰 Finance Tracker</h2>
+
+    <ul>
+
+        <li><a href="dashboard.html">🏠 Dashboard</a></li>
+
+        <li>💳 Transactions</li>
+
+        <li>📊 Analytics</li>
+
+        <li><a href="budget.html">🎯 Budgets</a></li>
+
+        <li><a href="insights.html">💡 Insights</a></li>
+
+        <li>📄 Reports</li>
+
+        <li>📤 Upload Statement</li>
+
+        <li>⚙️ Settings</li>
+
+    </ul>
+
+</div>
+
+<div class="main">
+
+    <h1>Financial Insights</h1>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Income</h3>
+            <h2 id="income"></h2>
+        </div>
+
+        <div class="card">
+            <h3>Total Expense</h3>
+            <h2 id="expense"></h2>
+        </div>
+
+        <div class="card">
+            <h3>Savings</h3>
+            <h2 id="savings"></h2>
+        </div>
+
+        <div class="card">
+            <h3>Highest Spending</h3>
+            <h2 id="highest"></h2>
+        </div>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Summary</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Total Transactions</th>
+
+                    <th>Highest Spending Category</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td id="transactions"></td>
+
+                    <td id="highestCategory"></td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="charts">
+
+        <div class="chart-card">
+
+            <h2>Category Distribution</h2>
+
+            <canvas id="pieChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <h2>Expense by Category</h2>
+
+            <canvas id="barChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="js/insights.js"></script>
+
+</body>
+
+</html>

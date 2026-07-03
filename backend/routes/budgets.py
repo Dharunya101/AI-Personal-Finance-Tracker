@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from database import budgets_collection
+from database import budgets_collection, transactions_collection
 
 from models.schemas import Budget
 
@@ -16,11 +16,11 @@ def create_budget(budget: Budget):
 
     budgets_collection.insert_one({
 
-        "category": budget.category,
+    "category": budget.category,
 
-        "limit": budget.limit
+    "monthly_budget": budget.monthly_budget
 
-    })
+})
 
     return {
 
@@ -46,11 +46,9 @@ def update_budget(category:str,budget:Budget):
 
         {
 
-            "$set":{
-
-                "limit":budget.limit
-
-            }
+            "$set": {
+    "monthly_budget": budget.monthly_budget
+}
 
         }
 
@@ -114,11 +112,11 @@ def budget_status():
 
             "category":budget["category"],
 
-            "budget":budget["limit"],
+            "budget": budget["monthly_budget"],
 
             "spent":spent,
 
-            "remaining":budget["limit"]-spent
+            "remaining": budget["monthly_budget"] - spent
 
         })
 
@@ -154,7 +152,7 @@ def budget_alerts():
 
                 )
 
-        if spent>budget["limit"]:
+        if spent > budget["monthly_budget"]:
 
             alerts.append({
 

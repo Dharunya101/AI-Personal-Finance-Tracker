@@ -12,11 +12,15 @@ router = APIRouter(
 @router.post("/")
 def add_transaction(transaction: Transaction):
 
+    print("Step 1")
+
     category = predict_category(
         transaction.notes,
         transaction.payment_mode,
         transaction.location
     )
+
+    print("Step 2")
 
     data = {
         "notes": transaction.notes,
@@ -27,13 +31,20 @@ def add_transaction(transaction: Transaction):
         "category": category
     }
 
+    print("Step 3")
+
     result = transactions_collection.insert_one(data)
+
+    print("Step 4")
 
     return {
         "message": "Transaction Saved",
         "id": str(result.inserted_id),
         "category": category
     }
+
+    
+    
 @router.get("/")
 def get_transactions():
 

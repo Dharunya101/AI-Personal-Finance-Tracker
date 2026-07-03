@@ -1,0 +1,16 @@
+date,notes,payment_mode,location,amount
+2026-06-01,Swiggy Order,UPI,Bangalore,450
+2026-06-02,Uber Ride,Card,Bangalore,320
+2026-06-03,Amazon Shopping,Credit Card,Bangalore,1850
+2026-06-04,Monthly Salary,Bank Transfer,Bangalore,65000
+2026-06-05,Electricity Bill,UPI,Bangalore,2450
+2026-06-06,Netflix Subscription,UPI,Online,649
+2026-06-07,BigBasket Grocery,UPI,Bangalore,2350
+2026-06-08,Indian Oil Petrol,Card,Bangalore,1800
+2026-06-09,Zomato Order,UPI,Bangalore,520
+2026-06-10,Book Purchase,Credit Card,Bangalore,1200
+2026-06-11,Apollo Pharmacy,UPI,Bangalore,850
+2026-06-12,Movie Tickets,UPI,Bangalore,780
+2026-06-13,Dominos Pizza,UPI,Bangalore,640
+2026-06-14,Metro Recharge,UPI,Bangalore,300
+2026-06-15,Salary Bonus,Bank Transfer,Bangalore,12000

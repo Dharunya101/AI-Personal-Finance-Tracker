@@ -1,0 +1,562 @@
+/* ==========================
+   General
+========================== */
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#eef2f7;
+}
+
+/* ==========================
+   Sidebar
+========================== */
+
+.sidebar{
+    width:240px;
+    height:100vh;
+    background:#1e3a5f;
+    color:white;
+    position:fixed;
+    top:0;
+    left:0;
+}
+
+.sidebar h2{
+    text-align:center;
+    padding:25px;
+    margin:0;
+}
+
+.sidebar ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+
+.sidebar li{
+    padding:18px 25px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar li:hover{
+    background:#315b89;
+}
+
+.sidebar li.active{
+    background:#315b89;
+    border-left:5px solid #4fc3f7;
+}
+
+.sidebar a{
+    color:white;
+    text-decoration:none;
+    display:block;
+}
+
+/* ==========================
+   Main
+========================== */
+
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.main h1{
+    color:#1e3a5f;
+    margin-bottom:25px;
+}
+
+/* ==========================
+   Cards
+========================== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.card h3{
+    margin-bottom:12px;
+    color:#555;
+}
+
+.card h2{
+    margin:0;
+    color:#1e3a5f;
+    font-size:28px;
+}
+
+/* ==========================
+   Sections
+========================== */
+
+.section{
+    margin-top:30px;
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+}
+
+.section h2{
+    margin-top:0;
+    margin-bottom:20px;
+    color:#1e3a5f;
+}
+
+/* ==========================
+   Tables
+========================== */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:20px;
+}
+
+th,
+td{
+    padding:16px 20px;
+    border-bottom:1px solid #e5e5e5;
+    text-align:left;
+}
+
+th{
+    background:#1e3a5f;
+    color:white;
+}
+
+tr:hover{
+    background:#f7f9fc;
+}
+
+/* ==========================
+   Charts
+========================== */
+
+.charts{
+    display:flex;
+    gap:25px;
+    margin-top:30px;
+    flex-wrap:wrap;
+}
+
+.chart-card{
+
+    flex:1;
+    min-width:420px;
+    height:420px;
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:20px;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.15);
+
+}
+
+.chart-card h2{
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+    color:#1e3a5f;
+
+}
+
+.chart-card canvas{
+
+    width:100% !important;
+
+    height:320px !important;
+
+}
+
+/* ==========================
+   Budget Form
+========================== */
+
+.section input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin:12px 0;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    box-sizing:border-box;
+
+    font-size:16px;
+
+}
+
+.section button{
+
+    width:100%;
+
+    padding:14px;
+
+    background:#3498db;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:17px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.section button:hover{
+
+    background:#2980b9;
+
+    transform:translateY(-2px);
+
+}
+
+/* ==========================
+   Login
+========================== */
+
+.login-box{
+
+    width:380px;
+
+    margin:120px auto;
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:15px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.2);
+
+}
+
+.login-box h2{
+
+    text-align:center;
+
+    margin-bottom:25px;
+
+}
+
+input{
+
+    width:100%;
+
+    padding:12px;
+
+    margin:10px 0;
+
+    border:1px solid #ccc;
+
+    border-radius:8px;
+
+    box-sizing:border-box;
+
+}
+
+button{
+
+    width:100%;
+
+    padding:12px;
+
+    background:#3498db;
+
+    color:white;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+button:hover{
+
+    background:#2980b9;
+
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:1200px){
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .charts{
+        flex-direction:column;
+    }
+
+    .chart-card{
+        width:100%;
+        min-width:100%;
+        height:380px;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+
+    .chart-card{
+        height:350px;
+        min-width:100%;
+    }
+
+}
+/* Budget Alerts */
+
+.alert-box{
+
+    background:#ffe5e5;
+
+    color:#b30000;
+
+    padding:15px;
+
+    margin:12px 0;
+
+    border-left:6px solid red;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+}
+
+.success-box{
+
+    background:#e8f8e8;
+
+    color:#0b7a0b;
+
+    padding:15px;
+
+    border-left:6px solid green;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+}
+/* ===================================
+   Landing Page
+=================================== */
+
+body{
+
+    margin:0;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:linear-gradient(
+        135deg,
+        #1e3a5f,
+        #3498db,
+        #6dd5fa
+    );
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* Main Card */
+
+.landing{
+
+    width:650px;
+
+    background:rgba(255,255,255,0.95);
+
+    padding:60px;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+
+    animation:fadeIn 1s ease;
+
+}
+
+/* Heading */
+
+.landing h1{
+
+    color:#1e3a5f;
+
+    font-size:44px;
+
+    margin-bottom:20px;
+
+}
+
+/* Subtitle */
+
+.landing p{
+
+    color:#555;
+
+    font-size:20px;
+
+    line-height:1.7;
+
+    margin-bottom:40px;
+
+}
+
+/* Buttons */
+
+.landing button{
+
+    width:260px;
+
+    padding:16px;
+
+    margin:10px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#1e3a5f;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+/* Hover */
+
+.landing button:hover{
+
+    background:#3498db;
+
+    transform:translateY(-4px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+
+}
+
+/* Remove Link Underline */
+
+.landing a{
+
+    text-decoration:none;
+
+}
+
+/* Fade Animation */
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(30px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+    .landing{
+
+        width:90%;
+
+        padding:40px;
+
+    }
+
+    .landing h1{
+
+        font-size:34px;
+
+    }
+
+    .landing p{
+
+        font-size:18px;
+
+    }
+
+    .landing button{
+
+        width:100%;
+
+    }
+
+}

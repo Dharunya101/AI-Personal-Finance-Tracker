@@ -1,16 +1,40 @@
 from fastapi import APIRouter
+from models.schemas import User
+from database import users_collection
+
+print("AUTH ROUTE LOADED")
 
 router = APIRouter(
     prefix="/auth",
     tags=["🔐 Authentication"]
 )
-
-
 @router.post("/signup")
-def signup():
+def signup(user: User):
+
+    existing_user = users_collection.find_one(
+        {"email": user.email}
+    )
+
+    if existing_user:
+
+        return {
+            "message": "Email already registered."
+        }
+
+    users_collection.insert_one({
+
+        "name": user.name,
+
+        "email": user.email,
+
+        "password": user.password
+
+    })
 
     return {
-        "message": "User registered successfully."
+
+        "message": "Account created successfully."
+
     }
 
 

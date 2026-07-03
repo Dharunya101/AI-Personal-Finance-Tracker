@@ -20,3 +20,16 @@ class Budget(BaseModel):
     category: str
 
     limit: float
+
+from pydantic import BaseModel
+
+class Budget(BaseModel):
+    category: str
+    monthly_budget: float
+
+from pydantic import BaseModel, EmailStr
+
+class User(BaseModel):
+    name: str
+    email: EmailStr
+    password: str

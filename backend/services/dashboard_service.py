@@ -1,61 +1,37 @@
 from database import transactions_collection
 
-
-income_categories=[
-
+income_categories = [
     "salary",
-
     "bonus",
-
     "investment",
-
     "freelance"
-
 ]
-
 
 def dashboard_summary():
 
-    transactions=list(
+    transactions = list(transactions_collection.find())
 
-        transactions_collection.find()
-
-    )
-
-    income=0
-
-    expense=0
+    total_income = 0
+    total_expense = 0
 
     for t in transactions:
 
-        amount=float(
-
-            t.get("amount",0)
-
-        )
-
-        category=t.get(
-
-            "category",""
-
-        )
+        amount = float(t.get("amount", 0))
+        category = t.get("category", "").lower()
 
         if category in income_categories:
-
-            income+=amount
-
+            total_income += amount
         else:
+            total_expense += amount
 
-            expense+=amount
+    savings = total_income - total_expense
 
-    return{
+    budget_remaining = 50000 - total_expense
 
-        "Total Transactions":len(transactions),
-
-        "Total Income":income,
-
-        "Total Expense":expense,
-
-        "Balance":income-expense
-
+    return {
+        "total_transactions": len(transactions),
+        "total_income": total_income,
+        "total_expense": total_expense,
+        "savings": savings,
+        "budget_remaining": budget_remaining
     }
