@@ -9,6 +9,23 @@
     <link rel="stylesheet" href="css/style.css">
 
 </head>
+<script>
+
+if(!localStorage.getItem("loggedInUser")){
+
+    window.location.href="login.html";
+
+}
+
+function logout(){
+
+    localStorage.removeItem("loggedInUser");
+
+    window.location.href="login.html";
+
+}
+
+</script>
 
 <body>
 
@@ -21,13 +38,22 @@
     <ul>
 
         <li><a href="dashboard.html">🏠 Dashboard</a></li>
-        <li>💳 Transactions</li>
-        <li>📊 Analytics</li>
-        <li>🎯 Budgets</li>
-        <li>💡 Insights</li>
-        <li>📄 Reports</li>
-        <li>📤 Upload Statement</li>
-        <li>⚙️ Settings</li>
+
+        <li><a href="transactions.html">💳 Transactions</a></li>
+
+        <li><a href="analytics.html">📊 Analytics</a></li>
+
+        <li><a href="budget.html">🎯 Budgets</a></li>
+
+        <li><a href="insights.html">💡 Insights</a></li>
+
+        <li><a href="report.html">📄 Reports</a></li>
+
+        <li><a href="upload.html">📤 Upload Statement</a></li>
+
+        <li><a href="settings.html">⚙️ Settings</a></li>
+
+        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
 
     </ul>
 

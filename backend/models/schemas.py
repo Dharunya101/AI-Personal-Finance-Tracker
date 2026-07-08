@@ -33,3 +33,9 @@ class User(BaseModel):
     name: str
     email: EmailStr
     password: str
+
+class LoginUser(BaseModel):
+
+    email: str
+
+    password: str

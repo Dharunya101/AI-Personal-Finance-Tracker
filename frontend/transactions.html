@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Upload Statement</title>
+    <title>Transactions</title>
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -38,21 +38,13 @@ function logout(){
     <ul>
 
         <li><a href="dashboard.html">🏠 Dashboard</a></li>
-
         <li><a href="transactions.html">💳 Transactions</a></li>
-
         <li><a href="analytics.html">📊 Analytics</a></li>
-
         <li><a href="budget.html">🎯 Budgets</a></li>
-
         <li><a href="insights.html">💡 Insights</a></li>
-
         <li><a href="report.html">📄 Reports</a></li>
-
         <li><a href="upload.html">📤 Upload Statement</a></li>
-
         <li><a href="settings.html">⚙️ Settings</a></li>
-
         <li><a href="#" onclick="logout()">🚪 Logout</a></li>
 
     </ul>
@@ -61,32 +53,81 @@ function logout(){
 
 <div class="main">
 
-    <h1>Upload Bank Statement</h1>
+<h1>Transactions</h1>
 
-    <div class="section">
+<div class="section">
 
-        <input
-            type="file"
-            id="csvFile"
-            accept=".csv">
+<h2>Add Transaction</h2>
 
-        <br><br>
+<input type="text" id="notes" placeholder="Notes">
 
-        <button onclick="uploadCSV()">
+<input type="text" id="payment_mode" placeholder="Payment Mode">
 
-            Upload CSV
+<input type="text" id="location" placeholder="Location">
 
-        </button>
+<input type="number" id="amount" placeholder="Amount">
 
-        <br><br>
+<input type="date" id="date">
 
-        <p id="status"></p>
+<button onclick="addTransaction()">
 
-    </div>
+Add Transaction
+
+</button>
 
 </div>
 
-<script src="js/upload.js"></script>
+<div class="section">
+
+<h2>Transaction History</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Date</th>
+
+<th>Category</th>
+
+<th>Amount</th>
+
+<th>Location</th>
+
+</tr>
+
+</thead>
+
+<tbody id="transactionTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script src="js/transactions.js"></script>
+
+<script>
+
+if(!localStorage.getItem("loggedInUser")){
+
+window.location.href="login.html";
+
+}
+
+function logout(){
+
+localStorage.removeItem("loggedInUser");
+
+window.location.href="login.html";
+
+}
+
+</script>
 
 </body>
 

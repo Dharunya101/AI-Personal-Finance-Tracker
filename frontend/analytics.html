@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Analytics</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<script>
+
+if(!localStorage.getItem("loggedInUser")){
+
+    window.location.href="login.html";
+
+}
+
+function logout(){
+
+    localStorage.removeItem("loggedInUser");
+
+    window.location.href="login.html";
+
+}
+
+</script>
+
+<body>
+
+<div class="sidebar">
+
+<h2>💰 Finance Tracker</h2>
+
+<ul>
+
+<li><a href="dashboard.html">🏠 Dashboard</a></li>
+<li><a href="transactions.html">💳 Transactions</a></li>
+<li><a href="analytics.html">📊 Analytics</a></li>
+<li><a href="budget.html">🎯 Budgets</a></li>
+<li><a href="insights.html">💡 Insights</a></li>
+<li><a href="report.html">📄 Reports</a></li>
+<li><a href="upload.html">📤 Upload Statement</a></li>
+<li><a href="settings.html">⚙️ Settings</a></li>
+<li><a href="#" onclick="logout()">🚪 Logout</a></li>
+
+</ul>
+
+</div>
+
+<div class="main">
+
+<h1>Analytics</h1>
+
+<div class="charts">
+
+<div class="chart-card">
+
+<h2>Expenses by Category</h2>
+
+<canvas id="pieChart"></canvas>
+
+</div>
+
+<div class="chart-card">
+
+<h2>Monthly Expenses</h2>
+
+<canvas id="barChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="js/analytics.js"></script>
+
+<script>
+
+if(!localStorage.getItem("loggedInUser")){
+
+window.location.href="login.html";
+
+}
+
+function logout(){
+
+localStorage.removeItem("loggedInUser");
+
+window.location.href="login.html";
+
+}
+
+</script>
+
+</body>
+
+</html>

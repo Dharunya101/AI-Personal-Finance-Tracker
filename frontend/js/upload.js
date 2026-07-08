@@ -47,3 +47,16 @@ function uploadCSV() {
     });
 
 }
+
+.then(data=>{
+
+    document.getElementById("status").innerHTML =
+        "✅ Upload Successful";
+
+    setTimeout(()=>{
+
+        window.location.href="transactions.html";
+
+    },1000);
+
+});

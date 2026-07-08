@@ -20,28 +20,49 @@ function signup() {
 
     }
 
-    fetch("http://127.0.0.1:8001/auth/signup",{
+    fetch("http://127.0.0.1:8001/auth/signup", {
 
-        method:"POST",
+        method: "POST",
 
-        headers:{
-            "Content-Type":"application/json"
+        headers: {
+            "Content-Type": "application/json"
         },
 
-        body:JSON.stringify(user)
+        body: JSON.stringify(user)
 
     })
 
-    .then(response=>response.json())
+    .then(response => response.json())
 
-    .then(data=>{
+    .then(data => {
 
-        document.getElementById("message").innerHTML =
+        document.getElementById("message").innerHTML = data.message;
 
-            data.message;
+        if(data.message === "Account created successfully."){
+
+            alert("Account Created Successfully!");
+
+            setTimeout(() => {
+
+                window.location.href = "login.html";
+
+            }, 500);
+
+        }
+        else{
+
+            alert(data.message);
+
+        }
 
     })
 
-    .catch(error=>console.log(error));
+    .catch(error => {
+
+        console.error(error);
+
+        alert("Signup Failed");
+
+    });
 
 }

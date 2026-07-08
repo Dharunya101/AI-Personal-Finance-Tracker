@@ -560,3 +560,72 @@ body{
     }
 
 }
+
+/* Sidebar Links */
+
+.sidebar ul li a{
+
+    color:white;
+
+    text-decoration:none;
+
+    display:block;
+
+}
+
+.sidebar ul li{
+
+    list-style:none;
+
+}
+
+.sidebar ul li:hover{
+
+    background:#315b89;
+
+    cursor:pointer;
+
+}
+/* ==========================
+   Dark Mode
+========================== */
+
+.dark-mode{
+
+    background:#1b1b1b;
+
+    color:white;
+
+}
+
+.dark-mode .section{
+
+    background:#2b2b2b;
+
+    color:white;
+
+}
+
+.dark-mode input{
+
+    background:#3a3a3a;
+
+    color:white;
+
+    border:1px solid #555;
+
+}
+
+.dark-mode table{
+
+    color:white;
+
+}
+
+.dark-mode .card{
+
+    background:#2b2b2b;
+
+    color:white;
+
+}

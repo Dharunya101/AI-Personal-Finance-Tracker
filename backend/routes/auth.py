@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from models.schemas import User
+from models.schemas import User, LoginUser
 from database import users_collection
 
 print("AUTH ROUTE LOADED")
@@ -39,7 +39,21 @@ def signup(user: User):
 
 
 @router.post("/login")
-def login():
+def login(user: LoginUser):
+
+    existing_user = users_collection.find_one({
+        "email": user.email
+    })
+
+    if not existing_user:
+        return {
+            "message": "Email not registered."
+        }
+
+    if existing_user["password"] != user.password:
+        return {
+            "message": "Incorrect password."
+        }
 
     return {
         "message": "Login successful."
