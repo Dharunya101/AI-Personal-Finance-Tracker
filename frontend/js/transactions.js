@@ -1,83 +1,145 @@
+// ======================================
+// Load Transactions
+// ======================================
+
 loadTransactions();
 
-function loadTransactions(){
+function loadTransactions() {
 
-const email = localStorage.getItem("loggedInUser");
+    const email = localStorage.getItem("loggedInUser");
+    fetch(`http://127.0.0.1:8001/transactions/user/${email}`)
+    .then(response => response.json())
 
-fetch(`http://127.0.0.1:8001/transactions/${email}`)
+    .then(data => {
 
-.then(response=>response.json())
+        let table = document.getElementById("transactionTable");
 
-.then(data=>{
+        table.innerHTML = "";
 
-let table=document.getElementById("transactionTable");
+        // Show total number of transactions
+        document.getElementById("transactionCount").innerHTML =
+            `(${data.length})`;
 
-table.innerHTML="";
+        data.forEach(t => {
 
-data.forEach(t=>{
+            table.innerHTML += `
 
-table.innerHTML+=`
+            <tr>
 
-<tr>
+                <td>${t.date}</td>
 
-<td>${t.date}</td>
+                <td>${t.category}</td>
 
-<td>${t.category}</td>
+                <td>₹${Number(t.amount).toLocaleString("en-IN")}</td>
 
-<td>₹${t.amount}</td>
+                <td>${t.location}</td>
 
-<td>${t.location}</td>
+                <td>
 
-</tr>
+                    <button onclick="editTransaction('${t._id}')">
+                        Edit
+                    </button>
 
-`;
+                    <button onclick="deleteTransaction('${t._id}')">
+                        Delete
+                    </button>
 
-});
+                </td>
 
-});
+            </tr>
+
+            `;
+
+        });
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert("Unable to load transactions.");
+
+    });
 
 }
 
-function addTransaction(){
 
-const transaction = {
+// ======================================
+// Add Transaction
+// ======================================
 
-    user_email: localStorage.getItem("loggedInUser"),
+function addTransaction() {
 
-    notes: document.getElementById("notes").value,
+    const transaction = {
 
-    payment_mode: document.getElementById("payment_mode").value,
+        user_email: localStorage.getItem("loggedInUser"),
 
-    location: document.getElementById("location").value,
+        notes: document.getElementById("notes").value,
 
-    amount: Number(document.getElementById("amount").value),
+        payment_mode: document.getElementById("payment_mode").value,
 
-    date: document.getElementById("date").value
+        location: document.getElementById("location").value,
 
-};
+        amount: Number(document.getElementById("amount").value),
 
-fetch("http://127.0.0.1:8001/transactions/",{
+        date: document.getElementById("date").value
 
-method:"POST",
+    };
 
-headers:{
+    fetch("http://127.0.0.1:8001/transactions/", {
 
-"Content-Type":"application/json"
+        method: "POST",
 
-},
+        headers: {
 
-body:JSON.stringify(transaction)
+            "Content-Type": "application/json"
 
-})
+        },
 
-.then(response=>response.json())
+        body: JSON.stringify(transaction)
 
-.then(data=>{
+    })
 
-alert(data.message);
+    .then(response => response.json())
 
-location.reload();
+    .then(data => {
 
-});
+        alert(data.message);
+
+        loadTransactions();
+
+        document.getElementById("notes").value = "";
+        document.getElementById("payment_mode").value = "";
+        document.getElementById("location").value = "";
+        document.getElementById("amount").value = "";
+        document.getElementById("date").value = "";
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert("Unable to add transaction.");
+
+    });
+
+}
+
+
+// ======================================
+// Placeholder Functions
+// ======================================
+
+function editTransaction(id){
+
+    alert("Edit feature coming soon.");
+
+}
+
+function deleteTransaction(id){
+
+    alert("Delete feature coming soon.");
 
 }

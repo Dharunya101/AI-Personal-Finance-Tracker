@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-
 from database import transactions_collection
 
 router = APIRouter(
@@ -17,10 +16,11 @@ def get_insights(user_email: str):
         )
     )
 
-    total_expense = 0
     total_income = 0
+    total_expense = 0
 
     category_summary = {}
+    monthly_summary = {}
 
     income_categories = [
         "salary",
@@ -33,16 +33,25 @@ def get_insights(user_email: str):
 
         amount = float(transaction.get("amount", 0))
 
-        category = transaction.get("category", "Unknown")
+        category = transaction.get("category", "Unknown").lower()
 
-        if category.lower() in income_categories:
+        date = transaction.get("date", "")
 
+        # Month format -> YYYY-MM
+        month = date[:7]
+
+        # Income / Expense
+        if category in income_categories:
             total_income += amount
-
         else:
-
             total_expense += amount
 
+            # Monthly expense summary
+            monthly_summary[month] = (
+                monthly_summary.get(month, 0) + amount
+            )
+
+        # Category summary
         category_summary[category] = (
             category_summary.get(category, 0) + amount
         )
@@ -70,7 +79,9 @@ def get_insights(user_email: str):
 
         "total_transactions": len(transactions),
 
-        "category_summary": category_summary
+        "category_summary": category_summary,
+
+        "monthly_summary": monthly_summary
 
     }
 

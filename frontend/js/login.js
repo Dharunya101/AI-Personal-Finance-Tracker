@@ -44,7 +44,7 @@ function login() {
 
             document.getElementById("loginMessage").style.color = "green";
             document.getElementById("loginMessage").innerHTML =
-                "✅ Login Successful! Redirecting...";
+                "Login Successful! Redirecting...";
 
             setTimeout(() => {
 
