@@ -1,9 +1,20 @@
 // ==========================================
-// Dashboard Cards
+// Dashboard
 // ==========================================
-fetch("http://127.0.0.1:8001/dashboard/overview")
+
+const email = localStorage.getItem("loggedInUser");
+
+console.log("Logged in user:", email);
+
+if (!email) {
+    alert("Please login first.");
+    window.location.href = "login.html";
+}
+fetch(`http://127.0.0.1:8001/dashboard/overview/${email}`)
 .then(response => response.json())
 .then(data => {
+
+    console.log("Overview Data:", data);
 
     document.getElementById("income").innerHTML =
         new Intl.NumberFormat("en-IN", {
@@ -37,7 +48,7 @@ fetch("http://127.0.0.1:8001/dashboard/overview")
 // ==========================================
 // Recent Transactions
 // ==========================================
-fetch("http://127.0.0.1:8001/dashboard/recent-transactions")
+fetch(`http://127.0.0.1:8001/dashboard/recent-transactions/${email}`)
 .then(response => response.json())
 .then(data => {
 
@@ -69,7 +80,7 @@ fetch("http://127.0.0.1:8001/dashboard/recent-transactions")
 // ==========================================
 // Expense by Category Pie Chart
 // ==========================================
-fetch("http://127.0.0.1:8001/dashboard/category-summary")
+fetch(`http://127.0.0.1:8001/dashboard/category-summary/${email}`)
 .then(response => response.json())
 .then(data => {
 
@@ -127,7 +138,7 @@ fetch("http://127.0.0.1:8001/dashboard/category-summary")
 // ==========================================
 // Monthly Expense Trend
 // ==========================================
-fetch("http://127.0.0.1:8001/dashboard/monthly-summary")
+fetch(`http://127.0.0.1:8001/dashboard/monthly-summary/${email}`)
 .then(response => response.json())
 .then(data => {
 

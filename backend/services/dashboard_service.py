@@ -7,9 +7,14 @@ income_categories = [
     "freelance"
 ]
 
-def dashboard_summary():
 
-    transactions = list(transactions_collection.find())
+def dashboard_summary(user_email):
+
+    transactions = list(
+        transactions_collection.find(
+            {"user_email": user_email}
+        )
+    )
 
     total_income = 0
     total_expense = 0
@@ -29,9 +34,15 @@ def dashboard_summary():
     budget_remaining = 50000 - total_expense
 
     return {
+
         "total_transactions": len(transactions),
+
         "total_income": total_income,
+
         "total_expense": total_expense,
+
         "savings": savings,
+
         "budget_remaining": budget_remaining
+
     }

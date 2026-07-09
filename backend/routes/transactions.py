@@ -23,13 +23,22 @@ def add_transaction(transaction: Transaction):
     print("Step 2")
 
     data = {
-        "notes": transaction.notes,
-        "payment_mode": transaction.payment_mode,
-        "location": transaction.location,
-        "amount": transaction.amount,
-        "date": transaction.date,
-        "category": category
-    }
+
+    "user_email": transaction.user_email,
+
+    "notes": transaction.notes,
+
+    "payment_mode": transaction.payment_mode,
+
+    "location": transaction.location,
+
+    "amount": transaction.amount,
+
+    "date": transaction.date,
+
+    "category": category
+
+}
 
     print("Step 3")
 
@@ -43,20 +52,21 @@ def add_transaction(transaction: Transaction):
         "category": category
     }
 
-    
-    
-@router.get("/")
-def get_transactions():
+@router.get("/{user_email}")
+def get_transactions(user_email: str):
 
     transactions = []
 
-    for transaction in transactions_collection.find():
+    for transaction in transactions_collection.find(
+        {"user_email": user_email}
+    ):
 
         transaction["_id"] = str(transaction["_id"])
 
         transactions.append(transaction)
 
     return transactions
+
 @router.get("/{transaction_id}")
 def get_transaction(transaction_id: str):
 

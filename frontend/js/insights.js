@@ -2,7 +2,9 @@
 // Financial Insights
 // ======================================
 
-fetch("http://127.0.0.1:8001/insights/")
+const email = localStorage.getItem("loggedInUser");
+
+fetch(`http://127.0.0.1:8001/insights/${email}`)
 .then(response => response.json())
 .then(data => {
 

@@ -1,8 +1,13 @@
-fetch("http://127.0.0.1:8001/reports/")
+const email = localStorage.getItem("loggedInUser");
+
+// Load Report Data
+fetch(`http://127.0.0.1:8001/reports/${email}`)
+
 .then(response => response.json())
+
 .then(data => {
 
-    // Cards
+    // Summary Cards
     document.getElementById("income").innerHTML =
         new Intl.NumberFormat("en-IN", {
             style: "currency",
@@ -21,7 +26,7 @@ fetch("http://127.0.0.1:8001/reports/")
             currency: "INR"
         }).format(data.savings);
 
-    // Transactions
+    // Transactions Table
     const table = document.getElementById("reportTable");
 
     table.innerHTML = "";
@@ -77,21 +82,36 @@ fetch("http://127.0.0.1:8001/reports/")
     });
 
 })
-.catch(error => console.log(error));
 
+.catch(error => {
+
+    console.error(error);
+
+    alert("Unable to load reports.");
+
+});
+
+
+// Download CSV
 function downloadCSV(){
 
+    const email = localStorage.getItem("loggedInUser");
+
     window.open(
-        "http://127.0.0.1:8001/reports/download/csv",
+        `http://127.0.0.1:8001/reports/download/csv/${email}`,
         "_blank"
     );
 
 }
 
+
+// Download PDF
 function downloadPDF(){
 
+    const email = localStorage.getItem("loggedInUser");
+
     window.open(
-        "http://127.0.0.1:8001/reports/download/pdf",
+        `http://127.0.0.1:8001/reports/download/pdf/${email}`,
         "_blank"
     );
 

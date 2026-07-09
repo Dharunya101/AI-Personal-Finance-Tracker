@@ -2,7 +2,9 @@ loadTransactions();
 
 function loadTransactions(){
 
-fetch("http://127.0.0.1:8001/transactions/")
+const email = localStorage.getItem("loggedInUser");
+
+fetch(`http://127.0.0.1:8001/transactions/${email}`)
 
 .then(response=>response.json())
 
@@ -38,17 +40,19 @@ table.innerHTML+=`
 
 function addTransaction(){
 
-const transaction={
+const transaction = {
 
-notes:document.getElementById("notes").value,
+    user_email: localStorage.getItem("loggedInUser"),
 
-payment_mode:document.getElementById("payment_mode").value,
+    notes: document.getElementById("notes").value,
 
-location:document.getElementById("location").value,
+    payment_mode: document.getElementById("payment_mode").value,
 
-amount:Number(document.getElementById("amount").value),
+    location: document.getElementById("location").value,
 
-date:document.getElementById("date").value
+    amount: Number(document.getElementById("amount").value),
+
+    date: document.getElementById("date").value
 
 };
 

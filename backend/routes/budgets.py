@@ -124,42 +124,34 @@ def budget_status():
 @router.get("/alerts")
 def budget_alerts():
 
-    alerts=[]
+    alerts = []
 
-    budgets=list(
-
-        budgets_collection.find({},{"_id":0})
-
+    budgets = list(
+        budgets_collection.find({}, {"_id": 0})
     )
 
-    transactions=list(
-
+    transactions = list(
         transactions_collection.find()
-
     )
 
     for budget in budgets:
 
-        spent=0
+        spent = 0
 
         for transaction in transactions:
 
-            if transaction["category"]==budget["category"]:
+            category = transaction.get("category")
 
-                spent+=float(
+            amount = float(transaction.get("amount", 0))
 
-                    transaction["amount"]
-
-                )
+            if category == budget["category"]:
+                spent += amount
 
         if spent > budget["monthly_budget"]:
 
             alerts.append({
-
-                "category":budget["category"],
-
-                "message":"Budget Exceeded"
-
+                "category": budget["category"],
+                "message": "Budget Exceeded"
             })
 
     return alerts

@@ -9,18 +9,25 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.platypus import Table
 from reportlab.platypus import TableStyle
 from reportlab.lib import colors
-import io
 
 router = APIRouter(
     prefix="/reports",
     tags=["📄 Reports"]
 )
 
-@router.get("/")
-def financial_report():
+
+# ==========================
+# Financial Report
+# ==========================
+
+@router.get("/{user_email}")
+def financial_report(user_email: str):
 
     transactions = list(
-        transactions_collection.find({}, {"_id":0})
+        transactions_collection.find(
+            {"user_email": user_email},
+            {"_id": 0}
+        )
     )
 
     total_income = 0
@@ -28,15 +35,25 @@ def financial_report():
 
     category_summary = {}
 
+    income_categories = [
+        "salary",
+        "bonus",
+        "investment",
+        "freelance"
+    ]
+
     for transaction in transactions:
 
-        amount = float(transaction["amount"])
+        amount = float(transaction.get("amount", 0))
 
-        category = transaction["category"]
+        category = transaction.get("category", "Unknown")
 
-        if category.lower() == "salary":
+        if category.lower() in income_categories:
+
             total_income += amount
+
         else:
+
             total_expense += amount
 
         category_summary[category] = (
@@ -49,18 +66,27 @@ def financial_report():
 
         "total_expense": total_expense,
 
-        "savings": total_income-total_expense,
+        "savings": total_income - total_expense,
 
         "transactions": transactions,
 
         "category_summary": category_summary
 
     }
-@router.get("/download/csv")
-def download_csv():
+
+
+# ==========================
+# Download CSV
+# ==========================
+
+@router.get("/download/csv/{user_email}")
+def download_csv(user_email: str):
 
     transactions = list(
-        transactions_collection.find({}, {"_id": 0})
+        transactions_collection.find(
+            {"user_email": user_email},
+            {"_id": 0}
+        )
     )
 
     df = pd.DataFrame(transactions)
@@ -79,11 +105,19 @@ def download_csv():
 
     return response
 
-@router.get("/download/pdf")
-def download_pdf():
+
+# ==========================
+# Download PDF
+# ==========================
+
+@router.get("/download/pdf/{user_email}")
+def download_pdf(user_email: str):
 
     transactions = list(
-        transactions_collection.find({}, {"_id": 0})
+        transactions_collection.find(
+            {"user_email": user_email},
+            {"_id": 0}
+        )
     )
 
     buffer = io.BytesIO()
@@ -104,10 +138,10 @@ def download_pdf():
     table = Table(data)
 
     table.setStyle(TableStyle([
-        ("BACKGROUND", (0,0), (-1,0), colors.grey),
-        ("TEXTCOLOR", (0,0), (-1,0), colors.whitesmoke),
-        ("GRID", (0,0), (-1,-1), 1, colors.black),
-        ("BACKGROUND", (0,1), (-1,-1), colors.beige)
+        ("BACKGROUND", (0, 0), (-1, 0), colors.grey),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
+        ("GRID", (0, 0), (-1, -1), 1, colors.black),
+        ("BACKGROUND", (0, 1), (-1, -1), colors.beige)
     ]))
 
     pdf.build([table])

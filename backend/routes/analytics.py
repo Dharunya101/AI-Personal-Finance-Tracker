@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from database import transactions_collection
 
 router = APIRouter(
@@ -7,12 +8,20 @@ router = APIRouter(
 )
 
 
-@router.get("/category-summary")
-def category_summary():
+# ===============================
+# Category Summary
+# ===============================
+
+@router.get("/category-summary/{user_email}")
+def category_summary(user_email: str):
 
     summary = {}
 
-    for transaction in transactions_collection.find():
+    transactions = transactions_collection.find(
+        {"user_email": user_email}
+    )
+
+    for transaction in transactions:
 
         category = transaction.get("category", "Unknown")
 
@@ -23,12 +32,20 @@ def category_summary():
     return summary
 
 
-@router.get("/payment-mode")
-def payment_mode():
+# ===============================
+# Payment Mode
+# ===============================
+
+@router.get("/payment-mode/{user_email}")
+def payment_mode(user_email: str):
 
     summary = {}
 
-    for transaction in transactions_collection.find():
+    transactions = transactions_collection.find(
+        {"user_email": user_email}
+    )
+
+    for transaction in transactions:
 
         mode = transaction.get("payment_mode", "Unknown")
 
@@ -37,34 +54,50 @@ def payment_mode():
     return summary
 
 
-@router.get("/location")
-def location():
+# ===============================
+# Location Summary
+# ===============================
+
+@router.get("/location/{user_email}")
+def location(user_email: str):
 
     summary = {}
 
-    for transaction in transactions_collection.find():
+    transactions = transactions_collection.find(
+        {"user_email": user_email}
+    )
 
-        location = transaction.get("location", "Unknown")
+    for transaction in transactions:
 
-        summary[location] = summary.get(location, 0) + 1
+        loc = transaction.get("location", "Unknown")
+
+        summary[loc] = summary.get(loc, 0) + 1
 
     return summary
 
 
-@router.get("/income-vs-expense")
-def income_vs_expense():
+# ===============================
+# Income vs Expense
+# ===============================
 
-    income_categories = [
-        "salary",
-        "bonus",
-        "investment",
-        "freelance"
-    ]
+income_categories = [
+    "salary",
+    "bonus",
+    "investment",
+    "freelance"
+]
+
+@router.get("/income-vs-expense/{user_email}")
+def income_vs_expense(user_email: str):
 
     income = 0
     expense = 0
 
-    for transaction in transactions_collection.find():
+    transactions = transactions_collection.find(
+        {"user_email": user_email}
+    )
+
+    for transaction in transactions:
 
         category = transaction.get("category", "").lower()
 
@@ -76,17 +109,28 @@ def income_vs_expense():
             expense += amount
 
     return {
+
         "Income": income,
+
         "Expense": expense
+
     }
 
 
-@router.get("/top-categories")
-def top_categories():
+# ===============================
+# Top Categories
+# ===============================
+
+@router.get("/top-categories/{user_email}")
+def top_categories(user_email: str):
 
     summary = {}
 
-    for transaction in transactions_collection.find():
+    transactions = transactions_collection.find(
+        {"user_email": user_email}
+    )
+
+    for transaction in transactions:
 
         category = transaction.get("category", "Unknown")
 
@@ -95,7 +139,11 @@ def top_categories():
         summary[category] = summary.get(category, 0) + amount
 
     sorted_summary = dict(
-        sorted(summary.items(), key=lambda x: x[1], reverse=True)
+        sorted(
+            summary.items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
     )
 
     return sorted_summary

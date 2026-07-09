@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File, Form
 import pandas as pd
 import joblib
 
@@ -14,7 +14,10 @@ model = joblib.load("../saved_models/expense_classifier.pkl")
 
 
 @router.post("/csv")
-async def upload_csv(file: UploadFile = File(...)):
+async def upload_csv(
+    file: UploadFile = File(...),
+    user_email: str = Form(...)
+):
 
     df = pd.read_csv(file.file)
 
@@ -35,14 +38,21 @@ async def upload_csv(file: UploadFile = File(...)):
 
         transactions_collection.insert_one({
 
-            "date": date,
-            "notes": notes,
-            "payment_mode": payment_mode,
-            "location": location,
-            "amount": amount,
-            "category": predicted_category
+    "user_email": user_email,
 
-        })
+    "date": date,
+
+    "notes": notes,
+
+    "payment_mode": payment_mode,
+
+    "location": location,
+
+    "amount": amount,
+
+    "category": predicted_category
+
+})
 
         rows_inserted += 1
 

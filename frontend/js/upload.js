@@ -12,7 +12,16 @@ function uploadCSV() {
 
     const formData = new FormData();
 
-    formData.append("file", fileInput.files[0]);
+    formData.append(
+        "file",
+        fileInput.files[0]
+    );
+
+    // Send the logged-in user's email
+    formData.append(
+        "user_email",
+        localStorage.getItem("loggedInUser")
+    );
 
     fetch("http://127.0.0.1:8001/upload/csv", {
 
@@ -34,11 +43,18 @@ function uploadCSV() {
 
             data.rows_inserted;
 
+        // Redirect after 2 seconds
+        setTimeout(() => {
+
+            window.location.href = "transactions.html";
+
+        }, 2000);
+
     })
 
     .catch(error => {
 
-        console.log(error);
+        console.error(error);
 
         document.getElementById("status").innerHTML =
 
@@ -47,16 +63,3 @@ function uploadCSV() {
     });
 
 }
-
-.then(data=>{
-
-    document.getElementById("status").innerHTML =
-        "✅ Upload Successful";
-
-    setTimeout(()=>{
-
-        window.location.href="transactions.html";
-
-    },1000);
-
-});

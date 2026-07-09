@@ -4,6 +4,10 @@
 <head>
 
     <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -11,32 +15,85 @@
 
 <body>
 
-<div class="login-box">
+<div class="login-container">
 
-    <h1>AI Personal Finance Tracker</h1>
+    <!-- Left Side -->
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email">
+    <div class="left-side">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password">
+        <h1>
+AI Personal Finance
+<br>
+Tracker
+</h1>
 
-    <button id="loginBtn" onclick="login()">
-        Login
-    </button>
+        <p>
+            Smart Expense Tracking &
+            Intelligent Financial Insights
+        </p>
 
-    <p id="loginMessage"
-       style="color:red; text-align:center; font-weight:bold;">
-    </p>
+        <img src="images/finance.png" alt="Finance Illustration">
 
-    <p style="text-align:center;">
-        Don't have an account?
-        <a href="signup.html">Create Account</a>
-    </p>
+        <div class="features">
+
+            <p>AI-powered Expense Categorization</p>
+
+            <p>Budget Management & Alerts</p>
+
+            <p>Interactive Financial Dashboard</p>
+
+            <p>Analytics & Reports</p>
+
+            <p>AI Spending Insights</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Right Side -->
+
+    <div class="right-side">
+
+        <div class="login-box">
+
+            <h2>Welcome Back 👋</h2>
+
+            <p style="text-align:center; margin-bottom:25px; color:#64748b;">
+                Login to continue managing your finances
+            </p>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email">
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter your password">
+
+            <button
+                id="loginBtn"
+                onclick="login()">
+
+                Login
+
+            </button>
+
+            <p
+                id="loginMessage"
+                style="color:red;text-align:center;margin-top:15px;">
+            </p>
+
+            <p class="signup-link">
+    Don't have an account?
+    <a href="signup.html">Create Account</a>
+</p>
+
+        </div>
+
+    </div>
 
 </div>
 

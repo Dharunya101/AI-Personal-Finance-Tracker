@@ -2,10 +2,17 @@ from pydantic import BaseModel
 from typing import Optional
 
 class Transaction(BaseModel):
+
+    user_email: str
+
     notes: str
+
     payment_mode: str
+
     location: str
+
     amount: float
+
     date: str
 
 class UpdateTransaction(BaseModel):
