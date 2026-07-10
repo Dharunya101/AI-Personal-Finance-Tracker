@@ -4,10 +4,12 @@
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <title>Create Account</title>
 
@@ -17,55 +19,49 @@
 
 <body>
 
-<div class="login-box">
+<div class="login-page">
 
-    <h2>Create Account</h2>
+    <div class="login-box">
 
-    <input
-        type="text"
-        id="name"
-        placeholder="Full Name">
+        <h2>Create Account</h2>
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email">
+        <input
+            type="text"
+            id="name"
+            placeholder="Full Name">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password">
+        <input
+            type="email"
+            id="email"
+            placeholder="Email">
 
-    <input
-        type="password"
-        id="confirmPassword"
-        placeholder="Confirm Password">
+        <input
+            type="password"
+            id="password"
+            placeholder="Password">
 
-    <button onclick="signup()">
+        <input
+            type="password"
+            id="confirmPassword"
+            placeholder="Confirm Password">
 
-        Create Account
+        <button onclick="signup()">
+            Create Account
+        </button>
 
-    </button>
+        <div class="signup-link">
 
-    <br><br>
+            Already have an account?
 
-    <p style="text-align:center;">
+            <a href="login.html">
+                Login
+            </a>
 
-        Already have an account?
+        </div>
 
-        <a href="login.html">
+        <p id="message" style="color:green;"></p>
 
-            Login
-
-        </a>
-
-    </p>
-
-    <p
-        id="message"
-        style="text-align:center;color:green;">
-
-    </p>
+    </div>
 
 </div>
 

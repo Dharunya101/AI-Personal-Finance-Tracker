@@ -1,8 +1,14 @@
+const email = localStorage.getItem("loggedInUser");
+
+// =====================================
+// Existing Budgets
+// =====================================
+
 fetch("http://127.0.0.1:8001/budgets/")
 .then(response => response.json())
 .then(data => {
 
-    let table = document.getElementById("budgetTable");
+    const table = document.getElementById("budgetTable");
 
     table.innerHTML = "";
 
@@ -10,14 +16,11 @@ fetch("http://127.0.0.1:8001/budgets/")
 
         table.innerHTML += `
         <tr>
-
             <td>${budget.category}</td>
-
             <td>${new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR"
-}).format(budget.monthly_budget)}</td>
-
+                style: "currency",
+                currency: "INR"
+            }).format(budget.monthly_budget)}</td>
         </tr>
         `;
 
@@ -25,6 +28,11 @@ fetch("http://127.0.0.1:8001/budgets/")
 
 })
 .catch(error => console.log(error));
+
+
+// =====================================
+// Add Budget
+// =====================================
 
 function addBudget(){
 
@@ -64,12 +72,15 @@ function addBudget(){
 
 }
 
-// ===============================
-// Budget Status
-// ===============================
 
-fetch("http://127.0.0.1:8001/budgets/status")
+// =====================================
+// Budget Status
+// =====================================
+
+fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
+
 .then(response => response.json())
+
 .then(data => {
 
     const table = document.getElementById("budgetStatusTable");
@@ -78,8 +89,7 @@ fetch("http://127.0.0.1:8001/budgets/status")
 
     data.forEach(item => {
 
-        const remainingColor =
-            item.remaining < 0 ? "red" : "green";
+        const remainingColor = item.remaining < 0 ? "red" : "limegreen";
 
         table.innerHTML += `
 
@@ -91,8 +101,10 @@ fetch("http://127.0.0.1:8001/budgets/status")
 
             <td>₹${item.spent.toLocaleString()}</td>
 
-            <td style="color:${remainingColor}; font-weight:bold;">
+            <td style="color:${remainingColor};font-weight:bold;">
+
                 ₹${item.remaining.toLocaleString()}
+
             </td>
 
         </tr>
@@ -102,13 +114,18 @@ fetch("http://127.0.0.1:8001/budgets/status")
     });
 
 })
-.catch(error => console.log(error));
-// =======================================
-// Budget Alerts
-// =======================================
 
-fetch("http://127.0.0.1:8001/budgets/alerts")
+.catch(error => console.log(error));
+
+
+// =====================================
+// Budget Alerts
+// =====================================
+
+fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
+
 .then(response => response.json())
+
 .then(data => {
 
     const alerts = document.getElementById("budgetAlerts");
@@ -118,11 +135,13 @@ fetch("http://127.0.0.1:8001/budgets/alerts")
     if(data.length === 0){
 
         alerts.innerHTML = `
-            <div class="success-box">
 
-                ✅ All budgets are within limits.
+        <div class="success-box">
 
-            </div>
+            ✅ All budgets are within limits.
+
+        </div>
+
         `;
 
         return;
@@ -144,4 +163,5 @@ fetch("http://127.0.0.1:8001/budgets/alerts")
     });
 
 })
+
 .catch(error => console.log(error));

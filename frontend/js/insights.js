@@ -37,72 +37,201 @@ fetch(`http://127.0.0.1:8001/insights/${email}`)
     // ===========================
     // Pie Chart
     // ===========================
+    new Chart(document.getElementById("pieChart"), {
 
-    new Chart(
-        document.getElementById("pieChart"),
-        {
+    type: "pie",
 
-            type: "pie",
+    data: {
 
-            data: {
+        labels: Object.keys(data.category_summary),
 
-                labels: Object.keys(data.category_summary),
+        datasets: [{
 
-                datasets: [{
+            data: Object.values(data.category_summary),
 
-                    data: Object.values(data.category_summary)
+            backgroundColor: [
 
-                }]
+                "#36A2EB",
+                "#FF6384",
+                "#FF9F40",
+                "#FFD166",
+                "#4BC0C0",
+                "#9966FF",
+                "#C9CBCF",
+                "#3FA9F5"
 
-            },
+            ],
 
-            options: {
+            borderColor: "#ffffff",
 
-                responsive: true,
+            borderWidth: 2
 
-                maintainAspectRatio: false
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                position: "top",
+
+                labels: {
+
+                    color: "#ffffff",
+
+                    font: {
+
+                        size: 18,
+
+                        weight: "bold"
+
+                    }
+
+                }
 
             }
 
         }
 
-    );
+    }
+
+});
+
 
     // ===========================
     // Bar Chart
     // ===========================
+    new Chart(document.getElementById("barChart"), {
 
-    new Chart(
-        document.getElementById("barChart"),
-        {
+    type: "line",
 
-            type: "bar",
+    data: {
 
-            data: {
+        labels: Object.keys(data.category_summary),
 
-                labels: Object.keys(data.category_summary),
+        datasets: [{
 
-                datasets: [{
+            label: "Expense",
 
-                    label: "Expense",
+            data: Object.values(data.category_summary),
 
-                    data: Object.values(data.category_summary)
+            borderColor: "#18E3FF",
 
-                }]
+            backgroundColor: "rgba(24,227,255,0.25)",
+
+            fill: true,
+
+            tension: 0.4,
+
+            borderWidth: 5,
+
+            pointRadius: 6,
+
+            pointBackgroundColor: "#ffffff",
+
+            pointBorderColor: "#18E3FF",
+
+            pointBorderWidth: 4
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+
+                    color: "#ffffff",
+
+                    font: {
+
+                        size: 18,
+
+                        weight: "bold"
+
+                    }
+
+                }
+
+            }
+
+        },
+
+        scales: {
+
+            x: {
+
+                ticks: {
+
+                    color: "#ffffff",
+
+                    font: {
+
+                        size: 15,
+
+                        weight: "bold"
+
+                    }
+
+                },
+
+                grid: {
+
+                    color: "rgba(255,255,255,0.15)"
+
+                }
 
             },
 
-            options: {
+            y: {
 
-                responsive: true,
+                ticks: {
 
-                maintainAspectRatio: false
+                    color: "#ffffff",
+
+                    font: {
+
+                        size: 15,
+
+                        weight: "bold"
+
+                    }
+
+                },
+
+                grid: {
+
+                    color: "rgba(255,255,255,0.15)"
+
+                }
 
             }
 
         }
 
-    );
+    }
 
 })
-.catch(error => console.log(error));
+})
+.catch(error => {
+
+    console.error(error);
+
+    alert("Unable to load insights.");
+
+});

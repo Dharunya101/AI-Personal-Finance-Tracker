@@ -52,45 +52,7 @@ fetch(`http://127.0.0.1:8001/reports/${email}`)
 
         `;
 
-    });
-
-    // Pie Chart
-    new Chart(document.getElementById("pieChart"), {
-
-        type: "pie",
-
-        data: {
-
-            labels: Object.keys(data.category_summary),
-
-            datasets: [{
-
-                data: Object.values(data.category_summary)
-
-            }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false
-
-        }
-
-    });
-
-})
-
-.catch(error => {
-
-    console.error(error);
-
-    alert("Unable to load reports.");
-
-});
-
+    });   
 
 // Download CSV
 function downloadCSV(){
