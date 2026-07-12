@@ -1,56 +1,22 @@
 // ======================================
 // Load Transactions
 // ======================================
-
+let allTransactions = [];
 loadTransactions();
 
 function loadTransactions() {
 
     const email = localStorage.getItem("loggedInUser");
+
     fetch(`http://127.0.0.1:8001/transactions/user/${email}`)
+
     .then(response => response.json())
 
     .then(data => {
 
-        let table = document.getElementById("transactionTable");
+        allTransactions = data;
 
-        table.innerHTML = "";
-
-        // Show total number of transactions
-        document.getElementById("transactionCount").innerHTML =
-            `(${data.length})`;
-
-        data.forEach(t => {
-
-            table.innerHTML += `
-
-            <tr>
-
-                <td>${t.date}</td>
-
-                <td>${t.category}</td>
-
-                <td>₹${Number(t.amount).toLocaleString("en-IN")}</td>
-
-                <td>${t.location}</td>
-
-                <td>
-
-                    <button onclick="editTransaction('${t._id}')">
-                        Edit
-                    </button>
-
-                    <button onclick="deleteTransaction('${t._id}')">
-                        Delete
-                    </button>
-
-                </td>
-
-            </tr>
-
-            `;
-
-        });
+        displayTransactions(allTransactions);
 
     })
 
@@ -64,6 +30,67 @@ function loadTransactions() {
 
 }
 
+function displayTransactions(data){
+
+    let table = document.getElementById("transactionTable");
+
+    table.innerHTML = "";
+
+    document.getElementById("transactionCount").innerHTML =
+        `(${data.length})`;
+
+    data.forEach(t=>{
+
+        table.innerHTML += `
+
+        <tr>
+
+            <td>${t.date}</td>
+
+            <td>${t.category}</td>
+
+            <td>₹${Number(t.amount).toLocaleString("en-IN")}</td>
+
+            <td>${t.location}</td>
+
+            <td>
+
+                <button onclick="editTransaction('${t._id}')">
+                    Edit
+                </button>
+
+                <button onclick="deleteTransaction('${t._id}')">
+                    Delete
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+document.getElementById("searchTransaction")
+
+.addEventListener("input",function(){
+
+    const keyword=this.value.toLowerCase();
+
+    const filtered=allTransactions.filter(t=>
+
+        t.category.toLowerCase().includes(keyword)
+
+        ||
+
+        t.location.toLowerCase().includes(keyword)
+
+    );
+
+    displayTransactions(filtered);
+
+});
 
 // ======================================
 // Add Transaction
@@ -132,14 +159,69 @@ function addTransaction() {
 // Placeholder Functions
 // ======================================
 
-function editTransaction(id){
+async function editTransaction(id){
 
-    alert("Edit feature coming soon.");
+    const amount = prompt("Enter new amount");
+
+    if(amount===null) return;
+
+    const response = await fetch(
+
+        `http://127.0.0.1:8001/transactions/${id}`,
+
+        {
+
+            method:"PUT",
+
+            headers:{
+
+                "Content-Type":"application/json"
+
+            },
+
+            body:JSON.stringify({
+
+                amount:Number(amount)
+
+            })
+
+        }
+
+    );
+
+    const result=await response.json();
+
+    alert(result.message);
+
+    loadTransactions();
 
 }
+async function deleteTransaction(id){
 
-function deleteTransaction(id){
+    const confirmDelete=confirm(
 
-    alert("Delete feature coming soon.");
+        "Delete this transaction?"
+
+    );
+
+    if(!confirmDelete) return;
+
+    const response=await fetch(
+
+        `http://127.0.0.1:8001/transactions/${id}`,
+
+        {
+
+            method:"DELETE"
+
+        }
+
+    );
+
+    const result=await response.json();
+
+    alert(result.message);
+
+    loadTransactions();
 
 }

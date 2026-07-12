@@ -2355,3 +2355,41 @@ width:70%;
 /* ===========================================================
    END OF CSS
 =========================================================== */
+
+.password-container{
+
+    position:relative;
+
+    width:100%;
+
+    margin-bottom:20px;
+
+}
+
+.password-container input{
+
+    width:100%;
+
+    padding:14px 50px 14px 16px;
+
+    box-sizing:border-box;
+
+}
+
+.toggle-password{
+
+    position:absolute;
+
+    right:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    user-select:none;
+
+}

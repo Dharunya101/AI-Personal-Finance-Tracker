@@ -1,10 +1,14 @@
+// ======================================
+// Signup Function
+// ======================================
+
 function signup() {
 
     const user = {
 
-        name: document.getElementById("name").value,
+        name: document.getElementById("name").value.trim(),
 
-        email: document.getElementById("email").value,
+        email: document.getElementById("email").value.trim(),
 
         password: document.getElementById("password").value,
 
@@ -12,13 +16,59 @@ function signup() {
 
     };
 
-    if(user.password !== user.confirmPassword){
+    // ===============================
+    // Check Empty Fields
+    // ===============================
 
-        alert("Passwords do not match.");
+    if (
+        user.name === "" ||
+        user.email === "" ||
+        user.password === "" ||
+        user.confirmPassword === ""
+    ) {
+
+        alert("Please fill in all the fields.");
+        return;
+
+    }
+
+    // ===============================
+    // Password Validation
+    // ===============================
+
+    const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#])[A-Za-z\d@$!%*?&.#]{8,}$/;
+
+    if (!passwordRegex.test(user.password)) {
+
+        alert(
+`Password must contain:
+
+• Minimum 8 characters
+• At least one uppercase letter (A-Z)
+• At least one lowercase letter (a-z)
+• At least one number (0-9)
+• At least one special character (@$!%*?&.#)`
+        );
 
         return;
 
     }
+
+    // ===============================
+    // Confirm Password
+    // ===============================
+
+    if (user.password !== user.confirmPassword) {
+
+        alert("Passwords do not match.");
+        return;
+
+    }
+
+    // ===============================
+    // Send Data to Backend
+    // ===============================
 
     fetch("http://127.0.0.1:8001/auth/signup", {
 
@@ -38,7 +88,7 @@ function signup() {
 
         document.getElementById("message").innerHTML = data.message;
 
-        if(data.message === "Account created successfully."){
+        if (data.message === "Account created successfully.") {
 
             alert("Account Created Successfully!");
 
@@ -48,8 +98,7 @@ function signup() {
 
             }, 500);
 
-        }
-        else{
+        } else {
 
             alert(data.message);
 
@@ -64,5 +113,28 @@ function signup() {
         alert("Signup Failed");
 
     });
+
+}
+
+
+// ======================================
+// Show / Hide Password
+// ======================================
+
+function togglePassword(id, element) {
+
+    const input = document.getElementById(id);
+
+    if (input.type === "password") {
+
+        input.type = "text";
+        element.textContent = "🙈";
+
+    } else {
+
+        input.type = "password";
+        element.textContent = "👁️";
+
+    }
 
 }
