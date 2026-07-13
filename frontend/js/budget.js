@@ -15,14 +15,21 @@ fetch("http://127.0.0.1:8001/budgets/")
     data.forEach(budget => {
 
         table.innerHTML += `
-        <tr>
-            <td>${budget.category}</td>
-            <td>${new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR"
-            }).format(budget.monthly_budget)}</td>
-        </tr>
-        `;
+<tr>
+    <td>${budget.category}</td>
+
+    <td>${new Intl.NumberFormat("en-IN", {
+        style: "currency",
+        currency: "INR"
+    }).format(budget.monthly_budget)}</td>
+
+    <td>
+        <button onclick="changeBudget('${budget.category}', ${budget.monthly_budget})">
+            ✏️ Change
+        </button>
+    </td>
+</tr>
+`;
 
     });
 
@@ -165,3 +172,66 @@ fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
 })
 
 .catch(error => console.log(error));
+
+// =====================================
+// Change Budget
+// =====================================
+
+function changeBudget(category, currentBudget){
+
+    const newBudget = prompt(
+
+        `Current Budget: ₹${currentBudget}\n\nEnter New Budget:`,
+
+        currentBudget
+
+    );
+
+    if(newBudget === null)
+        return;
+
+    if(newBudget === "" || isNaN(newBudget) || Number(newBudget) <= 0){
+
+        alert("Please enter a valid budget amount.");
+
+        return;
+
+    }
+
+    fetch(`http://127.0.0.1:8001/budgets/${category}`,{
+
+        method:"PUT",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+
+            category: category,
+
+            monthly_budget: Number(newBudget)
+
+        })
+
+    })
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        alert(data.message);
+
+        location.reload();
+
+    })
+
+    .catch(error => {
+
+        console.log(error);
+
+        alert("Unable to update budget.");
+
+    });
+
+}
