@@ -1,78 +1,146 @@
+// ======================================
+// Logged In User
+// ======================================
+
 const email = localStorage.getItem("loggedInUser");
 
 // ======================================
-// Load Report Data
+// Month Filter
 // ======================================
 
-fetch(`http://127.0.0.1:8001/reports/${email}`)
+const monthFilter = document.getElementById("monthFilter");
 
-.then(response => response.json())
+// Default = Current Month
+monthFilter.value = new Date().toISOString().slice(0,7);
 
-.then(data => {
+// Initial Load
+loadPageData();
 
-    console.log(data);
-
-    // Summary Cards
-
-    document.getElementById("income").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_income);
-
-    document.getElementById("expense").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_expense);
-
-    document.getElementById("savings").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.savings);
+// Reload when month changes
+monthFilter.addEventListener("change", loadPageData);
 
 
-    // ===========================
-    // Transactions Table
-    // ===========================
+// ======================================
+// Load Report
+// ======================================
 
-    const table = document.getElementById("reportTable");
+function loadPageData(){
 
-    table.innerHTML = "";
+    const month = monthFilter.value;
 
-    data.transactions.forEach(transaction => {
+    fetch(
 
-        table.innerHTML += `
+        `http://127.0.0.1:8001/reports/${email}?month=${month}`
 
-        <tr>
+    )
 
-            <td>${transaction.date}</td>
+    .then(response => response.json())
 
-            <td>${transaction.category}</td>
+    .then(data => {
 
-            <td>${new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR"
-            }).format(transaction.amount)}</td>
+        // ===========================
+        // Summary Cards
+        // ===========================
 
-            <td>${transaction.location}</td>
+        document.getElementById("income").innerHTML =
+            new Intl.NumberFormat("en-IN",{
 
-        </tr>
+                style:"currency",
 
-        `;
+                currency:"INR"
+
+            }).format(data.total_income);
+
+        document.getElementById("expense").innerHTML =
+            new Intl.NumberFormat("en-IN",{
+
+                style:"currency",
+
+                currency:"INR"
+
+            }).format(data.total_expense);
+
+        document.getElementById("savings").innerHTML =
+            new Intl.NumberFormat("en-IN",{
+
+                style:"currency",
+
+                currency:"INR"
+
+            }).format(data.savings);
+
+
+        // ===========================
+        // Transactions Table
+        // ===========================
+
+        const table = document.getElementById("reportTable");
+
+        table.innerHTML = "";
+
+        if(data.transactions.length===0){
+
+            table.innerHTML=`
+
+            <tr>
+
+                <td colspan="4"
+                style="text-align:center;
+                padding:20px;">
+
+                No transactions found for this month.
+
+                </td>
+
+            </tr>
+
+            `;
+
+            return;
+
+        }
+
+        data.transactions.forEach(transaction=>{
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>${transaction.date}</td>
+
+                <td>${transaction.category}</td>
+
+                <td>
+
+                ${new Intl.NumberFormat("en-IN",{
+
+                    style:"currency",
+
+                    currency:"INR"
+
+                }).format(transaction.amount)}
+
+                </td>
+
+                <td>${transaction.location}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+    })
+
+    .catch(error=>{
+
+        console.log(error);
+
+        alert("Unable to load report.");
 
     });
 
-})
-
-.catch(error => {
-
-    console.log(error);
-
-    alert("Unable to load report.");
-
-});
+}
 
 
 // ======================================
@@ -80,8 +148,6 @@ fetch(`http://127.0.0.1:8001/reports/${email}`)
 // ======================================
 
 function downloadCSV(){
-
-    const email = localStorage.getItem("loggedInUser");
 
     window.open(
 
@@ -99,8 +165,6 @@ function downloadCSV(){
 // ======================================
 
 function downloadPDF(){
-
-    const email = localStorage.getItem("loggedInUser");
 
     window.open(
 

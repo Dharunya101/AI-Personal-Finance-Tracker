@@ -15,7 +15,6 @@
 
 <link rel="stylesheet" href="css/style.css">
 
-<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -40,7 +39,7 @@ function logout(){
 
 </script>
 
-<!-- ================= Sidebar ================= -->
+<!-- Sidebar -->
 
 <div class="sidebar">
 
@@ -70,11 +69,29 @@ function logout(){
 
 </div>
 
-<!-- ================= Main ================= -->
+<!-- Main -->
 
 <div class="main">
 
 <h1>Analytics Dashboard</h1>
+
+<!-- ==========================
+     Month Filter
+========================== -->
+
+<div class="filter-container">
+
+    <label for="monthFilter">
+
+        <b>📅 Month:</b>
+
+    </label>
+
+    <input
+        type="month"
+        id="monthFilter">
+
+</div>
 
 <div class="charts">
 
@@ -104,11 +121,9 @@ function logout(){
 
 <div class="charts">
 
-    <!-- Box Plot -->
-
     <div class="chart-card" style="width:100%;">
 
-        <h2>Category Comparsion </h2>
+        <h2>Category Comparison</h2>
 
         <canvas id="radarChart"></canvas>
 

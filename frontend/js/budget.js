@@ -15,26 +15,35 @@ fetch("http://127.0.0.1:8001/budgets/")
     data.forEach(budget => {
 
         table.innerHTML += `
-<tr>
-    <td>${budget.category}</td>
 
-    <td>${new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR"
-    }).format(budget.monthly_budget)}</td>
+        <tr>
 
-    <td>
-        <button onclick="changeBudget('${budget.category}', ${budget.monthly_budget})">
-            ✏️ Change
-        </button>
-    </td>
-</tr>
-`;
+            <td>${budget.category}</td>
+
+            <td>${new Intl.NumberFormat("en-IN",{
+                style:"currency",
+                currency:"INR"
+            }).format(budget.monthly_budget)}</td>
+
+            <td>
+
+                <button onclick="changeBudget('${budget.category}', ${budget.monthly_budget})">
+
+                    ✏️ Change
+
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
 
     });
 
 })
-.catch(error => console.log(error));
+
+.catch(error=>console.log(error));
 
 
 // =====================================
@@ -43,12 +52,14 @@ fetch("http://127.0.0.1:8001/budgets/")
 
 function addBudget(){
 
-    const budget = {
+    const budget={
 
-        category: document.getElementById("category").value,
+        category:document.getElementById("category").value,
 
-        monthly_budget: Number(
+        monthly_budget:Number(
+
             document.getElementById("monthly_budget").value
+
         )
 
     };
@@ -58,7 +69,9 @@ function addBudget(){
         method:"POST",
 
         headers:{
+
             "Content-Type":"application/json"
+
         },
 
         body:JSON.stringify(budget)
@@ -69,13 +82,19 @@ function addBudget(){
 
     .then(data=>{
 
-        alert("Budget Added Successfully");
+        alert(data.message);
 
         location.reload();
 
     })
 
-    .catch(error=>console.log(error));
+    .catch(error=>{
+
+        console.log(error);
+
+        alert("Unable to add budget.");
+
+    });
 
 }
 
@@ -86,19 +105,35 @@ function addBudget(){
 
 fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
 
-.then(response => response.json())
+.then(response=>response.json())
 
-.then(data => {
+.then(data=>{
 
-    const table = document.getElementById("budgetStatusTable");
+    const table=document.getElementById("budgetStatusTable");
 
-    table.innerHTML = "";
+    table.innerHTML="";
 
-    data.forEach(item => {
+    data.forEach(item=>{
 
-        const remainingColor = item.remaining < 0 ? "red" : "limegreen";
+        const remainingColor=item.remaining<0 ? "red":"limegreen";
 
-        table.innerHTML += `
+        let percentage=(item.spent/item.budget)*100;
+
+        if(isNaN(percentage))
+            percentage=0;
+
+        if(percentage>100)
+            percentage=100;
+
+        let barColor="#2ecc71";
+
+        if(percentage>=70)
+            barColor="#f39c12";
+
+        if(percentage>=90)
+            barColor="#e74c3c";
+
+        table.innerHTML+=`
 
         <tr>
 
@@ -114,6 +149,29 @@ fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
 
             </td>
 
+            <td>
+
+                <div class="progress-container">
+
+                    <div
+                        class="progress-bar"
+                        style="
+                            width:${percentage}%;
+                            background:${barColor};
+                        ">
+
+                    </div>
+
+                </div>
+
+                <div class="progress-text">
+
+                    ${percentage.toFixed(0)}%
+
+                </div>
+
+            </td>
+
         </tr>
 
         `;
@@ -122,7 +180,7 @@ fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
 
 })
 
-.catch(error => console.log(error));
+.catch(error=>console.log(error));
 
 
 // =====================================
@@ -131,17 +189,17 @@ fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
 
 fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
 
-.then(response => response.json())
+.then(response=>response.json())
 
-.then(data => {
+.then(data=>{
 
-    const alerts = document.getElementById("budgetAlerts");
+    const alerts=document.getElementById("budgetAlerts");
 
-    alerts.innerHTML = "";
+    alerts.innerHTML="";
 
-    if(data.length === 0){
+    if(data.length===0){
 
-        alerts.innerHTML = `
+        alerts.innerHTML=`
 
         <div class="success-box">
 
@@ -155,9 +213,9 @@ fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
 
     }
 
-    data.forEach(alert => {
+    data.forEach(alert=>{
 
-        alerts.innerHTML += `
+        alerts.innerHTML+=`
 
         <div class="alert-box">
 
@@ -171,15 +229,16 @@ fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
 
 })
 
-.catch(error => console.log(error));
+.catch(error=>console.log(error));
+
 
 // =====================================
 // Change Budget
 // =====================================
 
-function changeBudget(category, currentBudget){
+function changeBudget(category,currentBudget){
 
-    const newBudget = prompt(
+    const newBudget=prompt(
 
         `Current Budget: ₹${currentBudget}\n\nEnter New Budget:`,
 
@@ -187,10 +246,10 @@ function changeBudget(category, currentBudget){
 
     );
 
-    if(newBudget === null)
+    if(newBudget===null)
         return;
 
-    if(newBudget === "" || isNaN(newBudget) || Number(newBudget) <= 0){
+    if(newBudget==="" || isNaN(newBudget) || Number(newBudget)<=0){
 
         alert("Please enter a valid budget amount.");
 
@@ -203,22 +262,24 @@ function changeBudget(category, currentBudget){
         method:"PUT",
 
         headers:{
+
             "Content-Type":"application/json"
+
         },
 
         body:JSON.stringify({
 
-            category: category,
+            category:category,
 
-            monthly_budget: Number(newBudget)
+            monthly_budget:Number(newBudget)
 
         })
 
     })
 
-    .then(response => response.json())
+    .then(response=>response.json())
 
-    .then(data => {
+    .then(data=>{
 
         alert(data.message);
 
@@ -226,7 +287,7 @@ function changeBudget(category, currentBudget){
 
     })
 
-    .catch(error => {
+    .catch(error=>{
 
         console.log(error);
 

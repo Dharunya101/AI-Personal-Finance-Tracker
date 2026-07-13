@@ -4,18 +4,22 @@
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Reports</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
+
+<body>
 
 <script>
 
@@ -35,7 +39,7 @@ function logout(){
 
 </script>
 
-<body>
+<!-- ================= Sidebar ================= -->
 
 <div class="sidebar">
 
@@ -65,28 +69,61 @@ function logout(){
 
 </div>
 
+<!-- ================= Main ================= -->
+
 <div class="main">
 
     <h1>Financial Reports</h1>
 
+    <!-- ==========================
+         Month Filter
+    ========================== -->
+
+    <div class="filter-container">
+
+        <label for="monthFilter">
+
+            <b>📅 Month:</b>
+
+        </label>
+
+        <input
+            type="month"
+            id="monthFilter">
+
+    </div>
+
+    <!-- Summary Cards -->
+
     <div class="cards">
 
         <div class="card">
+
             <h3>Total Income</h3>
+
             <h2 id="income">₹0</h2>
+
         </div>
 
         <div class="card">
+
             <h3>Total Expense</h3>
+
             <h2 id="expense">₹0</h2>
+
         </div>
 
         <div class="card">
+
             <h3>Savings</h3>
+
             <h2 id="savings">₹0</h2>
+
         </div>
 
     </div>
+
+    <!-- Transactions -->
 
     <div class="section">
 
@@ -115,17 +152,22 @@ function logout(){
 
     </div>
 
+    <!-- Download Buttons -->
 
     <div class="section">
 
         <button onclick="downloadCSV()">
+
             📥 Download CSV
+
         </button>
 
         <br><br>
 
         <button onclick="window.print()">
+
             📄 Download PDF
+
         </button>
 
     </div>

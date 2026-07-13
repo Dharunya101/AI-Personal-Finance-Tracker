@@ -1,85 +1,134 @@
+// ======================================
+// Logged In User
+// ======================================
+
 const email = localStorage.getItem("loggedInUser");
 
 console.log("Logged in user:", email);
 
-fetch(`http://127.0.0.1:8001/analytics/category-summary/${email}`)
-.then(response => response.json())
-.then(data => {
+// ======================================
+// Global Variables
+// ======================================
 
-    console.log(data);
+let pieChart = null;
+let lineChart = null;
+let radarChart = null;
 
-    const categoryLabels = Object.keys(data.category_summary);
-    const categoryValues = Object.values(data.category_summary);
+const monthFilter = document.getElementById("monthFilter");
 
-    const monthLabels = Object.keys(data.monthly_summary);
-    const monthValues = Object.values(data.monthly_summary);
+// Default = Current Month
+monthFilter.value = new Date().toISOString().slice(0, 7);
 
-    if(categoryLabels.length === 0){
+// Initial Load
+loadPageData();
 
-        alert("No transactions available.");
+// Reload when month changes
+monthFilter.addEventListener("change", loadPageData);
 
-        return;
+// ======================================
+// Load Analytics
+// ======================================
 
-    }
+function loadPageData() {
 
-    // =====================================
-    // PIE CHART
-    // =====================================
+    const month = monthFilter.value;
 
-    new Chart(document.getElementById("pieChart"),{
+    fetch(
+        `http://127.0.0.1:8001/analytics/category-summary/${email}?month=${month}`
+    )
 
-        type:"pie",
+    .then(response => response.json())
 
-        data:{
+    .then(data => {
 
-            labels:categoryLabels,
+        console.log("Analytics Data:", data);
 
-            datasets:[{
+        const categoryLabels = Object.keys(data.category_summary);
+        const categoryValues = Object.values(data.category_summary);
 
-                data:categoryValues,
+        const monthLabels = Object.keys(data.monthly_summary);
+        const monthValues = Object.values(data.monthly_summary);
 
-                backgroundColor:[
+        if (categoryLabels.length === 0) {
 
-                    "#36A2EB",
-                    "#FF6384",
-                    "#FF9F40",
-                    "#FFD166",
-                    "#4BC0C0",
-                    "#9966FF",
-                    "#C9CBCF",
-                    "#3FA9F5"
+            alert("No transactions available for this month.");
 
-                ],
+            return;
 
-                borderColor:"#ffffff",
+        }
 
-                borderWidth:2
+        // =====================================
+        // PIE CHART
+        // =====================================
 
-            }]
+        if (pieChart) {
 
-        },
+            pieChart.destroy();
 
-        options:{
+        }
 
-            responsive:true,
+        pieChart = new Chart(
 
-            maintainAspectRatio:false,
+            document.getElementById("pieChart"),
 
-            plugins:{
+            {
 
-                legend:{
+                type: "pie",
 
-                    position:"top",
+                data: {
 
-                    labels:{
+                    labels: categoryLabels,
 
-                        color:"#ffffff",
+                    datasets: [{
 
-                        font:{
+                        data: categoryValues,
 
-                            size:18,
+                        backgroundColor: [
 
-                            weight:"bold"
+                            "#36A2EB",
+                            "#FF6384",
+                            "#FF9F40",
+                            "#FFD166",
+                            "#4BC0C0",
+                            "#9966FF",
+                            "#C9CBCF",
+                            "#3FA9F5"
+
+                        ],
+
+                        borderColor: "#ffffff",
+
+                        borderWidth: 2
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "top",
+
+                            labels: {
+
+                                color: "#ffffff",
+
+                                font: {
+
+                                    size: 18,
+
+                                    weight: "bold"
+
+                                }
+
+                            }
 
                         }
 
@@ -89,123 +138,265 @@ fetch(`http://127.0.0.1:8001/analytics/category-summary/${email}`)
 
             }
 
+        );
+
+        // =====================================
+        // LINE CHART
+        // =====================================
+
+        if (lineChart) {
+
+            lineChart.destroy();
+
         }
 
-    });
+        lineChart = new Chart(
 
-    // =====================================
-    // MONTHLY LINE CHART
-    // =====================================
+            document.getElementById("lineChart"),
 
-    new Chart(document.getElementById("lineChart"),{
+            {
 
-        type:"line",
+                type: "line",
 
-        data:{
+                data: {
 
-            labels:monthLabels,
+                    labels: monthLabels,
 
-            datasets:[{
+                    datasets: [{
 
-                label:"Monthly Expense",
+                        label: "Monthly Expense",
 
-                data:monthValues,
+                        data: monthValues,
 
-                borderColor:"#18E3FF",
+                        borderColor: "#18E3FF",
 
-                backgroundColor:"rgba(24,227,255,0.25)",
+                        backgroundColor: "rgba(24,227,255,0.25)",
 
-                fill:true,
+                        fill: true,
 
-                tension:0.4,
+                        tension: 0.4,
 
-                borderWidth:5,
+                        borderWidth: 5,
 
-                pointRadius:6,
+                        pointRadius: 6,
 
-                pointBackgroundColor:"#ffffff",
+                        pointBackgroundColor: "#ffffff",
 
-                pointBorderColor:"#18E3FF",
+                        pointBorderColor: "#18E3FF",
 
-                pointBorderWidth:4
+                        pointBorderWidth: 4
 
-            }]
+                    }]
 
-        },
+                },
 
-        options:{
+                options: {
 
-            responsive:true,
+                    responsive: true,
 
-            maintainAspectRatio:false,
+                    maintainAspectRatio: false,
 
-            plugins:{
+                    plugins: {
 
-                legend:{
+                        legend: {
 
-                    labels:{
+                            labels: {
 
-                        color:"#ffffff",
+                                color: "#ffffff",
 
-                        font:{
+                                font: {
 
-                            size:18,
+                                    size: 18,
 
-                            weight:"bold"
+                                    weight: "bold"
 
-                        }
+                                }
 
-                    }
-
-                }
-
-            },
-
-            scales:{
-
-                x:{
-
-                    ticks:{
-
-                        color:"#ffffff",
-
-                        font:{
-
-                            size:15,
-
-                            weight:"bold"
+                            }
 
                         }
 
                     },
 
-                    grid:{
+                    scales: {
 
-                        color:"rgba(255,255,255,0.15)"
+                        x: {
+
+                            ticks: {
+
+                                color: "#ffffff",
+
+                                font: {
+
+                                    size: 15,
+
+                                    weight: "bold"
+
+                                }
+
+                            },
+
+                            grid: {
+
+                                color: "rgba(255,255,255,0.15)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            ticks: {
+
+                                color: "#ffffff",
+
+                                font: {
+
+                                    size: 15,
+
+                                    weight: "bold"
+
+                                }
+
+                            },
+
+                            grid: {
+
+                                color: "rgba(255,255,255,0.15)"
+
+                            }
+
+                        }
 
                     }
 
+                }
+
+            }
+
+        );
+
+        // =====================================
+        // RADAR CHART
+        // =====================================
+
+        if (radarChart) {
+
+            radarChart.destroy();
+
+        }
+
+        radarChart = new Chart(
+
+            document.getElementById("radarChart"),
+
+            {
+
+                type: "radar",
+
+                data: {
+
+                    labels: categoryLabels,
+
+                    datasets: [{
+
+                        label: "Category Expenses",
+
+                        data: categoryValues,
+
+                        backgroundColor: "rgba(24,227,255,0.25)",
+
+                        borderColor: "#18E3FF",
+
+                        borderWidth: 4,
+
+                        pointBackgroundColor: "#ffffff",
+
+                        pointBorderColor: "#18E3FF",
+
+                        pointRadius: 5,
+
+                        pointHoverRadius: 7
+
+                    }]
+
                 },
 
-                y:{
+                options: {
 
-                    ticks:{
+                    responsive: true,
 
-                        color:"#ffffff",
+                    maintainAspectRatio: false,
 
-                        font:{
+                    plugins: {
 
-                            size:15,
+                        legend: {
 
-                            weight:"bold"
+                            labels: {
+
+                                color: "#ffffff",
+
+                                font: {
+
+                                    size: 18,
+
+                                    weight: "bold"
+
+                                }
+
+                            }
 
                         }
 
                     },
 
-                    grid:{
+                    scales: {
 
-                        color:"rgba(255,255,255,0.15)"
+                        r: {
+
+                            angleLines: {
+
+                                color: "rgba(255,255,255,0.15)"
+
+                            },
+
+                            grid: {
+
+                                color: "rgba(255,255,255,0.15)"
+
+                            },
+
+                            pointLabels: {
+
+                                color: "#ffffff",
+
+                                font: {
+
+                                    size: 15,
+
+                                    weight: "bold"
+
+                                }
+
+                            },
+
+                            ticks: {
+
+                                color: "#ffffff",
+
+                                backdropColor: "transparent",
+
+                                font: {
+
+                                    size: 13,
+
+                                    weight: "bold"
+
+                                }
+
+                            }
+
+                        }
 
                     }
 
@@ -213,131 +404,16 @@ fetch(`http://127.0.0.1:8001/analytics/category-summary/${email}`)
 
             }
 
-        }
+        );
+
+    })
+
+    .catch(error => {
+
+        console.error("Analytics Error:", error);
+
+        alert("Unable to load analytics.");
 
     });
-new Chart(document.getElementById("radarChart"), {
 
-    type: "radar",
-
-    data: {
-
-        labels: categoryLabels,
-
-        datasets: [{
-
-            label: "Category Expenses",
-
-            data: categoryValues,
-
-            backgroundColor: "rgba(24,227,255,0.25)",
-
-            borderColor: "#18E3FF",
-
-            borderWidth: 4,
-
-            pointBackgroundColor: "#ffffff",
-
-            pointBorderColor: "#18E3FF",
-
-            pointRadius: 5,
-
-            pointHoverRadius: 7
-
-        }]
-
-    },
-
-    options: {
-
-        responsive: true,
-
-        maintainAspectRatio: false,
-
-        plugins: {
-
-            legend: {
-
-                labels: {
-
-                    color: "#ffffff",
-
-                    font: {
-
-                        size: 18,
-
-                        weight: "bold"
-
-                    }
-
-                }
-
-            }
-
-        },
-
-        scales: {
-
-            r: {
-
-                angleLines: {
-
-                    color: "rgba(255,255,255,0.15)"
-
-                },
-
-                grid: {
-
-                    color: "rgba(255,255,255,0.15)"
-
-                },
-
-                pointLabels: {
-
-                    color: "#ffffff",
-
-                    font: {
-
-                        size: 15,
-
-                        weight: "bold"
-
-                    }
-
-                },
-
-                ticks: {
-
-                    color: "#ffffff",
-
-                    backdropColor: "transparent",
-
-                    font: {
-
-                        size: 13,
-
-                        weight: "bold"
-
-                    }
-
-                }
-
-            }
-
-        }
-
-    }
-
-});
-
-// Close the .then() block
-})
-
-// Catch errors
-.catch(error => {
-
-    console.error(error);
-
-    alert("Unable to load analytics.");
-
-});
+}

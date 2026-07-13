@@ -18,216 +18,130 @@ document.getElementById("userName").innerHTML =
     name.charAt(0).toUpperCase() + name.slice(1);
 
 // ======================================
-// Load Dashboard Insights
+// Global Variables
 // ======================================
 
-fetch(`http://127.0.0.1:8001/insights/${email}`)
-.then(response => response.json())
-.then(data => {
+let pieChart = null;
+let lineChart = null;
 
-    // ==========================
-    // Summary Cards
-    // ==========================
+const monthFilter = document.getElementById("monthFilter");
 
-    document.getElementById("income").innerHTML =
-        "₹" + Number(data.total_income).toLocaleString();
+// Default month = Current Month
+monthFilter.value = new Date().toISOString().slice(0, 7);
 
-    document.getElementById("expense").innerHTML =
-        "₹" + Number(data.total_expense).toLocaleString();
+// Load data initially
+loadPageData();
 
-    document.getElementById("savings").innerHTML =
-        "₹" + Number(data.savings).toLocaleString();
+// Reload when month changes
+monthFilter.addEventListener("change", loadPageData);
 
-    document.getElementById("budget").innerHTML =
-        "₹" + Number(data.total_income - data.total_expense).toLocaleString();
+// ======================================
+// Load Dashboard
+// ======================================
+
+function loadPageData() {
+
+    const month = monthFilter.value;
+
+    // ======================================
+    // Load Dashboard Insights
+    // ======================================
+
+    fetch(`http://127.0.0.1:8001/insights/${email}?month=${month}`)
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        // ==========================
+        // Summary Cards
+        // ==========================
+
+        document.getElementById("income").innerHTML =
+            "₹" + Number(data.total_income).toLocaleString();
+
+        document.getElementById("expense").innerHTML =
+            "₹" + Number(data.total_expense).toLocaleString();
+
+        document.getElementById("savings").innerHTML =
+            "₹" + Number(data.savings).toLocaleString();
+
+        document.getElementById("budget").innerHTML =
+            "₹" + Number(
+                data.total_income - data.total_expense
+            ).toLocaleString();
 
 
-    // ==========================
-    // Expense by Category (Pie Chart)
-    // ==========================
+        // ==========================
+        // Pie Chart
+        // ==========================
 
-    new Chart(document.getElementById("pieChart"), {
-
-        type: "pie",
-
-        data: {
-
-            labels: Object.keys(data.category_summary),
-
-            datasets: [{
-
-                data: Object.values(data.category_summary),
-
-                backgroundColor: [
-
-                    "#4FC3F7",
-                    "#FF6384",
-                    "#FF9F40",
-                    "#FFD166",
-                    "#4BC0C0",
-                    "#9966FF",
-                    "#C9CBCF",
-                    "#36A2EB"
-
-                ],
-
-                borderColor: "#FFFFFF",
-
-                borderWidth: 2
-
-            }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-
-                    labels: {
-
-                        color: "white",
-
-                        font: {
-
-                            size: 14,
-
-                            weight: "bold"
-
-                        }
-
-                    }
-
-                }
-
-            }
-
+        if (pieChart) {
+            pieChart.destroy();
         }
 
-    });
+        pieChart = new Chart(
+            document.getElementById("pieChart"),
+            {
 
+                type: "pie",
 
-    // ==========================
-    // Monthly Expense Trend
-    // ==========================
+                data: {
 
-    if (data.monthly_summary &&
-        Object.keys(data.monthly_summary).length > 0) {
+                    labels: Object.keys(
+                        data.category_summary
+                    ),
 
-        new Chart(document.getElementById("lineChart"), {
+                    datasets: [{
 
-            type: "line",
+                        data: Object.values(
+                            data.category_summary
+                        ),
 
-            data: {
+                        backgroundColor: [
 
-                labels: Object.keys(data.monthly_summary),
+                            "#4FC3F7",
+                            "#FF6384",
+                            "#FF9F40",
+                            "#FFD166",
+                            "#4BC0C0",
+                            "#9966FF",
+                            "#C9CBCF",
+                            "#36A2EB"
 
-                datasets: [{
+                        ],
 
-                    label: "Monthly Expense",
+                        borderColor: "#FFFFFF",
 
-                    data: Object.values(data.monthly_summary),
+                        borderWidth: 2
 
-                    borderColor: "#00E5FF",
-
-                    backgroundColor: "rgba(0,229,255,0.25)",
-
-                    pointBackgroundColor: "#00E5FF",
-
-                    pointBorderColor: "#FFFFFF",
-
-                    pointRadius: 5,
-
-                    pointHoverRadius: 8,
-
-                    borderWidth: 4,
-
-                    fill: true,
-
-                    tension: 0.4
-
-                }]
-
-            },
-
-            options: {
-
-                responsive: true,
-
-                maintainAspectRatio: false,
-
-                plugins: {
-
-                    legend: {
-
-                        labels: {
-
-                            color: "white",
-
-                            font: {
-
-                                size: 14,
-
-                                weight: "bold"
-
-                            }
-
-                        }
-
-                    }
+                    }]
 
                 },
 
-                scales: {
+                options: {
 
-                    x: {
+                    responsive: true,
 
-                        ticks: {
+                    maintainAspectRatio: false,
 
-                            color: "white",
+                    plugins: {
 
-                            font: {
+                        legend: {
 
-                                size: 13,
+                            labels: {
 
-                                weight: "bold"
+                                color: "white",
 
-                            }
+                                font: {
 
-                        },
+                                    size: 14,
 
-                        grid: {
+                                    weight: "bold"
 
-                            color: "rgba(255,255,255,0.15)"
-
-                        }
-
-                    },
-
-                    y: {
-
-                        ticks: {
-
-                            color: "white",
-
-                            font: {
-
-                                size: 13,
-
-                                weight: "bold"
+                                }
 
                             }
-
-                        },
-
-                        grid: {
-
-                            color: "rgba(255,255,255,0.15)"
 
                         }
 
@@ -237,58 +151,245 @@ fetch(`http://127.0.0.1:8001/insights/${email}`)
 
             }
 
-        });
-
-    }
-
-})
-.catch(error => {
-
-    console.error("Insights Error:", error);
-
-});
+        );
 
 
-// ======================================
-// Load Recent Transactions
-// ======================================
+        // ==========================
+        // Monthly Expense Trend
+        // ==========================
 
-fetch(`http://127.0.0.1:8001/transactions/user/${email}`)
+        if (
+            data.monthly_summary &&
+            Object.keys(data.monthly_summary).length > 0
+        ) {
 
-.then(response => response.json())
+            if (lineChart) {
+                lineChart.destroy();
+            }
 
-.then(data => {
+            lineChart = new Chart(
 
-    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                document.getElementById("lineChart"),
 
-    const table = document.getElementById("transactionTable");
+                {
 
-    table.innerHTML = "";
+                    type: "line",
 
-    data.slice(0, 5).forEach(transaction => {
+                    data: {
 
-        table.innerHTML += `
+                        labels: Object.keys(
+                            data.monthly_summary
+                        ),
 
-        <tr>
+                        datasets: [{
 
-            <td>${transaction.date}</td>
+                            label: "Monthly Expense",
 
-            <td>${transaction.category}</td>
+                            data: Object.values(
+                                data.monthly_summary
+                            ),
 
-            <td>₹${Number(transaction.amount).toLocaleString()}</td>
+                            borderColor: "#00E5FF",
 
-            <td>${transaction.location}</td>
+                            backgroundColor:
+                                "rgba(0,229,255,0.25)",
 
-        </tr>
+                            pointBackgroundColor:
+                                "#00E5FF",
 
-        `;
+                            pointBorderColor:
+                                "#FFFFFF",
+
+                            pointRadius: 5,
+
+                            pointHoverRadius: 8,
+
+                            borderWidth: 4,
+
+                            fill: true,
+
+                            tension: 0.4
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 14,
+
+                                        weight: "bold"
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                ticks: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 13,
+
+                                        weight: "bold"
+
+                                    }
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.15)"
+
+                                }
+
+                            },
+
+                            y: {
+
+                                ticks: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 13,
+
+                                        weight: "bold"
+
+                                    }
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.15)"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error("Insights Error:", error);
 
     });
 
-})
+    // ======================================
+    // Load Recent Transactions
+    // ======================================
 
-.catch(error => {
+    fetch(
+        `http://127.0.0.1:8001/transactions/user/${email}?month=${month}`
+    )
 
-    console.error("Transaction Error:", error);
+    .then(response => response.json())
 
-});
+    .then(data => {
+
+        data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
+        const table =
+            document.getElementById("transactionTable");
+
+        table.innerHTML = "";
+
+        if(data.length === 0){
+
+            table.innerHTML = `
+
+            <tr>
+
+                <td colspan="4"
+                    style="text-align:center;
+                           padding:20px;
+                           color:white;">
+
+                    No transactions found for this month.
+
+                </td>
+
+            </tr>
+
+            `;
+
+            return;
+
+        }
+
+        data.slice(0,5).forEach(transaction => {
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>${transaction.date}</td>
+
+                <td>${transaction.category}</td>
+
+                <td>
+
+                    ₹${Number(transaction.amount)
+                        .toLocaleString("en-IN")}
+
+                </td>
+
+                <td>${transaction.location}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Transaction Error:",
+            error
+        );
+
+    });
+
+}

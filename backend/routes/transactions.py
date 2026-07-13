@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from bson import ObjectId
 
 from database import transactions_collection
@@ -48,17 +48,32 @@ def add_transaction(transaction: Transaction):
 
 # ==========================================
 # Get All Transactions of a User
-# (Latest transaction first)
+# (Supports Monthly Filter)
 # ==========================================
 
 @router.get("/user/{user_email}")
-def get_transactions(user_email: str):
+def get_transactions(
+    user_email: str,
+    month: str = Query(None)
+):
 
     transactions = []
 
-    for transaction in transactions_collection.find(
-        {"user_email": user_email}
-    ).sort("date", -1):
+    query = {
+
+        "user_email": user_email
+
+    }
+
+    # Get all transactions of the user
+    for transaction in transactions_collection.find(query).sort("date", -1):
+
+        # Apply month filter if selected
+        if month:
+
+            if not transaction.get("date", "").startswith(month):
+
+                continue
 
         transaction["_id"] = str(transaction["_id"])
 
@@ -68,7 +83,7 @@ def get_transactions(user_email: str):
 
 
 # ==========================================
-# Get Single Transaction by ID
+# Get Single Transaction
 # ==========================================
 
 @router.get("/{transaction_id}")

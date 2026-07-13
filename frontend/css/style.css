@@ -2393,3 +2393,89 @@ width:70%;
     user-select:none;
 
 }
+
+/* =========================================
+   Budget Progress Bars
+========================================= */
+
+.progress-container{
+
+    width:160px;
+
+    height:16px;
+
+    background:#dfe6e9;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin:auto;
+
+}
+
+.progress-bar{
+
+    height:100%;
+
+    width:0%;
+
+    border-radius:20px;
+
+    transition:width .8s ease;
+
+}
+
+.progress-text{
+
+    text-align:center;
+
+    font-size:13px;
+
+    font-weight:600;
+
+    margin-top:5px;
+
+}
+
+/* ===========================
+   Month Filter
+=========================== */
+
+.filter-container{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:25px;
+
+}
+
+.filter-container label{
+
+    font-weight:600;
+
+    color:#ffffff;
+
+}
+
+.filter-container input{
+
+    padding:10px 14px;
+
+    border:none;
+
+    border-radius:8px;
+
+    font-size:15px;
+
+    background:#ffffff;
+
+    color:#333;
+
+}
