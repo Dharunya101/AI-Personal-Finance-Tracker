@@ -24,9 +24,7 @@
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
-
     window.location.href="login.html";
-
 }
 
 function logout(){
@@ -39,7 +37,7 @@ function logout(){
 
 </script>
 
-<!-- Sidebar -->
+<!-- ================= Sidebar ================= -->
 
 <div class="sidebar">
 
@@ -51,7 +49,7 @@ function logout(){
 
 <li><a href="transactions.html">Transactions</a></li>
 
-<li><a href="analytics.html">Analytics</a></li>
+<li><a href="analytics.html" class="active">Analytics</a></li>
 
 <li><a href="budget.html">Budgets</a></li>
 
@@ -69,7 +67,7 @@ function logout(){
 
 </div>
 
-<!-- Main -->
+<!-- ================= Main ================= -->
 
 <div class="main">
 
@@ -81,53 +79,67 @@ function logout(){
 
 <div class="filter-container">
 
-    <label for="monthFilter">
+<label for="monthFilter">
 
-        <b>📅 Month:</b>
+<b>📅 Month:</b>
 
-    </label>
+</label>
 
-    <input
-        type="month"
-        id="monthFilter">
+<input
+type="month"
+id="monthFilter">
 
 </div>
 
+<!-- ==========================
+     Budget vs Expense
+========================== -->
+
 <div class="charts">
 
-    <!-- Pie Chart -->
+<div class="chart-card">
 
-    <div class="chart-card">
+<h2>Budget vs Expense</h2>
 
-        <h2>Expense by Category</h2>
+<canvas id="budgetExpenseChart"></canvas>
 
-        <canvas id="pieChart"></canvas>
-
-    </div>
-
-    <!-- Monthly Trend -->
-
-    <div class="chart-card">
-
-        <h2>Monthly Expense Trend</h2>
-
-        <canvas id="lineChart"></canvas>
-
-    </div>
+</div>
 
 </div>
 
 <br>
 
+<!-- ==========================
+     Monthly Category-wise Expenses
+========================== -->
+
 <div class="charts">
 
-    <div class="chart-card" style="width:100%;">
+<div class="chart-card" style="width:100%;">
 
-        <h2>Category Comparison</h2>
+<h2>Monthly Category-wise Expenses</h2>
 
-        <canvas id="radarChart"></canvas>
+<canvas id="stackedBarChart"></canvas>
 
-    </div>
+</div>
+
+</div>
+
+<br>
+
+<!-- ==========================
+     Category Comparison
+========================== -->
+
+<div class="charts">
+
+<div class="chart-card" style="width:100%;">
+
+<h2>Category Comparison</h2>
+
+<canvas id="groupedBarChart"></canvas>
+
+</div>
 
 </div>
 
