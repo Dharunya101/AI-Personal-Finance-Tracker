@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Create Account</title>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/style.css">
 
 </head>
@@ -40,7 +44,7 @@
         <input
             type="email"
             id="email"
-            placeholder="Email"
+            placeholder="Email Address"
             required>
 
         <!-- Password -->
@@ -57,22 +61,12 @@
             <span
                 class="toggle-password"
                 onclick="togglePassword('password', this)">
-                👁️
+
+                <i class="fa-solid fa-eye"></i>
+
             </span>
 
         </div>
-
-        <small id="passwordHint">
-
-            Password must contain:
-
-            <br>• Minimum 8 characters
-            <br>• One uppercase letter
-            <br>• One lowercase letter
-            <br>• One number
-            <br>• One special character
-
-        </small>
 
         <!-- Confirm Password -->
 
@@ -87,18 +81,26 @@
             <span
                 class="toggle-password"
                 onclick="togglePassword('confirmPassword', this)">
-                👁️
+
+                <i class="fa-solid fa-eye"></i>
+
             </span>
 
         </div>
 
-        <!-- Button -->
+        <!-- Create Account Button -->
 
-        <button onclick="signup()">
+        <button type="button" onclick="signup()">
 
             Create Account
 
         </button>
+
+        <!-- Message -->
+
+        <p id="message" class="message"></p>
+
+        <!-- Login Link -->
 
         <div class="signup-link">
 
@@ -111,8 +113,6 @@
             </a>
 
         </div>
-
-        <p id="message" style="color:green;"></p>
 
     </div>
 

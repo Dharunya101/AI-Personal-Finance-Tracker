@@ -22,14 +22,14 @@ document.getElementById("userName").innerHTML =
 // ======================================
 
 let pieChart = null;
-let lineChart = null;
+let barChart = null;
 
 const monthFilter = document.getElementById("monthFilter");
 
-// Default month = Current Month
+// Default = Current Month
 monthFilter.value = new Date().toISOString().slice(0, 7);
 
-// Load data initially
+// Initial Load
 loadPageData();
 
 // Reload when month changes
@@ -44,7 +44,7 @@ function loadPageData() {
     const month = monthFilter.value;
 
     // ======================================
-    // Load Dashboard Insights
+    // Dashboard Insights
     // ======================================
 
     fetch(`http://127.0.0.1:8001/insights/${email}?month=${month}`)
@@ -71,9 +71,8 @@ function loadPageData() {
                 data.total_income - data.total_expense
             ).toLocaleString();
 
-
         // ==========================
-        // Pie Chart
+        // Expense by Category (Pie)
         // ==========================
 
         if (pieChart) {
@@ -81,22 +80,20 @@ function loadPageData() {
         }
 
         pieChart = new Chart(
+
             document.getElementById("pieChart"),
+
             {
 
                 type: "pie",
 
                 data: {
 
-                    labels: Object.keys(
-                        data.category_summary
-                    ),
+                    labels: Object.keys(data.category_summary),
 
                     datasets: [{
 
-                        data: Object.values(
-                            data.category_summary
-                        ),
+                        data: Object.values(data.category_summary),
 
                         backgroundColor: [
 
@@ -153,144 +150,125 @@ function loadPageData() {
 
         );
 
-
         // ==========================
-        // Monthly Expense Trend
+        // Top 5 Spending Categories
         // ==========================
 
-        if (
-            data.monthly_summary &&
-            Object.keys(data.monthly_summary).length > 0
-        ) {
+        const topCategories = Object.entries(data.category_summary)
 
-            if (lineChart) {
-                lineChart.destroy();
-            }
+            .sort((a, b) => b[1] - a[1])
 
-            lineChart = new Chart(
+            .slice(0, 5);
+                    if (barChart) {
+            barChart.destroy();
+        }
 
-                document.getElementById("lineChart"),
+        barChart = new Chart(
 
-                {
+            document.getElementById("barChart"),
 
-                    type: "line",
+            {
 
-                    data: {
+                type: "bar",
 
-                        labels: Object.keys(
-                            data.monthly_summary
-                        ),
+                data: {
 
-                        datasets: [{
+                    labels: topCategories.map(item =>
 
-                            label: "Monthly Expense",
+                        item[0].charAt(0).toUpperCase() +
+                        item[0].slice(1)
 
-                            data: Object.values(
-                                data.monthly_summary
-                            ),
+                    ),
 
-                            borderColor: "#00E5FF",
+                    datasets: [{
 
-                            backgroundColor:
-                                "rgba(0,229,255,0.25)",
+                        label: "Amount Spent",
 
-                            pointBackgroundColor:
-                                "#00E5FF",
+                        data: topCategories.map(item => item[1]),
 
-                            pointBorderColor:
-                                "#FFFFFF",
+                        backgroundColor: [
 
-                            pointRadius: 5,
+                            "#36A2EB",
+                            "#FF6384",
+                            "#FF9F40",
+                            "#FFD166",
+                            "#4BC0C0"
 
-                            pointHoverRadius: 8,
+                        ],
 
-                            borderWidth: 4,
+                        borderRadius: 8,
 
-                            fill: true,
+                        borderWidth: 1
 
-                            tension: 0.4
+                    }]
 
-                        }]
+                },
+
+                options: {
+
+                    indexAxis: "y",
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            display: false
+
+                        }
 
                     },
 
-                    options: {
+                    scales: {
 
-                        responsive: true,
+                        x: {
 
-                        maintainAspectRatio: false,
+                            beginAtZero: true,
 
-                        plugins: {
+                            ticks: {
 
-                            legend: {
+                                color: "white",
 
-                                labels: {
+                                font: {
 
-                                    color: "white",
+                                    size: 13,
 
-                                    font: {
-
-                                        size: 14,
-
-                                        weight: "bold"
-
-                                    }
-
-                                }
-
-                            }
-
-                        },
-
-                        scales: {
-
-                            x: {
-
-                                ticks: {
-
-                                    color: "white",
-
-                                    font: {
-
-                                        size: 13,
-
-                                        weight: "bold"
-
-                                    }
-
-                                },
-
-                                grid: {
-
-                                    color:
-                                        "rgba(255,255,255,0.15)"
+                                    weight: "bold"
 
                                 }
 
                             },
 
-                            y: {
+                            grid: {
 
-                                ticks: {
+                                color: "rgba(255,255,255,0.15)"
 
-                                    color: "white",
+                            }
 
-                                    font: {
+                        },
 
-                                        size: 13,
+                        y: {
 
-                                        weight: "bold"
+                            ticks: {
 
-                                    }
+                                color: "white",
 
-                                },
+                                font: {
 
-                                grid: {
+                                    size: 13,
 
-                                    color:
-                                        "rgba(255,255,255,0.15)"
+                                    weight: "bold"
 
                                 }
+
+                            },
+
+                            grid: {
+
+                                display: false
 
                             }
 
@@ -300,9 +278,9 @@ function loadPageData() {
 
                 }
 
-            );
+            }
 
-        }
+        );
 
     })
 
@@ -317,7 +295,9 @@ function loadPageData() {
     // ======================================
 
     fetch(
+
         `http://127.0.0.1:8001/transactions/user/${email}?month=${month}`
+
     )
 
     .then(response => response.json())
@@ -325,11 +305,12 @@ function loadPageData() {
     .then(data => {
 
         data.sort(
+
             (a, b) => new Date(b.date) - new Date(a.date)
+
         );
 
-        const table =
-            document.getElementById("transactionTable");
+        const table = document.getElementById("transactionTable");
 
         table.innerHTML = "";
 
@@ -340,9 +321,11 @@ function loadPageData() {
             <tr>
 
                 <td colspan="4"
-                    style="text-align:center;
-                           padding:20px;
-                           color:white;">
+                    style="
+                        text-align:center;
+                        padding:20px;
+                        color:white;
+                    ">
 
                     No transactions found for this month.
 
@@ -368,8 +351,7 @@ function loadPageData() {
 
                 <td>
 
-                    ₹${Number(transaction.amount)
-                        .toLocaleString("en-IN")}
+                    ₹${Number(transaction.amount).toLocaleString("en-IN")}
 
                 </td>
 
@@ -385,10 +367,7 @@ function loadPageData() {
 
     .catch(error => {
 
-        console.error(
-            "Transaction Error:",
-            error
-        );
+        console.error("Transaction Error:", error);
 
     });
 

@@ -4,30 +4,33 @@
 
 function signup() {
 
-    const user = {
-
-        name: document.getElementById("name").value.trim(),
-
-        email: document.getElementById("email").value.trim(),
-
-        password: document.getElementById("password").value,
-
-        confirmPassword: document.getElementById("confirmPassword").value
-
-    };
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
     // ===============================
-    // Check Empty Fields
+    // Empty Field Validation
     // ===============================
 
-    if (
-        user.name === "" ||
-        user.email === "" ||
-        user.password === "" ||
-        user.confirmPassword === ""
-    ) {
+    if (!name || !email || !password || !confirmPassword) {
 
         alert("Please fill in all the fields.");
+
+        return;
+
+    }
+
+    // ===============================
+    // Email Validation
+    // ===============================
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+
+        alert("Please enter a valid email address.");
+
         return;
 
     }
@@ -39,16 +42,16 @@ function signup() {
     const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#])[A-Za-z\d@$!%*?&.#]{8,}$/;
 
-    if (!passwordRegex.test(user.password)) {
+    if (!passwordRegex.test(password)) {
 
         alert(
 `Password must contain:
 
 • Minimum 8 characters
-• At least one uppercase letter (A-Z)
-• At least one lowercase letter (a-z)
-• At least one number (0-9)
-• At least one special character (@$!%*?&.#)`
+• One uppercase letter (A-Z)
+• One lowercase letter (a-z)
+• One number (0-9)
+• One special character (@$!%*?&.#)`
         );
 
         return;
@@ -59,15 +62,26 @@ function signup() {
     // Confirm Password
     // ===============================
 
-    if (user.password !== user.confirmPassword) {
+    if (password !== confirmPassword) {
 
         alert("Passwords do not match.");
+
         return;
 
     }
 
     // ===============================
-    // Send Data to Backend
+    // Disable Button
+    // ===============================
+
+    const button = document.querySelector("button");
+
+    button.disabled = true;
+
+    button.innerHTML = "Creating Account...";
+
+    // ===============================
+    // Backend Request
     // ===============================
 
     fetch("http://127.0.0.1:8001/auth/signup", {
@@ -75,10 +89,22 @@ function signup() {
         method: "POST",
 
         headers: {
+
             "Content-Type": "application/json"
+
         },
 
-        body: JSON.stringify(user)
+        body: JSON.stringify({
+
+            name,
+
+            email,
+
+            password,
+
+            confirmPassword
+
+        })
 
     })
 
@@ -90,17 +116,19 @@ function signup() {
 
         if (data.message === "Account created successfully.") {
 
-            alert("Account Created Successfully!");
+            alert("Account created successfully!");
 
-            setTimeout(() => {
+            window.location.href = "login.html";
 
-                window.location.href = "login.html";
+        }
 
-            }, 500);
-
-        } else {
+        else {
 
             alert(data.message);
+
+            document.getElementById("password").value = "";
+
+            document.getElementById("confirmPassword").value = "";
 
         }
 
@@ -110,11 +138,20 @@ function signup() {
 
         console.error(error);
 
-        alert("Signup Failed");
+        alert("Unable to create account. Please try again.");
+
+    })
+
+    .finally(() => {
+
+        button.disabled = false;
+
+        button.innerHTML = "Create Account";
 
     });
 
 }
+
 
 
 // ======================================
@@ -125,15 +162,25 @@ function togglePassword(id, element) {
 
     const input = document.getElementById(id);
 
+    const icon = element.querySelector("i");
+
     if (input.type === "password") {
 
         input.type = "text";
-        element.textContent = "🙈";
 
-    } else {
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+    }
+
+    else {
 
         input.type = "password";
-        element.textContent = "👁️";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
 
     }
 
