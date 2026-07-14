@@ -1,7 +1,13 @@
 // ======================================
+// Global Variables
+// ======================================
+
+let allTransactions = [];
+
+// ======================================
 // Load Transactions
 // ======================================
-let allTransactions = [];
+
 loadTransactions();
 
 function loadTransactions() {
@@ -16,7 +22,7 @@ function loadTransactions() {
 
         allTransactions = data;
 
-        displayTransactions(allTransactions);
+        sortTransactions();
 
     })
 
@@ -30,16 +36,54 @@ function loadTransactions() {
 
 }
 
-function displayTransactions(data){
 
-    let table = document.getElementById("transactionTable");
+// ======================================
+// Sort Transactions
+// ======================================
+
+function sortTransactions() {
+
+    const order = document.getElementById("sortDate").value;
+
+    if (order === "newest") {
+
+        allTransactions.sort(
+
+            (a, b) => new Date(b.date) - new Date(a.date)
+
+        );
+
+    }
+
+    else {
+
+        allTransactions.sort(
+
+            (a, b) => new Date(a.date) - new Date(b.date)
+
+        );
+
+    }
+
+    displayTransactions(allTransactions);
+
+}
+
+
+// ======================================
+// Display Transactions
+// ======================================
+
+function displayTransactions(data) {
+
+    const table = document.getElementById("transactionTable");
 
     table.innerHTML = "";
 
     document.getElementById("transactionCount").innerHTML =
         `(${data.length})`;
 
-    data.forEach(t=>{
+    data.forEach(t => {
 
         table.innerHTML += `
 
@@ -56,11 +100,15 @@ function displayTransactions(data){
             <td>
 
                 <button onclick="editTransaction('${t._id}')">
+
                     Edit
+
                 </button>
 
                 <button onclick="deleteTransaction('${t._id}')">
+
                     Delete
+
                 </button>
 
             </td>
@@ -72,13 +120,19 @@ function displayTransactions(data){
     });
 
 }
+
+
+// ======================================
+// Search Transactions
+// ======================================
+
 document.getElementById("searchTransaction")
 
-.addEventListener("input",function(){
+.addEventListener("input", function () {
 
-    const keyword=this.value.toLowerCase();
+    const keyword = this.value.toLowerCase();
 
-    const filtered=allTransactions.filter(t=>
+    const filtered = allTransactions.filter(t =>
 
         t.category.toLowerCase().includes(keyword)
 
@@ -91,6 +145,7 @@ document.getElementById("searchTransaction")
     displayTransactions(filtered);
 
 });
+
 
 // ======================================
 // Add Transaction
@@ -156,14 +211,14 @@ function addTransaction() {
 
 
 // ======================================
-// Placeholder Functions
+// Edit Transaction
 // ======================================
 
-async function editTransaction(id){
+async function editTransaction(id) {
 
     const amount = prompt("Enter new amount");
 
-    if(amount===null) return;
+    if (amount === null) return;
 
     const response = await fetch(
 
@@ -171,17 +226,17 @@ async function editTransaction(id){
 
         {
 
-            method:"PUT",
+            method: "PUT",
 
-            headers:{
+            headers: {
 
-                "Content-Type":"application/json"
+                "Content-Type": "application/json"
 
             },
 
-            body:JSON.stringify({
+            body: JSON.stringify({
 
-                amount:Number(amount)
+                amount: Number(amount)
 
             })
 
@@ -189,36 +244,42 @@ async function editTransaction(id){
 
     );
 
-    const result=await response.json();
+    const result = await response.json();
 
     alert(result.message);
 
     loadTransactions();
 
 }
-async function deleteTransaction(id){
 
-    const confirmDelete=confirm(
+
+// ======================================
+// Delete Transaction
+// ======================================
+
+async function deleteTransaction(id) {
+
+    const confirmDelete = confirm(
 
         "Delete this transaction?"
 
     );
 
-    if(!confirmDelete) return;
+    if (!confirmDelete) return;
 
-    const response=await fetch(
+    const response = await fetch(
 
         `http://127.0.0.1:8001/transactions/${id}`,
 
         {
 
-            method:"DELETE"
+            method: "DELETE"
 
         }
 
     );
 
-    const result=await response.json();
+    const result = await response.json();
 
     alert(result.message);
 

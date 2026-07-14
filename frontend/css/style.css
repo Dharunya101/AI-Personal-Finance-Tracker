@@ -2555,3 +2555,62 @@ width:70%;
     color:#333;
 
 }
+.table-controls{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin:20px 0;
+
+    width:100%;
+
+}
+
+.search-box{
+
+    width:70%;
+
+}
+
+.search-box input{
+
+    width:100%;
+
+}
+
+.sort-container{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.sort-label{
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+#sortDate{
+
+    width:170px;
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:none;
+
+    outline:none;
+
+}
