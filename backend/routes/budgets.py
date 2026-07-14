@@ -1,54 +1,69 @@
 from fastapi import APIRouter
 
 from database import budgets_collection, transactions_collection
-
 from models.schemas import Budget
 
 router = APIRouter(
-
     prefix="/budgets",
-
     tags=["💰 Budget Management"]
-
 )
+
+# ======================================================
+# Create Budget
+# ======================================================
+
 @router.post("/")
 def create_budget(budget: Budget):
 
     budgets_collection.insert_one({
 
-    "category": budget.category,
+        "category": budget.category,
 
-    "monthly_budget": budget.monthly_budget
+        "monthly_budget": budget.monthly_budget
 
-})
+    })
 
     return {
 
-        "message":"Budget Created Successfully"
+        "message": "Budget Created Successfully"
 
     }
+
+
+# ======================================================
+# Get All Budgets
+# ======================================================
+
 @router.get("/")
 def get_budgets():
 
-    budgets=[]
+    budgets = []
 
-    for budget in budgets_collection.find({},{"_id":0}):
+    for budget in budgets_collection.find({}, {"_id": 0}):
 
         budgets.append(budget)
 
     return budgets
+
+
+# ======================================================
+# Update Budget
+# ======================================================
+
 @router.put("/{category}")
-def update_budget(category:str,budget:Budget):
+def update_budget(category: str, budget: Budget):
 
     budgets_collection.update_one(
 
-        {"category":category},
+        {"category": category},
 
         {
 
             "$set": {
-    "monthly_budget": budget.monthly_budget
-}
+
+                "monthly_budget": budget.monthly_budget
+
+            }
 
         }
 
@@ -56,17 +71,23 @@ def update_budget(category:str,budget:Budget):
 
     return {
 
-        "message":"Budget Updated"
+        "message": "Budget Updated"
 
     }
+
+
+# ======================================================
+# Delete Budget
+# ======================================================
+
 @router.delete("/{category}")
-def delete_budget(category:str):
+def delete_budget(category: str):
 
     budgets_collection.delete_one(
 
         {
 
-            "category":category
+            "category": category
 
         }
 
@@ -74,64 +95,38 @@ def delete_budget(category:str):
 
     return {
 
-        "message":"Budget Deleted"
+        "message": "Budget Deleted"
 
     }
-@router.get("/status")
-def budget_status():
 
-    result=[]
 
-    budgets=list(
+# ======================================================
+# Budget Status
+# ======================================================
 
-        budgets_collection.find({},{"_id":0})
+@router.get("/status/{user_email}")
+def budget_status(user_email: str):
 
-    )
-
-    transactions=list(
-
-        transactions_collection.find()
-
-    )
-
-    for budget in budgets:
-
-        spent=0
-
-        for transaction in transactions:
-
-            if transaction["category"]==budget["category"]:
-
-                spent+=float(
-
-                    transaction["amount"]
-
-                )
-
-        result.append({
-
-            "category":budget["category"],
-
-            "budget": budget["monthly_budget"],
-
-            "spent":spent,
-
-            "remaining": budget["monthly_budget"] - spent
-
-        })
-
-    return result
-@router.get("/alerts")
-def budget_alerts():
-
-    alerts = []
+    result = []
 
     budgets = list(
+
         budgets_collection.find({}, {"_id": 0})
+
     )
 
     transactions = list(
-        transactions_collection.find()
+
+        transactions_collection.find(
+
+            {
+
+                "user_email": user_email
+
+            }
+
+        )
+
     )
 
     for budget in budgets:
@@ -140,18 +135,72 @@ def budget_alerts():
 
         for transaction in transactions:
 
-            category = transaction.get("category")
+            if transaction.get("category") == budget["category"]:
 
-            amount = float(transaction.get("amount", 0))
+                spent += float(transaction.get("amount", 0))
 
-            if category == budget["category"]:
-                spent += amount
+        result.append({
+
+            "category": budget["category"],
+
+            "budget": budget["monthly_budget"],
+
+            "spent": spent,
+
+            "remaining": budget["monthly_budget"] - spent
+
+        })
+
+    return result
+
+
+# ======================================================
+# Budget Alerts
+# ======================================================
+
+@router.get("/alerts/{user_email}")
+def budget_alerts(user_email: str):
+
+    alerts = []
+
+    budgets = list(
+
+        budgets_collection.find({}, {"_id": 0})
+
+    )
+
+    transactions = list(
+
+        transactions_collection.find(
+
+            {
+
+                "user_email": user_email
+
+            }
+
+        )
+
+    )
+
+    for budget in budgets:
+
+        spent = 0
+
+        for transaction in transactions:
+
+            if transaction.get("category") == budget["category"]:
+
+                spent += float(transaction.get("amount", 0))
 
         if spent > budget["monthly_budget"]:
 
             alerts.append({
+
                 "category": budget["category"],
+
                 "message": "Budget Exceeded"
+
             })
 
     return alerts

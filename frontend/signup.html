@@ -4,12 +4,16 @@
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Create Account</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 
@@ -17,55 +21,100 @@
 
 <body>
 
-<div class="login-box">
+<div class="login-page">
 
-    <h2>Create Account</h2>
+    <div class="login-box">
 
-    <input
-        type="text"
-        id="name"
-        placeholder="Full Name">
+        <h2>Create Account</h2>
 
-    <input
-        type="email"
-        id="email"
-        placeholder="Email">
+        <!-- Full Name -->
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password">
+        <input
+            type="text"
+            id="name"
+            placeholder="Full Name"
+            required>
 
-    <input
-        type="password"
-        id="confirmPassword"
-        placeholder="Confirm Password">
+        <!-- Email -->
 
-    <button onclick="signup()">
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+            required>
 
-        Create Account
+        <!-- Password -->
 
-    </button>
+        <div class="password-container">
 
-    <br><br>
+            <input
+                type="password"
+                id="password"
+                placeholder="Create Password"
+                minlength="8"
+                required>
 
-    <p style="text-align:center;">
+            <span
+                class="toggle-password"
+                onclick="togglePassword('password', this)">
+                👁️
+            </span>
 
-        Already have an account?
+        </div>
 
-        <a href="login.html">
+        <small id="passwordHint">
 
-            Login
+            Password must contain:
 
-        </a>
+            <br>• Minimum 8 characters
+            <br>• One uppercase letter
+            <br>• One lowercase letter
+            <br>• One number
+            <br>• One special character
 
-    </p>
+        </small>
 
-    <p
-        id="message"
-        style="text-align:center;color:green;">
+        <!-- Confirm Password -->
 
-    </p>
+        <div class="password-container">
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password"
+                required>
+
+            <span
+                class="toggle-password"
+                onclick="togglePassword('confirmPassword', this)">
+                👁️
+            </span>
+
+        </div>
+
+        <!-- Button -->
+
+        <button onclick="signup()">
+
+            Create Account
+
+        </button>
+
+        <div class="signup-link">
+
+            Already have an account?
+
+            <a href="login.html">
+
+                Login
+
+            </a>
+
+        </div>
+
+        <p id="message" style="color:green;"></p>
+
+    </div>
 
 </div>
 

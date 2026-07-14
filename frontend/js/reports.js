@@ -1,118 +1,177 @@
+// ======================================
+// Logged In User
+// ======================================
+
 const email = localStorage.getItem("loggedInUser");
 
-// Load Report Data
-fetch(`http://127.0.0.1:8001/reports/${email}`)
+// ======================================
+// Month Filter
+// ======================================
 
-.then(response => response.json())
+const monthFilter = document.getElementById("monthFilter");
 
-.then(data => {
+// Default = Current Month
+monthFilter.value = new Date().toISOString().slice(0,7);
 
-    // Summary Cards
-    document.getElementById("income").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_income);
+// Initial Load
+loadPageData();
 
-    document.getElementById("expense").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_expense);
+// Reload when month changes
+monthFilter.addEventListener("change", loadPageData);
 
-    document.getElementById("savings").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.savings);
 
-    // Transactions Table
-    const table = document.getElementById("reportTable");
+// ======================================
+// Load Report
+// ======================================
 
-    table.innerHTML = "";
+function loadPageData(){
 
-    data.transactions.forEach(transaction => {
+    const month = monthFilter.value;
 
-        table.innerHTML += `
+    fetch(
 
-        <tr>
+        `http://127.0.0.1:8001/reports/${email}?month=${month}`
 
-            <td>${transaction.date}</td>
+    )
 
-            <td>${transaction.category}</td>
+    .then(response => response.json())
 
-            <td>${new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR"
-            }).format(transaction.amount)}</td>
+    .then(data => {
 
-            <td>${transaction.location}</td>
+        // ===========================
+        // Summary Cards
+        // ===========================
 
-        </tr>
+        document.getElementById("income").innerHTML =
+            new Intl.NumberFormat("en-IN",{
 
-        `;
+                style:"currency",
 
-    });
+                currency:"INR"
 
-    // Pie Chart
-    new Chart(document.getElementById("pieChart"), {
+            }).format(data.total_income);
 
-        type: "pie",
+        document.getElementById("expense").innerHTML =
+            new Intl.NumberFormat("en-IN",{
 
-        data: {
+                style:"currency",
 
-            labels: Object.keys(data.category_summary),
+                currency:"INR"
 
-            datasets: [{
+            }).format(data.total_expense);
 
-                data: Object.values(data.category_summary)
+        document.getElementById("savings").innerHTML =
+            new Intl.NumberFormat("en-IN",{
 
-            }]
+                style:"currency",
 
-        },
+                currency:"INR"
 
-        options: {
+            }).format(data.savings);
 
-            responsive: true,
 
-            maintainAspectRatio: false
+        // ===========================
+        // Transactions Table
+        // ===========================
+
+        const table = document.getElementById("reportTable");
+
+        table.innerHTML = "";
+
+        if(data.transactions.length===0){
+
+            table.innerHTML=`
+
+            <tr>
+
+                <td colspan="4"
+                style="text-align:center;
+                padding:20px;">
+
+                No transactions found for this month.
+
+                </td>
+
+            </tr>
+
+            `;
+
+            return;
 
         }
 
+        data.transactions.forEach(transaction=>{
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>${transaction.date}</td>
+
+                <td>${transaction.category}</td>
+
+                <td>
+
+                ${new Intl.NumberFormat("en-IN",{
+
+                    style:"currency",
+
+                    currency:"INR"
+
+                }).format(transaction.amount)}
+
+                </td>
+
+                <td>${transaction.location}</td>
+
+            </tr>
+
+            `;
+
+        });
+
+    })
+
+    .catch(error=>{
+
+        console.log(error);
+
+        alert("Unable to load report.");
+
     });
 
-})
-
-.catch(error => {
-
-    console.error(error);
-
-    alert("Unable to load reports.");
-
-});
+}
 
 
+// ======================================
 // Download CSV
+// ======================================
+
 function downloadCSV(){
 
-    const email = localStorage.getItem("loggedInUser");
-
     window.open(
+
         `http://127.0.0.1:8001/reports/download/csv/${email}`,
+
         "_blank"
+
     );
 
 }
 
 
+// ======================================
 // Download PDF
+// ======================================
+
 function downloadPDF(){
 
-    const email = localStorage.getItem("loggedInUser");
-
     window.open(
+
         `http://127.0.0.1:8001/reports/download/pdf/${email}`,
+
         "_blank"
+
     );
 
 }

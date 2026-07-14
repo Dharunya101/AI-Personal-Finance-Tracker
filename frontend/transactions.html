@@ -1,137 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Transactions</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
+
+    <script>
+
+        if (!localStorage.getItem("loggedInUser")) {
+            window.location.href = "login.html";
+        }
+
+        function logout() {
+            localStorage.removeItem("loggedInUser");
+            window.location.href = "login.html";
+        }
+
+    </script>
 
 </head>
 
-<script>
-
-if(!localStorage.getItem("loggedInUser")){
-
-    window.location.href="login.html";
-
-}
-
-function logout(){
-
-    localStorage.removeItem("loggedInUser");
-
-    window.location.href="login.html";
-
-}
-
-</script>
-
 <body>
 
-<div class="sidebar">
+    <!-- Sidebar -->
 
-    <h2>💰 Finance Tracker</h2>
+    <div class="sidebar">
 
-    <ul>
+        <h2>💰 Finance Tracker</h2>
 
-        <li><a href="dashboard.html">🏠 Dashboard</a></li>
-        <li><a href="transactions.html">💳 Transactions</a></li>
-        <li><a href="analytics.html">📊 Analytics</a></li>
-        <li><a href="budget.html">🎯 Budgets</a></li>
-        <li><a href="insights.html">💡 Insights</a></li>
-        <li><a href="report.html">📄 Reports</a></li>
-        <li><a href="upload.html">📤 Upload Statement</a></li>
-        <li><a href="settings.html">⚙️ Settings</a></li>
-        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+        <ul>
 
-    </ul>
+            <li><a href="dashboard.html">🏠 Dashboard</a></li>
 
-</div>
+            <li class="active">
+                <a href="transactions.html">💳 Transactions</a>
+            </li>
 
-<div class="main">
+            <li><a href="analytics.html">📊 Analytics</a></li>
 
-<h1>Transactions</h1>
+            <li><a href="budget.html">🎯 Budgets</a></li>
 
-<div class="section">
+            <li><a href="insights.html">💡 Insights</a></li>
 
-<h2>Add Transaction</h2>
+            <li><a href="report.html">📄 Reports</a></li>
 
-<input type="text" id="notes" placeholder="Notes">
+            <li><a href="upload.html">📤 Upload Statement</a></li>
 
-<input type="text" id="payment_mode" placeholder="Payment Mode">
+            <li><a href="settings.html">⚙️ Settings</a></li>
 
-<input type="text" id="location" placeholder="Location">
+            <li><a href="#" onclick="logout()">🚪 Logout</a></li>
 
-<input type="number" id="amount" placeholder="Amount">
+        </ul>
 
-<input type="date" id="date">
+    </div>
 
-<button onclick="addTransaction()">
+    <!-- Main -->
 
-Add Transaction
+    <div class="main">
 
-</button>
+        <h1>Transactions</h1>
 
-</div>
+        <!-- Add Transaction -->
 
-<div class="section">
+        <div class="section">
 
-<h2>Transaction History</h2>
+            <h2>Add Transaction</h2>
 
-<table>
+            <input
+                type="text"
+                id="notes"
+                placeholder="Example: Swiggy Order"
+                required>
 
-<thead>
+            <input
+                type="text"
+                id="payment_mode"
+                placeholder="UPI / Card / Cash"
+                required>
 
-<tr>
+            <input
+                type="text"
+                id="location"
+                placeholder="City"
+                required>
 
-<th>Date</th>
+            <input
+                type="number"
+                id="amount"
+                placeholder="Amount (₹)"
+                required>
 
-<th>Category</th>
+            <input
+                type="date"
+                id="date"
+                required>
 
-<th>Amount</th>
+            <button onclick="addTransaction()">
 
-<th>Location</th>
+                Add Transaction
 
-</tr>
+            </button>
 
-</thead>
+        </div>
 
-<tbody id="transactionTable">
+        <!-- Transaction History -->
 
-</tbody>
+        <div class="section">
 
-</table>
+            <div class="table-header">
 
-</div>
+                <h2>
 
-</div>
+                    Transaction History
 
-<script src="js/transactions.js"></script>
+                    <span id="transactionCount"></span>
 
-<script>
+                </h2>
 
-if(!localStorage.getItem("loggedInUser")){
+                <input
+                    type="text"
+                    id="searchTransaction"
+                    placeholder="🔍 Search by category or location...">
 
-window.location.href="login.html";
+            </div>
 
-}
+            <table>
 
-function logout(){
+                <thead>
 
-localStorage.removeItem("loggedInUser");
+                    <tr>
 
-window.location.href="login.html";
+                        <th>Date</th>
 
-}
+                        <th>Category</th>
 
-</script>
+                        <th>Amount</th>
+
+                        <th>Location</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="transactionTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <script src="js/transactions.js"></script>
 
 </body>
 

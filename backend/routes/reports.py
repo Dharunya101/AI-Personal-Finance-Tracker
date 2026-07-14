@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from database import transactions_collection
 
 from fastapi.responses import StreamingResponse
@@ -15,13 +15,15 @@ router = APIRouter(
     tags=["📄 Reports"]
 )
 
-
 # ==========================
 # Financial Report
 # ==========================
 
 @router.get("/{user_email}")
-def financial_report(user_email: str):
+def financial_report(
+    user_email: str,
+    month: str = Query(None)
+):
 
     transactions = list(
         transactions_collection.find(
@@ -29,6 +31,20 @@ def financial_report(user_email: str):
             {"_id": 0}
         )
     )
+
+    # ==========================
+    # Monthly Filter
+    # ==========================
+
+    if month:
+
+        transactions = [
+
+            t for t in transactions
+
+            if t.get("date", "").startswith(month)
+
+        ]
 
     total_income = 0
     total_expense = 0
@@ -57,7 +73,11 @@ def financial_report(user_email: str):
             total_expense += amount
 
         category_summary[category] = (
-            category_summary.get(category, 0) + amount
+
+            category_summary.get(category, 0)
+
+            + amount
+
         )
 
     return {

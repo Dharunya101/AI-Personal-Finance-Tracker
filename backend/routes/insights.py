@@ -1,5 +1,4 @@
-from fastapi import APIRouter
-
+from fastapi import APIRouter, Query
 from database import transactions_collection
 
 router = APIRouter(
@@ -8,8 +7,15 @@ router = APIRouter(
 )
 
 
+# ======================================================
+# Dashboard Insights
+# ======================================================
+
 @router.get("/{user_email}")
-def get_insights(user_email: str):
+def get_insights(
+    user_email: str,
+    month: str = Query(None)
+):
 
     transactions = list(
         transactions_collection.find(
@@ -17,10 +23,25 @@ def get_insights(user_email: str):
         )
     )
 
-    total_expense = 0
+    # ---------------------------------------
+    # Filter by Month (YYYY-MM)
+    # ---------------------------------------
+
+    if month:
+
+        transactions = [
+
+            t for t in transactions
+
+            if t.get("date", "").startswith(month)
+
+        ]
+
     total_income = 0
+    total_expense = 0
 
     category_summary = {}
+    monthly_summary = {}
 
     income_categories = [
         "salary",
@@ -33,18 +54,40 @@ def get_insights(user_email: str):
 
         amount = float(transaction.get("amount", 0))
 
-        category = transaction.get("category", "Unknown")
+        category = transaction.get(
+            "category",
+            "Unknown"
+        ).lower()
 
-        if category.lower() in income_categories:
+        date = transaction.get("date", "")
+
+        month_name = date[:7]
+
+        # Income
+        if category in income_categories:
 
             total_income += amount
 
+        # Expense
         else:
 
             total_expense += amount
 
+            monthly_summary[month_name] = (
+
+                monthly_summary.get(month_name, 0)
+
+                + amount
+
+            )
+
+        # Category Summary
         category_summary[category] = (
-            category_summary.get(category, 0) + amount
+
+            category_summary.get(category, 0)
+
+            + amount
+
         )
 
     savings = total_income - total_expense
@@ -54,8 +97,11 @@ def get_insights(user_email: str):
     if category_summary:
 
         highest_category = max(
+
             category_summary,
+
             key=category_summary.get
+
         )
 
     return {
@@ -70,12 +116,21 @@ def get_insights(user_email: str):
 
         "total_transactions": len(transactions),
 
-        "category_summary": category_summary
+        "category_summary": category_summary,
+
+        "monthly_summary": monthly_summary
 
     }
 
 
-@router.get("/monthly/{user_email}")
-def monthly_insights(user_email: str):
+# ======================================================
+# Monthly Insights
+# ======================================================
 
-    return get_insights(user_email)
+@router.get("/monthly/{user_email}")
+def monthly_insights(
+    user_email: str,
+    month: str = Query(None)
+):
+
+    return get_insights(user_email, month)

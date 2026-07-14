@@ -5,198 +5,186 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <title>Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
+
+<body>
+
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
-
     window.location.href="login.html";
-
 }
 
 function logout(){
-
     localStorage.removeItem("loggedInUser");
-
     window.location.href="login.html";
-
 }
 
 </script>
 
-<body>
+<!-- Sidebar -->
 
-    <!-- Sidebar -->
-    <div class="sidebar">
+<div class="sidebar">
 
-    <h2>💰 Finance Tracker</h2>
+<h2>💰 Finance Tracker</h2>
 
-    <ul>
+<ul>
 
-        <li><a href="dashboard.html">🏠 Dashboard</a></li>
+<li><a href="dashboard.html">🏠 Dashboard</a></li>
 
-        <li><a href="transactions.html">💳 Transactions</a></li>
+<li><a href="transactions.html">💳 Transactions</a></li>
 
-        <li><a href="analytics.html">📊 Analytics</a></li>
+<li><a href="analytics.html">📊 Analytics</a></li>
 
-        <li><a href="budget.html">🎯 Budgets</a></li>
+<li><a href="budget.html">🎯 Budgets</a></li>
 
-        <li><a href="insights.html">💡 Insights</a></li>
+<li><a href="insights.html">💡 Insights</a></li>
 
-        <li><a href="report.html">📄 Reports</a></li>
+<li><a href="report.html">📄 Reports</a></li>
 
-        <li><a href="upload.html">📤 Upload Statement</a></li>
+<li><a href="upload.html">📤 Upload Statement</a></li>
 
-        <li><a href="settings.html">⚙️ Settings</a></li>
+<li><a href="settings.html">⚙️ Settings</a></li>
 
-        <li><a href="#" onclick="logout()">🚪 Logout</a></li>
+<li><a href="#" onclick="logout()">🚪 Logout</a></li>
 
-    </ul>
+</ul>
 
 </div>
 
+<!-- Main -->
 
-    <!-- Main Content -->
-    <div class="main">
+<div class="main">
 
-        <h1>
-            Welcome,
-            <span id="userName"></span>
-        </h1>
+<h1>
 
-        <!-- Summary Cards -->
-        <div class="cards">
+Welcome,
 
-            <div class="card">
+<span id="userName"></span>
 
-                <h3>Total Income</h3>
+</h1>
 
-                <h2 id="income">₹0</h2>
+<!-- =========================
+     Month Filter
+========================= -->
 
-            </div>
+<div class="filter-container">
 
-            <div class="card">
+    <label for="monthFilter"><b>📅 Month:</b></label>
 
-                <h3>Total Expense</h3>
+    <input
+        type="month"
+        id="monthFilter">
 
-                <h2 id="expense">₹0</h2>
+</div>
 
-            </div>
+<!-- Dashboard Cards -->
 
-            <div class="card">
+<div class="cards">
 
-                <h3>Savings</h3>
+<div class="card">
 
-                <h2 id="savings">₹0</h2>
+<h3>Total Income</h3>
 
-            </div>
+<h2 id="income">₹0</h2>
 
-            <div class="card">
+</div>
 
-                <h3>Budget Left</h3>
+<div class="card">
 
-                <h2 id="budget">₹0</h2>
+<h3>Total Expense</h3>
 
-            </div>
+<h2 id="expense">₹0</h2>
 
-        </div>
+</div>
 
-        <!-- Recent Transactions -->
+<div class="card">
 
-        <div class="section">
+<h3>Savings</h3>
 
-            <h2>Recent Transactions</h2>
+<h2 id="savings">₹0</h2>
 
-            <table>
+</div>
 
-                <thead>
+<div class="card">
 
-                    <tr>
+<h3>Budget Left</h3>
 
-                        <th>Date</th>
+<h2 id="budget">₹0</h2>
 
-                        <th>Category</th>
+</div>
 
-                        <th>Amount</th>
+</div>
 
-                        <th>Location</th>
+<!-- Recent Transactions -->
 
-                    </tr>
+<div class="section">
 
-                </thead>
+<h2>Recent Transactions</h2>
 
-                <tbody id="transactionTable">
+<table>
 
-                </tbody>
+<thead>
 
-            </table>
+<tr>
 
-        </div>
+<th>Date</th>
 
-        <!-- Charts -->
+<th>Category</th>
 
-        <div class="charts">
+<th>Amount</th>
 
-            <div class="chart-card">
+<th>Location</th>
 
-                <h2>Expense by Category</h2>
+</tr>
 
-                <canvas id="pieChart"></canvas>
+</thead>
 
-            </div>
+<tbody id="transactionTable">
 
-            <div class="chart-card">
+</tbody>
 
-                <h2>Monthly Expense Trend</h2>
+</table>
 
-                <canvas id="lineChart"></canvas>
+</div>
 
-            </div>
+<!-- Charts -->
 
-        </div>
+<div class="charts">
 
-    </div>
+<div class="chart-card">
 
-    <script src="js/dashboard.js"></script>
+<h2>Expense by Category</h2>
 
-    <script>
+<canvas id="pieChart"></canvas>
 
-        // Check Login
-        if(!localStorage.getItem("loggedInUser")){
+</div>
 
-            alert("Please login first.");
+<div class="chart-card">
 
-            window.location.href = "login.html";
+<h2>Monthly Expense Trend</h2>
 
-        }
+<canvas id="lineChart"></canvas>
 
-        // Show Logged-in User
-        document.getElementById("userName").innerHTML =
-            localStorage.getItem("loggedInUser");
+</div>
 
-        // Logout Function
-        function logout(){
+</div>
 
-            localStorage.removeItem("loggedInUser");
+</div>
 
-            alert("Logged out successfully.");
-
-            window.location.href = "login.html";
-
-        }
-
-    </script>
+<script src="js/dashboard.js"></script>
 
 </body>
 

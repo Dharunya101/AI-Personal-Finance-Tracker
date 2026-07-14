@@ -1,198 +1,395 @@
-// ==========================================
-// Dashboard
-// ==========================================
+// ======================================
+// Logged In User
+// ======================================
 
 const email = localStorage.getItem("loggedInUser");
 
-console.log("Logged in user:", email);
-
 if (!email) {
-    alert("Please login first.");
     window.location.href = "login.html";
 }
-fetch(`http://127.0.0.1:8001/dashboard/overview/${email}`)
-.then(response => response.json())
-.then(data => {
 
-    console.log("Overview Data:", data);
+// ======================================
+// Welcome Message
+// ======================================
 
-    document.getElementById("income").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_income);
+const name = email.split("@")[0];
 
-    document.getElementById("expense").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.total_expense);
+document.getElementById("userName").innerHTML =
+    name.charAt(0).toUpperCase() + name.slice(1);
 
-    document.getElementById("savings").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.savings);
+// ======================================
+// Global Variables
+// ======================================
 
-    document.getElementById("budget").innerHTML =
-        new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR"
-        }).format(data.budget_remaining);
+let pieChart = null;
+let lineChart = null;
 
-})
-.catch(error => console.error("Overview Error:", error));
+const monthFilter = document.getElementById("monthFilter");
+
+// Default month = Current Month
+monthFilter.value = new Date().toISOString().slice(0, 7);
+
+// Load data initially
+loadPageData();
+
+// Reload when month changes
+monthFilter.addEventListener("change", loadPageData);
+
+// ======================================
+// Load Dashboard
+// ======================================
+
+function loadPageData() {
+
+    const month = monthFilter.value;
+
+    // ======================================
+    // Load Dashboard Insights
+    // ======================================
+
+    fetch(`http://127.0.0.1:8001/insights/${email}?month=${month}`)
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        // ==========================
+        // Summary Cards
+        // ==========================
+
+        document.getElementById("income").innerHTML =
+            "₹" + Number(data.total_income).toLocaleString();
+
+        document.getElementById("expense").innerHTML =
+            "₹" + Number(data.total_expense).toLocaleString();
+
+        document.getElementById("savings").innerHTML =
+            "₹" + Number(data.savings).toLocaleString();
+
+        document.getElementById("budget").innerHTML =
+            "₹" + Number(
+                data.total_income - data.total_expense
+            ).toLocaleString();
 
 
+        // ==========================
+        // Pie Chart
+        // ==========================
 
-// ==========================================
-// Recent Transactions
-// ==========================================
-fetch(`http://127.0.0.1:8001/dashboard/recent-transactions/${email}`)
-.then(response => response.json())
-.then(data => {
+        if (pieChart) {
+            pieChart.destroy();
+        }
 
-    const table = document.getElementById("transactionTable");
+        pieChart = new Chart(
+            document.getElementById("pieChart"),
+            {
 
-    table.innerHTML = "";
+                type: "pie",
 
-    data.forEach(transaction => {
+                data: {
 
-        table.innerHTML += `
+                    labels: Object.keys(
+                        data.category_summary
+                    ),
+
+                    datasets: [{
+
+                        data: Object.values(
+                            data.category_summary
+                        ),
+
+                        backgroundColor: [
+
+                            "#4FC3F7",
+                            "#FF6384",
+                            "#FF9F40",
+                            "#FFD166",
+                            "#4BC0C0",
+                            "#9966FF",
+                            "#C9CBCF",
+                            "#36A2EB"
+
+                        ],
+
+                        borderColor: "#FFFFFF",
+
+                        borderWidth: 2
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    plugins: {
+
+                        legend: {
+
+                            labels: {
+
+                                color: "white",
+
+                                font: {
+
+                                    size: 14,
+
+                                    weight: "bold"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+
+
+        // ==========================
+        // Monthly Expense Trend
+        // ==========================
+
+        if (
+            data.monthly_summary &&
+            Object.keys(data.monthly_summary).length > 0
+        ) {
+
+            if (lineChart) {
+                lineChart.destroy();
+            }
+
+            lineChart = new Chart(
+
+                document.getElementById("lineChart"),
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels: Object.keys(
+                            data.monthly_summary
+                        ),
+
+                        datasets: [{
+
+                            label: "Monthly Expense",
+
+                            data: Object.values(
+                                data.monthly_summary
+                            ),
+
+                            borderColor: "#00E5FF",
+
+                            backgroundColor:
+                                "rgba(0,229,255,0.25)",
+
+                            pointBackgroundColor:
+                                "#00E5FF",
+
+                            pointBorderColor:
+                                "#FFFFFF",
+
+                            pointRadius: 5,
+
+                            pointHoverRadius: 8,
+
+                            borderWidth: 4,
+
+                            fill: true,
+
+                            tension: 0.4
+
+                        }]
+
+                    },
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio: false,
+
+                        plugins: {
+
+                            legend: {
+
+                                labels: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 14,
+
+                                        weight: "bold"
+
+                                    }
+
+                                }
+
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+
+                                ticks: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 13,
+
+                                        weight: "bold"
+
+                                    }
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.15)"
+
+                                }
+
+                            },
+
+                            y: {
+
+                                ticks: {
+
+                                    color: "white",
+
+                                    font: {
+
+                                        size: 13,
+
+                                        weight: "bold"
+
+                                    }
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,0.15)"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error("Insights Error:", error);
+
+    });
+
+    // ======================================
+    // Load Recent Transactions
+    // ======================================
+
+    fetch(
+        `http://127.0.0.1:8001/transactions/user/${email}?month=${month}`
+    )
+
+    .then(response => response.json())
+
+    .then(data => {
+
+        data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
+        const table =
+            document.getElementById("transactionTable");
+
+        table.innerHTML = "";
+
+        if(data.length === 0){
+
+            table.innerHTML = `
+
             <tr>
-                <td>${transaction.date}</td>
-                <td>${transaction.category}</td>
-                <td>${new Intl.NumberFormat("en-IN", {
-                    style: "currency",
-                    currency: "INR"
-                }).format(transaction.amount)}</td>
-                <td>${transaction.location}</td>
+
+                <td colspan="4"
+                    style="text-align:center;
+                           padding:20px;
+                           color:white;">
+
+                    No transactions found for this month.
+
+                </td>
+
             </tr>
-        `;
 
-    });
+            `;
 
-})
-.catch(error => console.error("Transaction Error:", error));
-
-
-
-// ==========================================
-// Expense by Category Pie Chart
-// ==========================================
-fetch(`http://127.0.0.1:8001/dashboard/category-summary/${email}`)
-.then(response => response.json())
-.then(data => {
-
-    const labels = Object.keys(data);
-    const values = Object.values(data);
-
-    const ctx = document.getElementById("pieChart").getContext("2d");
-
-    new Chart(ctx, {
-
-        type: "pie",
-
-        data: {
-
-            labels: labels,
-
-            datasets: [{
-
-                label: "Expenses",
-
-                data: values
-
-            }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-                    position: "bottom"
-                },
-
-                title: {
-                    display: true,
-                    text: "Expense by Category"
-                }
-
-            }
+            return;
 
         }
 
-    });
+        data.slice(0,5).forEach(transaction => {
 
-})
-.catch(error => console.error("Category Chart Error:", error));
+            table.innerHTML += `
 
+            <tr>
 
+                <td>${transaction.date}</td>
 
-// ==========================================
-// Monthly Expense Trend
-// ==========================================
-fetch(`http://127.0.0.1:8001/dashboard/monthly-summary/${email}`)
-.then(response => response.json())
-.then(data => {
+                <td>${transaction.category}</td>
 
-    const labels = Object.keys(data);
-    const values = Object.values(data);
+                <td>
 
-    const ctx = document.getElementById("lineChart").getContext("2d");
+                    ₹${Number(transaction.amount)
+                        .toLocaleString("en-IN")}
 
-    new Chart(ctx, {
+                </td>
 
-        type: "line",
+                <td>${transaction.location}</td>
 
-        data: {
+            </tr>
 
-            labels: labels,
+            `;
 
-            datasets: [{
+        });
 
-                label: "Monthly Expense",
+    })
 
-                data: values,
+    .catch(error => {
 
-                fill: false,
-
-                borderWidth: 3,
-
-                tension: 0.3
-
-            }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false,
-
-            plugins: {
-
-                legend: {
-                    position: "bottom"
-                },
-
-                title: {
-                    display: true,
-                    text: "Monthly Expense Trend"
-                }
-
-            }
-
-        }
+        console.error(
+            "Transaction Error:",
+            error
+        );
 
     });
 
-})
-.catch(error => console.error("Monthly Chart Error:", error));
+}
