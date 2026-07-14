@@ -93,6 +93,10 @@ body{
    Sidebar
 =========================================================== */
 
+/* ===========================
+   SIDEBAR
+=========================== */
+
 .sidebar{
 
     position:fixed;
@@ -101,23 +105,25 @@ body{
 
     left:0;
 
-    width:250px;
+    width:280px;
 
     height:100vh;
 
-    background:rgba(18,35,74,.78);
+    background:#162B67;
 
-    backdrop-filter:blur(18px);
+    display:flex;
 
-    -webkit-backdrop-filter:blur(18px);
+    flex-direction:column;
 
-    border-right:1px solid rgba(255,255,255,.15);
+    padding:35px 20px;
 
-    padding-top:25px;
+    box-sizing:border-box;
 
-    z-index:100;
+    box-shadow:5px 0 20px rgba(0,0,0,.2);
 
 }
+
+/* Logo */
 
 .sidebar h2{
 
@@ -127,25 +133,65 @@ body{
 
     font-size:28px;
 
-    margin-bottom:30px;
-
     font-weight:700;
 
-    letter-spacing:.5px;
+    line-height:1.4;
+
+    margin-bottom:40px;
 
 }
+
+/* Menu */
 
 .sidebar ul{
 
     list-style:none;
 
+    padding:0;
+
+    margin:0;
+
+    width:100%;
+
 }
+
+/* Each Item */
 
 .sidebar ul li{
 
-    margin:8px 18px;
+    margin:0;
+
+    position:relative;
 
 }
+
+/* Divider */
+
+.sidebar ul li::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:18px;
+
+    right:18px;
+
+    bottom:0;
+
+    height:1px;
+
+    background:rgba(255,255,255,.12);
+
+}
+
+.sidebar ul li:last-child::after{
+
+    display:none;
+
+}
+
+/* Link */
 
 .sidebar ul li a{
 
@@ -153,37 +199,48 @@ body{
 
     align-items:center;
 
-    gap:12px;
+    gap:15px;
+
+    padding:18px 22px;
+
+    color:white;
 
     text-decoration:none;
 
-    color:white;
+    font-size:18px;
 
-    padding:14px 18px;
+    font-weight:500;
 
-    border-radius:14px;
+    border-radius:12px;
 
-    transition:.35s;
-
-    font-size:16px;
+    transition:.3s;
 
 }
+
+/* Hover */
 
 .sidebar ul li a:hover{
 
-    background:rgba(255,255,255,.15);
+    background:#2E66FF;
 
-    transform:translateX(8px);
+    transform:translateX(5px);
+
+}
+
+/* Active Page */
+
+.sidebar ul li a.active{
+
+    background:linear-gradient(
+        90deg,
+        #2E66FF,
+        #46B7FF
+    );
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
 
 }
 
-.sidebar ul li.active a{
-
-    background:#4fa7ff;
-
-    color:white;
-
-}
 
 /* ===========================================================
    Main Area
@@ -191,9 +248,9 @@ body{
 
 .main{
 
-    margin-left:270px;
+    margin-left:280px;
 
-    padding:35px;
+    padding:40px;
 
     min-height:100vh;
 
@@ -2362,7 +2419,7 @@ width:70%;
 
     width:100%;
 
-    margin-bottom:20px;
+    margin-bottom:18px;
 
 }
 
@@ -2370,9 +2427,7 @@ width:70%;
 
     width:100%;
 
-    padding:14px 50px 14px 16px;
-
-    box-sizing:border-box;
+    padding-right:50px;
 
 }
 
@@ -2388,11 +2443,32 @@ width:70%;
 
     cursor:pointer;
 
-    font-size:20px;
+    color:#7a7a7a;
 
-    user-select:none;
+    font-size:18px;
+
+    transition:0.3s;
 
 }
+
+.toggle-password:hover{
+
+    color:#2F80ED;
+
+}
+
+.message{
+
+    color:green;
+
+    text-align:center;
+
+    margin-top:12px;
+
+    font-size:15px;
+
+}
+ 
 
 /* =========================================
    Budget Progress Bars
