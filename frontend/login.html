@@ -15,51 +15,48 @@
 
     <link rel="stylesheet" href="css/style.css">
 
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
 
 <body>
 
 <div class="login-container">
 
-    <!-- ================= LEFT SIDE ================= -->
+    <!-- LEFT -->
 
     <div class="left-side">
 
         <h1>AI Personal Finance Tracker</h1>
 
         <p class="subtitle">
+
             Smart Expense Tracking & Intelligent Financial Insights
+
         </p>
 
-        <img src="images/finance.png" alt="Finance Illustration" class="login-image">
+        <img
+            src="images/finance.png"
+            class="login-image">
 
         <div class="features">
 
-            <div class="feature">
-                ✔ AI-powered Expense Categorization
-            </div>
+            <div class="feature">✔ AI-powered Expense Categorization</div>
 
-            <div class="feature">
-                ✔ Smart Budget Management & Alerts
-            </div>
+            <div class="feature">✔ Smart Budget Management & Alerts</div>
 
-            <div class="feature">
-                ✔ Interactive Financial Dashboard
-            </div>
+            <div class="feature">✔ Interactive Financial Dashboard</div>
 
-            <div class="feature">
-                ✔ Advanced Analytics & Reports
-            </div>
+            <div class="feature">✔ Advanced Analytics & Reports</div>
 
-            <div class="feature">
-                ✔ Personalized AI Spending Insights
-            </div>
+            <div class="feature">✔ Personalized AI Spending Insights</div>
 
         </div>
 
     </div>
 
-    <!-- ================= RIGHT SIDE ================= -->
+    <!-- RIGHT -->
 
     <div class="right-side">
 
@@ -68,7 +65,9 @@
             <h2>Welcome Back 👋</h2>
 
             <p class="login-text">
+
                 Login to continue managing your finances
+
             </p>
 
             <input
@@ -76,10 +75,33 @@
                 id="email"
                 placeholder="Enter your email">
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Enter your password">
+            <div class="password-container">
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password">
+
+                <span
+                    class="toggle-password"
+                    onclick="togglePassword('password',this)">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                </span>
+
+            </div>
+
+            <div class="forgot-password">
+
+                <a href="#"
+                onclick="forgotPassword()">
+
+                    Forgot Password?
+
+                </a>
+
+            </div>
 
             <button
                 id="loginBtn"
@@ -91,7 +113,7 @@
 
             <p
                 id="loginMessage"
-                style="color:red; text-align:center; margin-top:15px;">
+                style="color:red;text-align:center;margin-top:15px;">
             </p>
 
             <p class="signup-link">
@@ -99,12 +121,127 @@
                 Don't have an account?
 
                 <a href="signup.html">
+
                     Create Account
+
                 </a>
 
             </p>
 
         </div>
+
+    </div>
+
+</div>
+
+<!-- OTP Modal -->
+
+<div id="otpModal" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            onclick="closeOTPModal()">
+
+            &times;
+
+        </span>
+
+        <h2>
+
+            Verify OTP
+
+        </h2>
+
+        <p>
+
+            Enter the verification code sent to your email.
+
+        </p>
+
+        <input
+            type="text"
+            id="otp"
+            placeholder="Enter OTP">
+
+        <p id="timer">
+
+            OTP expires in <b>02:00</b>
+
+        </p>
+
+        <button
+            onclick="verifyOTP()">
+
+            Verify OTP
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- RESET PASSWORD -->
+
+<div id="resetModal" class="modal">
+
+    <div class="modal-content">
+
+        <span
+            class="close"
+            onclick="closeResetModal()">
+
+            &times;
+
+        </span>
+
+        <h2>
+
+            Reset Password
+
+        </h2>
+
+        <div class="password-container">
+
+            <input
+                type="password"
+                id="newPassword"
+                placeholder="New Password">
+
+            <span
+                class="toggle-password"
+                onclick="togglePassword('newPassword',this)">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </span>
+
+        </div>
+
+        <div class="password-container">
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm Password">
+
+            <span
+                class="toggle-password"
+                onclick="togglePassword('confirmPassword',this)">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </span>
+
+        </div>
+
+        <button
+            onclick="resetPassword()">
+
+            Update Password
+
+        </button>
 
     </div>
 
