@@ -214,45 +214,106 @@ function addTransaction() {
 // Edit Transaction
 // ======================================
 
-async function editTransaction(id) {
+function editTransaction(id){
 
-    const amount = prompt("Enter new amount");
+    const transaction = allTransactions.find(
 
-    if (amount === null) return;
+        t => t._id === id
 
-    const response = await fetch(
+    );
+
+    if(!transaction) return;
+
+    document.getElementById("editId").value =
+        transaction._id;
+
+    document.getElementById("editNotes").value =
+        transaction.notes;
+
+    document.getElementById("editCategory").value =
+        transaction.category;
+
+    document.getElementById("editPaymentMode").value =
+        transaction.payment_mode;
+
+    document.getElementById("editLocation").value =
+        transaction.location;
+
+    document.getElementById("editAmount").value =
+        transaction.amount;
+
+    document.getElementById("editDate").value =
+        transaction.date;
+
+    document.getElementById("editModal").style.display =
+        "flex";
+
+}
+
+function closeModal(){
+
+    document.getElementById("editModal").style.display =
+        "none";
+
+}
+
+async function saveTransaction(){
+
+    const id =
+        document.getElementById("editId").value;
+
+    const updatedTransaction={
+
+        notes:
+            document.getElementById("editNotes").value,
+
+        category:
+            document.getElementById("editCategory").value,
+
+        payment_mode:
+            document.getElementById("editPaymentMode").value,
+
+        location:
+            document.getElementById("editLocation").value,
+
+        amount:Number(
+            document.getElementById("editAmount").value
+        ),
+
+        date:
+            document.getElementById("editDate").value
+
+    };
+
+    const response=await fetch(
 
         `http://127.0.0.1:8001/transactions/${id}`,
 
         {
 
-            method: "PUT",
+            method:"PUT",
 
-            headers: {
+            headers:{
 
-                "Content-Type": "application/json"
+                "Content-Type":"application/json"
 
             },
 
-            body: JSON.stringify({
-
-                amount: Number(amount)
-
-            })
+            body:JSON.stringify(updatedTransaction)
 
         }
 
     );
 
-    const result = await response.json();
+    const result=await response.json();
 
     alert(result.message);
+
+    closeModal();
 
     loadTransactions();
 
 }
-
-
 // ======================================
 // Delete Transaction
 // ======================================

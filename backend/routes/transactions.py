@@ -47,8 +47,7 @@ def add_transaction(transaction: Transaction):
 
 
 # ==========================================
-# Get All Transactions of a User
-# (Supports Monthly Filter)
+# Get All Transactions
 # ==========================================
 
 @router.get("/user/{user_email}")
@@ -65,10 +64,8 @@ def get_transactions(
 
     }
 
-    # Get all transactions of the user
     for transaction in transactions_collection.find(query).sort("date", -1):
 
-        # Apply month filter if selected
         if month:
 
             if not transaction.get("date", "").startswith(month):
@@ -91,7 +88,11 @@ def get_transaction(transaction_id: str):
 
     transaction = transactions_collection.find_one(
 
-        {"_id": ObjectId(transaction_id)}
+        {
+
+            "_id": ObjectId(transaction_id)
+
+        }
 
     )
 
@@ -118,27 +119,63 @@ def update_transaction(
     transaction: UpdateTransaction
 ):
 
-    update_data = {}
+    # Predict category again using edited values
 
-    for key, value in transaction.model_dump().items():
+    category = predict_category(
 
-        if value is not None:
+        transaction.notes,
 
-            update_data[key] = value
+        transaction.payment_mode,
 
-    if update_data:
+        transaction.location
 
-        transactions_collection.update_one(
+    )
 
-            {"_id": ObjectId(transaction_id)},
+    update_data = {
 
-            {"$set": update_data}
+        "notes": transaction.notes,
 
-        )
+        "payment_mode": transaction.payment_mode,
+
+        "location": transaction.location,
+
+        "amount": transaction.amount,
+
+        "date": transaction.date,
+
+        "category": category
+
+    }
+
+    result = transactions_collection.update_one(
+
+        {
+
+            "_id": ObjectId(transaction_id)
+
+        },
+
+        {
+
+            "$set": update_data
+
+        }
+
+    )
+
+    if result.modified_count > 0:
+
+        return {
+
+            "message": "Transaction Updated Successfully",
+
+            "category": category
+
+        }
 
     return {
 
-        "message": "Transaction Updated"
+        "message": "No Changes Made"
 
     }
 
@@ -150,14 +187,26 @@ def update_transaction(
 @router.delete("/{transaction_id}")
 def delete_transaction(transaction_id: str):
 
-    transactions_collection.delete_one(
+    result = transactions_collection.delete_one(
 
-        {"_id": ObjectId(transaction_id)}
+        {
+
+            "_id": ObjectId(transaction_id)
+
+        }
 
     )
 
+    if result.deleted_count > 0:
+
+        return {
+
+            "message": "Transaction Deleted Successfully"
+
+        }
+
     return {
 
-        "message": "Transaction Deleted"
+        "message": "Transaction Not Found"
 
     }
