@@ -3,6 +3,10 @@
 // ======================================
 
 let allTransactions = [];
+let filteredTransactions = [];
+
+let currentPage = 1;
+const rowsPerPage = 5;
 
 // ======================================
 // Load Transactions
@@ -21,6 +25,7 @@ function loadTransactions() {
     .then(data => {
 
         allTransactions = data;
+        filteredTransactions = [...allTransactions];
 
         sortTransactions();
 
@@ -36,7 +41,6 @@ function loadTransactions() {
 
 }
 
-
 // ======================================
 // Sort Transactions
 // ======================================
@@ -45,45 +49,44 @@ function sortTransactions() {
 
     const order = document.getElementById("sortDate").value;
 
-    if (order === "newest") {
+    filteredTransactions.sort((a,b)=>{
 
-        allTransactions.sort(
+        if(order==="newest"){
 
-            (a, b) => new Date(b.date) - new Date(a.date)
+            return new Date(b.date)-new Date(a.date);
 
-        );
+        }
 
-    }
+        return new Date(a.date)-new Date(b.date);
 
-    else {
+    });
 
-        allTransactions.sort(
+    currentPage = 1;
 
-            (a, b) => new Date(a.date) - new Date(b.date)
-
-        );
-
-    }
-
-    displayTransactions(allTransactions);
+    displayTransactions(filteredTransactions);
 
 }
-
 
 // ======================================
 // Display Transactions
 // ======================================
 
-function displayTransactions(data) {
+function displayTransactions(data){
 
     const table = document.getElementById("transactionTable");
 
-    table.innerHTML = "";
+    table.innerHTML="";
 
     document.getElementById("transactionCount").innerHTML =
         `(${data.length})`;
 
-    data.forEach(t => {
+    const start = (currentPage-1) * rowsPerPage;
+
+    const end = start + rowsPerPage;
+
+    const pageData = data.slice(start,end);
+
+    pageData.forEach(t=>{
 
         table.innerHTML += `
 
@@ -119,20 +122,89 @@ function displayTransactions(data) {
 
     });
 
+    renderPagination(data.length);
+
 }
 
+// ======================================
+// Pagination
+// ======================================
+
+function renderPagination(totalRows){
+
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    let html = "";
+
+    html += `
+
+    <button
+
+        ${currentPage===1 ? "disabled" : ""}
+
+        onclick="changePage(${currentPage-1})">
+
+        ◀ Previous
+
+    </button>
+
+    `;
+
+    for(let i=1;i<=totalPages;i++){
+
+        html += `
+
+        <button
+
+            class="${i===currentPage ? "active-page" : ""}"
+
+            onclick="changePage(${i})">
+
+            ${i}
+
+        </button>
+
+        `;
+
+    }
+
+    html += `
+
+    <button
+
+        ${currentPage===totalPages ? "disabled" : ""}
+
+        onclick="changePage(${currentPage+1})">
+
+        Next ▶
+
+    </button>
+
+    `;
+
+    document.getElementById("pagination").innerHTML = html;
+
+}
+
+function changePage(page){
+
+    currentPage = page;
+
+    displayTransactions(filteredTransactions);
+
+}
 
 // ======================================
-// Search Transactions
+// Search
 // ======================================
 
 document.getElementById("searchTransaction")
 
-.addEventListener("input", function () {
+.addEventListener("input",function(){
 
-    const keyword = this.value.toLowerCase();
+    const keyword=this.value.toLowerCase();
 
-    const filtered = allTransactions.filter(t =>
+    filteredTransactions = allTransactions.filter(t=>
 
         t.category.toLowerCase().includes(keyword)
 
@@ -142,64 +214,65 @@ document.getElementById("searchTransaction")
 
     );
 
-    displayTransactions(filtered);
+    currentPage = 1;
+
+    sortTransactions();
 
 });
-
 
 // ======================================
 // Add Transaction
 // ======================================
 
-function addTransaction() {
+function addTransaction(){
 
-    const transaction = {
+    const transaction={
 
-        user_email: localStorage.getItem("loggedInUser"),
+        user_email:localStorage.getItem("loggedInUser"),
 
-        notes: document.getElementById("notes").value,
+        notes:document.getElementById("notes").value,
 
-        payment_mode: document.getElementById("payment_mode").value,
+        payment_mode:document.getElementById("payment_mode").value,
 
-        location: document.getElementById("location").value,
+        location:document.getElementById("location").value,
 
-        amount: Number(document.getElementById("amount").value),
+        amount:Number(document.getElementById("amount").value),
 
-        date: document.getElementById("date").value
+        date:document.getElementById("date").value
 
     };
 
-    fetch("http://127.0.0.1:8001/transactions/", {
+    fetch("http://127.0.0.1:8001/transactions/",{
 
-        method: "POST",
+        method:"POST",
 
-        headers: {
+        headers:{
 
-            "Content-Type": "application/json"
+            "Content-Type":"application/json"
 
         },
 
-        body: JSON.stringify(transaction)
+        body:JSON.stringify(transaction)
 
     })
 
-    .then(response => response.json())
+    .then(response=>response.json())
 
-    .then(data => {
+    .then(data=>{
 
         alert(data.message);
 
         loadTransactions();
 
-        document.getElementById("notes").value = "";
-        document.getElementById("payment_mode").value = "";
-        document.getElementById("location").value = "";
-        document.getElementById("amount").value = "";
-        document.getElementById("date").value = "";
+        document.getElementById("notes").value="";
+        document.getElementById("payment_mode").value="";
+        document.getElementById("location").value="";
+        document.getElementById("amount").value="";
+        document.getElementById("date").value="";
 
     })
 
-    .catch(error => {
+    .catch(error=>{
 
         console.log(error);
 
@@ -209,7 +282,6 @@ function addTransaction() {
 
 }
 
-
 // ======================================
 // Edit Transaction
 // ======================================
@@ -218,70 +290,47 @@ function editTransaction(id){
 
     const transaction = allTransactions.find(
 
-        t => t._id === id
+        t=>t._id===id
 
     );
 
     if(!transaction) return;
 
-    document.getElementById("editId").value =
-        transaction._id;
+    document.getElementById("editId").value=transaction._id;
+    document.getElementById("editNotes").value=transaction.notes;
+    document.getElementById("editCategory").value=transaction.category;
+    document.getElementById("editPaymentMode").value=transaction.payment_mode;
+    document.getElementById("editLocation").value=transaction.location;
+    document.getElementById("editAmount").value=transaction.amount;
+    document.getElementById("editDate").value=transaction.date;
 
-    document.getElementById("editNotes").value =
-        transaction.notes;
-
-    document.getElementById("editCategory").value =
-        transaction.category;
-
-    document.getElementById("editPaymentMode").value =
-        transaction.payment_mode;
-
-    document.getElementById("editLocation").value =
-        transaction.location;
-
-    document.getElementById("editAmount").value =
-        transaction.amount;
-
-    document.getElementById("editDate").value =
-        transaction.date;
-
-    document.getElementById("editModal").style.display =
-        "flex";
+    document.getElementById("editModal").style.display="flex";
 
 }
 
 function closeModal(){
 
-    document.getElementById("editModal").style.display =
-        "none";
+    document.getElementById("editModal").style.display="none";
 
 }
 
 async function saveTransaction(){
 
-    const id =
-        document.getElementById("editId").value;
+    const id=document.getElementById("editId").value;
 
     const updatedTransaction={
 
-        notes:
-            document.getElementById("editNotes").value,
+        notes:document.getElementById("editNotes").value,
 
-        category:
-            document.getElementById("editCategory").value,
+        category:document.getElementById("editCategory").value,
 
-        payment_mode:
-            document.getElementById("editPaymentMode").value,
+        payment_mode:document.getElementById("editPaymentMode").value,
 
-        location:
-            document.getElementById("editLocation").value,
+        location:document.getElementById("editLocation").value,
 
-        amount:Number(
-            document.getElementById("editAmount").value
-        ),
+        amount:Number(document.getElementById("editAmount").value),
 
-        date:
-            document.getElementById("editDate").value
+        date:document.getElementById("editDate").value
 
     };
 
@@ -314,33 +363,28 @@ async function saveTransaction(){
     loadTransactions();
 
 }
+
 // ======================================
 // Delete Transaction
 // ======================================
 
-async function deleteTransaction(id) {
+async function deleteTransaction(id){
 
-    const confirmDelete = confirm(
+    if(!confirm("Delete this transaction?")) return;
 
-        "Delete this transaction?"
-
-    );
-
-    if (!confirmDelete) return;
-
-    const response = await fetch(
+    const response=await fetch(
 
         `http://127.0.0.1:8001/transactions/${id}`,
 
         {
 
-            method: "DELETE"
+            method:"DELETE"
 
         }
 
     );
 
-    const result = await response.json();
+    const result=await response.json();
 
     alert(result.message);
 

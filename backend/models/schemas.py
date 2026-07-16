@@ -1,5 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
+
+# ==========================================
+# Transaction Models
+# ==========================================
 
 class Transaction(BaseModel):
 
@@ -15,34 +19,70 @@ class Transaction(BaseModel):
 
     date: str
 
+
 class UpdateTransaction(BaseModel):
+
     notes: Optional[str] = None
+
     payment_mode: Optional[str] = None
+
     location: Optional[str] = None
+
     amount: Optional[float] = None
+
     date: Optional[str] = None
 
+
+# ==========================================
+# Budget Model
+# ==========================================
+
 class Budget(BaseModel):
 
     category: str
 
-    limit: float
-
-from pydantic import BaseModel
-
-class Budget(BaseModel):
-    category: str
     monthly_budget: float
 
-from pydantic import BaseModel, EmailStr
+
+# ==========================================
+# User Models
+# ==========================================
 
 class User(BaseModel):
+
     name: str
+
     email: EmailStr
+
     password: str
+
 
 class LoginUser(BaseModel):
 
-    email: str
+    email: EmailStr
 
     password: str
+
+
+# ==========================================
+# Update Profile
+# ==========================================
+
+class UpdateUser(BaseModel):
+
+    name: str
+
+    email: EmailStr
+
+
+# ==========================================
+# Change Password
+# ==========================================
+
+class ChangePassword(BaseModel):
+
+    email: EmailStr
+
+    current_password: str
+
+    new_password: str

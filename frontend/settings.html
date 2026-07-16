@@ -4,16 +4,23 @@
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Settings</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/style.css">
 
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
 </head>
+
+<body>
 
 <script>
 
@@ -33,13 +40,11 @@ function logout(){
 
 </script>
 
-<body>
-
-<!-- Sidebar -->
+<!-- ================= Sidebar ================= -->
 
 <div class="sidebar">
 
-    <h2>Finance Tracker</h2>
+    <h2>💰 Finance Tracker</h2>
 
     <ul>
 
@@ -57,7 +62,7 @@ function logout(){
 
         <li><a href="upload.html">Upload Statement</a></li>
 
-        <li><a href="settings.html">Settings</a></li>
+        <li><a href="settings.html" class="active">Settings</a></li>
 
         <li><a href="#" onclick="logout()">Logout</a></li>
 
@@ -65,11 +70,13 @@ function logout(){
 
 </div>
 
-<!-- Main -->
+<!-- ================= Main ================= -->
 
 <div class="main">
 
     <h1>⚙️ Settings</h1>
+
+    <!-- ================= Profile ================= -->
 
     <div class="section">
 
@@ -83,40 +90,84 @@ function logout(){
         <input
             type="email"
             id="email"
-            placeholder="Email">
+            readonly>
 
         <button onclick="saveProfile()">
+
             Save Profile
+
         </button>
 
     </div>
+
+    <!-- ================= Password ================= -->
 
     <div class="section">
 
         <h2>Change Password</h2>
 
-        <input
-            type="password"
-            id="oldPassword"
-            placeholder="Current Password">
+        <div class="password-container">
 
-        <input
-            type="password"
-            id="newPassword"
-            placeholder="New Password">
+            <input
+
+                type="password"
+
+                id="oldPassword"
+
+                placeholder="Current Password">
+
+            <span
+
+                class="toggle-password"
+
+                onclick="togglePassword('oldPassword',this)">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </span>
+
+        </div>
+
+        <div class="password-container">
+
+            <input
+
+                type="password"
+
+                id="newPassword"
+
+                placeholder="New Password">
+
+            <span
+
+                class="toggle-password"
+
+                onclick="togglePassword('newPassword',this)">
+
+                <i class="fa-solid fa-eye"></i>
+
+            </span>
+
+        </div>
 
         <button onclick="changePassword()">
+
             Update Password
+
         </button>
 
     </div>
+
+    <!-- ================= Preferences ================= -->
 
     <div class="section">
 
         <h2>Preferences</h2>
 
         <button onclick="toggleTheme()">
+
             🌙 Toggle Dark Mode
+
         </button>
 
     </div>
