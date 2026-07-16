@@ -36,7 +36,7 @@
 
 <div class="sidebar">
 
-    <h2>💰 Finance Tracker</h2>
+    <h2>Finance Tracker</h2>
 
     <ul>
 
@@ -193,6 +193,66 @@
             </tbody>
 
         </table>
+
+    </div>
+
+</div>
+<!-- ==========================
+     Edit Transaction Modal
+========================== -->
+
+<div id="editModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Edit Transaction</h2>
+
+        <input type="hidden" id="editId">
+
+        <input
+            type="text"
+            id="editNotes"
+            placeholder="Notes">
+
+        <input
+            type="text"
+            id="editCategory"
+            placeholder="Category">
+
+        <input
+            type="text"
+            id="editPaymentMode"
+            placeholder="Payment Mode">
+
+        <input
+            type="text"
+            id="editLocation"
+            placeholder="Location">
+
+        <input
+            type="number"
+            id="editAmount"
+            placeholder="Amount">
+
+        <input
+            type="date"
+            id="editDate">
+
+        <div class="modal-buttons">
+
+            <button onclick="saveTransaction()">
+
+                Save
+
+            </button>
+
+            <button onclick="closeModal()">
+
+                Cancel
+
+            </button>
+
+        </div>
 
     </div>
 
