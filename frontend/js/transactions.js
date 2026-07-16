@@ -4,6 +4,10 @@
 
 let allTransactions = [];
 
+let currentPage = 1;
+
+const rowsPerPage = 5;
+
 // ======================================
 // Load Transactions
 // ======================================
@@ -83,7 +87,13 @@ function displayTransactions(data) {
     document.getElementById("transactionCount").innerHTML =
         `(${data.length})`;
 
-    data.forEach(t => {
+        const start = (currentPage - 1) * rowsPerPage;
+
+const end = start + rowsPerPage;
+
+const pageData = data.slice(start, end);
+
+pageData.forEach(t => {
 
         table.innerHTML += `
 
@@ -345,5 +355,49 @@ async function deleteTransaction(id) {
     alert(result.message);
 
     loadTransactions();
+
+}
+function renderPagination(totalRows){
+
+    const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+    let html = "";
+
+    html += `
+        <button
+            ${currentPage===1 ? "disabled" : ""}
+            onclick="changePage(${currentPage-1})">
+            ◀ Previous
+        </button>
+    `;
+
+    for(let i=1;i<=totalPages;i++){
+
+        html += `
+            <button
+                class="${i===currentPage ? "active-page" : ""}"
+                onclick="changePage(${i})">
+                ${i}
+            </button>
+        `;
+
+    }
+
+    html += `
+        <button
+            ${currentPage===totalPages ? "disabled" : ""}
+            onclick="changePage(${currentPage+1})">
+            Next ▶
+        </button>
+    `;
+
+    document.getElementById("pagination").innerHTML = html;
+
+}
+function changePage(page){
+
+    currentPage = page;
+
+    displayTransactions(allTransactions);
 
 }
