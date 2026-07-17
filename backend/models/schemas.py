@@ -86,3 +86,21 @@ class ChangePassword(BaseModel):
     current_password: str
 
     new_password: str
+
+class ForgotPassword(BaseModel):
+
+    email:str
+
+
+class VerifyOTP(BaseModel):
+
+    email:str
+
+    otp:str
+
+
+class ResetPassword(BaseModel):
+
+    email:str
+
+    new_password:str

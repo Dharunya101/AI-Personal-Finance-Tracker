@@ -2752,3 +2752,17 @@ width:70%;
     cursor:not-allowed;
 
 }
+.forgot-password{
+    margin-top: 12px;
+    margin-bottom: 18px;
+}
+
+.forgot-password a{
+    color: #2F6BFF;
+    font-weight: 700;
+    font-size: 17px;
+}
+
+.forgot-password a:hover{
+    color: #1E4FD6;
+}
