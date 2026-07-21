@@ -18,7 +18,7 @@ function loadTransactions() {
 
     const email = localStorage.getItem("loggedInUser");
 
-    fetch(`http://127.0.0.1:8001/transactions/user/${email}`)
+    fetch(`http://127.0.0.1:8002/transactions/user/${email}`)
 
     .then(response => response.json())
 
@@ -242,7 +242,7 @@ function addTransaction(){
 
     };
 
-    fetch("http://127.0.0.1:8001/transactions/",{
+    fetch("http://127.0.0.1:8002/transactions/",{
 
         method:"POST",
 
@@ -336,7 +336,7 @@ async function saveTransaction(){
 
     const response=await fetch(
 
-        `http://127.0.0.1:8001/transactions/${id}`,
+        `http://127.0.0.1:8002/transactions/${id}`,
 
         {
 
@@ -374,7 +374,7 @@ async function deleteTransaction(id){
 
     const response=await fetch(
 
-        `http://127.0.0.1:8001/transactions/${id}`,
+        `http://127.0.0.1:8002/transactions/${id}`,
 
         {
 

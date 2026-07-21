@@ -30,7 +30,7 @@ function loadPageData(){
 
     fetch(
 
-        `http://127.0.0.1:8001/reports/${email}?month=${month}`
+        `http://127.0.0.1:8002/reports/${email}?month=${month}`
 
     )
 
@@ -151,7 +151,7 @@ function downloadCSV(){
 
     window.open(
 
-        `http://127.0.0.1:8001/reports/download/csv/${email}`,
+        `http://127.0.0.1:8002/reports/download/csv/${email}`,
 
         "_blank"
 
@@ -168,7 +168,7 @@ function downloadPDF(){
 
     window.open(
 
-        `http://127.0.0.1:8001/reports/download/pdf/${email}`,
+        `http://127.0.0.1:8002/reports/download/pdf/${email}`,
 
         "_blank"
 

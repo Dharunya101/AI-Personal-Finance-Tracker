@@ -14,7 +14,7 @@ if (!email) {
 // Load User Details
 // ======================================
 
-fetch(`http://127.0.0.1:8001/users/${email}`)
+fetch(`http://127.0.0.1:8002/users/${email}`)
 
 .then(response => response.json())
 
@@ -49,7 +49,7 @@ function saveProfile(){
 
     };
 
-    fetch("http://127.0.0.1:8001/users/update",{
+    fetch("http://127.0.0.1:8002/users/update",{
 
         method:"PUT",
 
@@ -130,7 +130,7 @@ function changePassword(){
 
     fetch(
 
-        "http://127.0.0.1:8001/users/change-password",
+        "http://127.0.0.1:8002/users/change-password",
 
         {
 

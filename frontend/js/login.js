@@ -27,7 +27,7 @@ function login() {
 
     fetch(
 
-        "http://127.0.0.1:8001/auth/login",
+        "http://127.0.0.1:8002/auth/login",
 
         {
 
@@ -64,11 +64,11 @@ function login() {
             document.getElementById("loginMessage").innerHTML=
                 "Login Successful! Redirecting...";
 
-            setTimeout(()=>{
+            setTimeout(() => {
 
-                window.location.href="dashboard.html";
-
-            },1000);
+    console.log("Redirecting...");
+    window.location.href = "dashboard.html";
+}, 1000);
 
         }
 
@@ -123,7 +123,7 @@ function forgotPassword(){
 
     fetch(
 
-        `http://127.0.0.1:8001/auth/forgot-password/${enteredEmail}`,
+        `http://127.0.0.1:8002/auth/forgot-password/${enteredEmail}`,
 
         {
 
@@ -278,7 +278,7 @@ function verifyOTP(){
 
     fetch(
 
-        `http://127.0.0.1:8001/auth/verify-otp/${enteredEmail}/${otp}`,
+        `http://127.0.0.1:8002/auth/verify-otp/${enteredEmail}/${otp}`,
 
         {
 
@@ -375,7 +375,7 @@ function resetPassword(){
     }
 
     const url =
-    `http://127.0.0.1:8001/auth/reset-password/${encodeURIComponent(enteredEmail)}/${otp}/${encodeURIComponent(newPassword)}`;
+    `http://127.0.0.1:8002/auth/reset-password/${encodeURIComponent(enteredEmail)}/${otp}/${encodeURIComponent(newPassword)}`;
 
     console.log("Reset URL:", url);
 
