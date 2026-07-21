@@ -4,7 +4,7 @@ const email = localStorage.getItem("loggedInUser");
 // Existing Budgets
 // =====================================
 
-fetch("http://127.0.0.1:8001/budgets/")
+fetch("http://127.0.0.1:8002/budgets/")
 .then(response => response.json())
 .then(data => {
 
@@ -64,7 +64,7 @@ function addBudget(){
 
     };
 
-    fetch("http://127.0.0.1:8001/budgets/",{
+    fetch("http://127.0.0.1:8002/budgets/",{
 
         method:"POST",
 
@@ -103,7 +103,7 @@ function addBudget(){
 // Budget Status
 // =====================================
 
-fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
+fetch(`http://127.0.0.1:8002/budgets/status/${email}`)
 
 .then(response=>response.json())
 
@@ -187,7 +187,7 @@ fetch(`http://127.0.0.1:8001/budgets/status/${email}`)
 // Budget Alerts
 // =====================================
 
-fetch(`http://127.0.0.1:8001/budgets/alerts/${email}`)
+fetch(`http://127.0.0.1:8002/budgets/alerts/${email}`)
 
 .then(response=>response.json())
 
@@ -257,7 +257,7 @@ function changeBudget(category,currentBudget){
 
     }
 
-    fetch(`http://127.0.0.1:8001/budgets/${category}`,{
+    fetch(`http://127.0.0.1:8002/budgets/${category}`,{
 
         method:"PUT",
 

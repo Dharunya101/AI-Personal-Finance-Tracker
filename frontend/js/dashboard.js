@@ -47,7 +47,7 @@ function loadPageData() {
     // Dashboard Insights
     // ======================================
 
-    fetch(`http://127.0.0.1:8001/insights/${email}?month=${month}`)
+    fetch(`http://127.0.0.1:8002/insights/${email}?month=${month}`)
 
     .then(response => response.json())
 
@@ -296,7 +296,7 @@ function loadPageData() {
 
     fetch(
 
-        `http://127.0.0.1:8001/transactions/user/${email}?month=${month}`
+        `http://127.0.0.1:8002/transactions/user/${email}?month=${month}`
 
     )
 

@@ -38,7 +38,7 @@ function loadPageData(){
     const month = monthFilter.value;
 
     fetch(
-        `http://127.0.0.1:8001/analytics/category-summary/${email}?month=${month}`
+        `http://127.0.0.1:8002/analytics/category-summary/${email}?month=${month}`
     )
 
     .then(response => response.json())

@@ -84,7 +84,7 @@ function signup() {
     // Backend Request
     // ===============================
 
-    fetch("http://127.0.0.1:8001/auth/signup", {
+    fetch("http://127.0.0.1:8002/auth/signup", {
 
         method: "POST",
 

@@ -23,7 +23,7 @@ function uploadCSV() {
         localStorage.getItem("loggedInUser")
     );
 
-    fetch("http://127.0.0.1:8001/upload/csv", {
+    fetch("http://127.0.0.1:8002/upload/csv", {
 
         method: "POST",
 
