@@ -174,7 +174,7 @@ function startTimer(){
 
     clearInterval(otpTimer);
 
-    let timeLeft = 120;
+    let timeLeft = 300;
 
     updateTimer(timeLeft);
 

@@ -108,7 +108,7 @@ def forgot_password(email: str):
 
     otp = str(random.randint(100000,999999))
 
-    expiry = datetime.now() + timedelta(minutes=2)
+    expiry = datetime.now() + timedelta(minutes=5)
 
     otp_storage[email] = {
 
@@ -128,7 +128,7 @@ Your OTP for resetting your Finance Tracker password is:
 
 {otp}
 
-This OTP is valid for only 2 minutes.
+This OTP is valid for only 5 minutes.
 
 If you didn't request this, please ignore this email.
 
