@@ -1,4 +1,31 @@
 // ======================================
+// CUSTOM CAPTCHA
+// ======================================
+
+let generatedCaptcha = "";
+
+function generateCaptcha(){
+
+    const chars =
+        "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    generatedCaptcha = "";
+
+    for(let i=0;i<5;i++){
+
+        generatedCaptcha +=
+            chars.charAt(
+                Math.floor(Math.random()*chars.length)
+            );
+
+    }
+
+    document.getElementById("captchaText").innerHTML =
+        generatedCaptcha;
+
+}
+
+// ======================================// 
 // LOGIN
 // ======================================
 
@@ -24,6 +51,38 @@ function login() {
         return;
 
     }
+    const captcha = grecaptcha.getResponse();
+
+if(captcha.length === 0){
+
+    document.getElementById("loginMessage").style.color = "red";
+
+    document.getElementById("loginMessage").innerHTML =
+        "Please complete the reCAPTCHA.";
+
+    return;
+
+}
+const enteredCaptcha =
+document.getElementById("captchaInput")
+.value
+.trim()
+.toUpperCase();
+
+if(enteredCaptcha !== generatedCaptcha){
+
+    document.getElementById("loginMessage").style.color = "red";
+
+    document.getElementById("loginMessage").innerHTML =
+        "Incorrect security code.";
+
+    document.getElementById("captchaInput").value = "";
+
+    generateCaptcha();
+
+    return;
+
+}
 
     fetch(
 
@@ -39,7 +98,15 @@ function login() {
 
             },
 
-            body:JSON.stringify(user)
+            body:JSON.stringify({
+
+    email:user.email,
+
+    password:user.password,
+
+    captcha:grecaptcha.getResponse()
+
+})
 
         }
 
@@ -58,6 +125,11 @@ function login() {
                 user.email
 
             );
+            document.getElementById("captchaInput").value = "";
+
+generateCaptcha();
+
+grecaptcha.reset();
 
             document.getElementById("loginMessage").style.color="green";
 
@@ -74,12 +146,18 @@ function login() {
 
         else{
 
-            document.getElementById("loginMessage").style.color="red";
+    document.getElementById("loginMessage").style.color = "red";
 
-            document.getElementById("loginMessage").innerHTML=
-                data.message;
+    document.getElementById("loginMessage").innerHTML =
+        data.message;
 
-        }
+    document.getElementById("captchaInput").value = "";
+
+    generateCaptcha();
+
+    grecaptcha.reset();
+
+}
 
     })
 
@@ -578,3 +656,12 @@ document.getElementById("confirmPassword").addEventListener(
     }
 
 );
+// ======================================
+// Generate CAPTCHA on Page Load
+// ======================================
+
+window.onload = function(){
+
+    generateCaptcha();
+
+};

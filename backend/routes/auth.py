@@ -5,6 +5,7 @@ from database import users_collection
 import re
 import os
 import random
+import requests
 import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
@@ -70,6 +71,31 @@ def signup(user: User):
 
 @router.post("/login")
 def login(user: LoginUser):
+
+    # -----------------------------
+    # Verify Google reCAPTCHA
+    # -----------------------------
+
+    secret_key = "6LeD8WAtAAAAAFoTV1f5fFtzAZxJCONGSVciPm36"
+
+    response = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        data={
+            "secret": secret_key,
+            "response": user.captcha
+        }
+    )
+
+    result = response.json()
+
+    if not result.get("success"):
+        return {
+            "message": "Please complete the reCAPTCHA."
+        }
+
+    # -----------------------------
+    # Verify User
+    # -----------------------------
 
     existing = users_collection.find_one(
         {"email": user.email}
