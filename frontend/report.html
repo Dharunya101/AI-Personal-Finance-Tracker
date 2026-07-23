@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Reports</title>
+    <title>Financial Reports</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,22 +24,17 @@
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
-
     window.location.href="login.html";
-
 }
 
 function logout(){
-
     localStorage.removeItem("loggedInUser");
-
     window.location.href="login.html";
-
 }
 
 </script>
 
-<!-- ================= Sidebar ================= -->
+<!-- Sidebar -->
 
 <div class="sidebar">
 
@@ -48,44 +43,38 @@ function logout(){
     <ul>
 
         <li><a href="dashboard.html">Dashboard</a></li>
-
         <li><a href="transactions.html">Transactions</a></li>
-
         <li><a href="analytics.html">Analytics</a></li>
-
         <li><a href="budget.html">Budgets</a></li>
-
         <li><a href="insights.html">Insights</a></li>
-
-        <li><a href="report.html">Reports</a></li>
-
+        <li><a href="report.html" class="active">Reports</a></li>
         <li><a href="upload.html">Upload Statement</a></li>
-
         <li><a href="settings.html">Settings</a></li>
-
         <li><a href="#" onclick="logout()">Logout</a></li>
 
     </ul>
 
 </div>
 
-<!-- ================= Main ================= -->
+<!-- Main -->
 
 <div class="main">
 
-    <h1>Financial Reports</h1>
+    <div class="report-header">
 
-    <!-- ==========================
-         Month Filter
-    ========================== -->
+        <h1>📑 Monthly Financial Report</h1>
+
+        <p>
+            AI Personal Finance Tracker
+        </p>
+
+    </div>
+
+    <!-- Month -->
 
     <div class="filter-container">
 
-        <label for="monthFilter">
-
-            <b>📅 Month:</b>
-
-        </label>
+        <label><b>📅 Select Month</b></label>
 
         <input
             type="month"
@@ -93,13 +82,41 @@ function logout(){
 
     </div>
 
-    <!-- Summary Cards -->
+    <!-- User Information -->
+
+    <div class="section">
+
+        <h2>👤 User Information</h2>
+
+        <div class="report-user-grid">
+
+            <div>
+
+                <strong>Email</strong>
+
+                <p id="reportEmail"></p>
+
+            </div>
+
+            <div>
+
+                <strong>Generated On</strong>
+
+                <p id="generatedDate"></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Summary -->
 
     <div class="cards">
 
         <div class="card">
 
-            <h3>Total Income</h3>
+            <h3>💰 Total Income</h3>
 
             <h2 id="income">₹0</h2>
 
@@ -107,7 +124,7 @@ function logout(){
 
         <div class="card">
 
-            <h3>Total Expense</h3>
+            <h3>💸 Total Expense</h3>
 
             <h2 id="expense">₹0</h2>
 
@@ -115,11 +132,46 @@ function logout(){
 
         <div class="card">
 
-            <h3>Savings</h3>
+            <h3>💵 Savings</h3>
 
             <h2 id="savings">₹0</h2>
 
         </div>
+
+        <div class="card">
+
+            <h3>📊 Transactions</h3>
+
+            <h2 id="totalTransactions">0</h2>
+
+        </div>
+
+    </div>
+
+    <!-- Category Summary -->
+
+    <div class="section">
+
+        <h2>📊 Category Summary</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Category</th>
+                    <th>Total Amount</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="categorySummary">
+
+            </tbody>
+
+        </table>
 
     </div>
 
@@ -127,7 +179,7 @@ function logout(){
 
     <div class="section">
 
-        <h2>Transactions</h2>
+        <h2>📋 Transaction History</h2>
 
         <table>
 
@@ -136,9 +188,10 @@ function logout(){
                 <tr>
 
                     <th>Date</th>
+                    <th>Description</th>
                     <th>Category</th>
+                    <th>Payment</th>
                     <th>Amount</th>
-                    <th>Location</th>
 
                 </tr>
 
@@ -152,17 +205,29 @@ function logout(){
 
     </div>
 
-    <!-- Download Buttons -->
+    <!-- AI Insights -->
 
     <div class="section">
+
+        <h2>🤖 AI Insights</h2>
+
+        <ul id="aiInsights">
+
+            <li>Loading insights...</li>
+
+        </ul>
+
+    </div>
+
+    <!-- Download -->
+
+    <div class="section report-buttons">
 
         <button onclick="downloadCSV()">
 
             📥 Download CSV
 
         </button>
-
-        <br><br>
 
         <button onclick="window.print()">
 
@@ -175,6 +240,16 @@ function logout(){
 </div>
 
 <script src="js/reports.js"></script>
+
+<script>
+
+document.getElementById("reportEmail").innerHTML =
+localStorage.getItem("loggedInUser");
+
+document.getElementById("generatedDate").innerHTML =
+new Date().toLocaleString();
+
+</script>
 
 </body>
 

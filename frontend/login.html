@@ -3,6 +3,7 @@
 
 <head>
 
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -102,14 +103,49 @@
                 </a>
 
             </div>
+            <div class="g-recaptcha"
+     data-sitekey="6LeD8WAtAAAAAO9x46o4TcU4ycCG9CCJiPNduGlI">
+</div>
 
-            <button
-                id="loginBtn"
-                onclick="login()">
+<br>
 
-                Login
+<!-- Custom CAPTCHA -->
 
-            </button>
+<div class="custom-captcha">
+
+    <label><b>Enter the Security Code</b></label>
+
+    <div class="captcha-container">
+
+        <div id="captchaText" class="captcha-box">
+            ABC12
+        </div>
+
+        <button
+            type="button"
+            class="refresh-captcha"
+            onclick="generateCaptcha()">
+
+            <i class="fa-solid fa-rotate-right"></i>
+
+        </button>
+
+    </div>
+
+    <input
+        type="text"
+        id="captchaInput"
+        placeholder="Enter the security code"
+        autocomplete="off"
+        maxlength="5">
+
+</div>
+
+<br>
+
+<button onclick="login()">
+    Login
+</button>
 
             <p
                 id="loginMessage"
@@ -167,7 +203,7 @@
 
         <p id="timer">
 
-            OTP expires in <b>02:00</b>
+            OTP expires in <b>05:00</b>
 
         </p>
 

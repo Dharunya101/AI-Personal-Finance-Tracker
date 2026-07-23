@@ -5,6 +5,7 @@ from database import users_collection
 import re
 import os
 import random
+import requests
 import smtplib
 from email.mime.text import MIMEText
 from datetime import datetime, timedelta
@@ -71,6 +72,31 @@ def signup(user: User):
 @router.post("/login")
 def login(user: LoginUser):
 
+    # -----------------------------
+    # Verify Google reCAPTCHA
+    # -----------------------------
+
+    secret_key = "6LeD8WAtAAAAAFoTV1f5fFtzAZxJCONGSVciPm36"
+
+    response = requests.post(
+        "https://www.google.com/recaptcha/api/siteverify",
+        data={
+            "secret": secret_key,
+            "response": user.captcha
+        }
+    )
+
+    result = response.json()
+
+    if not result.get("success"):
+        return {
+            "message": "Please complete the reCAPTCHA."
+        }
+
+    # -----------------------------
+    # Verify User
+    # -----------------------------
+
     existing = users_collection.find_one(
         {"email": user.email}
     )
@@ -108,7 +134,7 @@ def forgot_password(email: str):
 
     otp = str(random.randint(100000,999999))
 
-    expiry = datetime.now() + timedelta(minutes=2)
+    expiry = datetime.now() + timedelta(minutes=5)
 
     otp_storage[email] = {
 
@@ -128,7 +154,7 @@ Your OTP for resetting your Finance Tracker password is:
 
 {otp}
 
-This OTP is valid for only 2 minutes.
+This OTP is valid for only 5 minutes.
 
 If you didn't request this, please ignore this email.
 

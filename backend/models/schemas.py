@@ -57,11 +57,12 @@ class User(BaseModel):
     password: str
 
 
+from pydantic import BaseModel
+
 class LoginUser(BaseModel):
-
-    email: EmailStr
-
+    email: str
     password: str
+    captcha: str
 
 
 # ==========================================
