@@ -104,9 +104,7 @@
             required>
 
         <button onclick="addTransaction()">
-
             Add Transaction
-
         </button>
 
     </div>
@@ -116,57 +114,32 @@
     <div class="section">
 
         <h2>
-
             Transaction History
-
             <span id="transactionCount"></span>
-
         </h2>
 
-        <!-- Search + Sort -->
+        <div class="transaction-toolbar">
 
-        <div class="table-controls">
+            <input
+                type="text"
+                id="searchTransaction"
+                placeholder="🔍 Search by category or location...">
 
-            <div class="search-box">
+            <select
+                id="sortDate"
+                onchange="sortTransactions()">
 
-                <input
-                    type="text"
-                    id="searchTransaction"
-                    placeholder="🔍 Search by category or location...">
+                <option value="newest">
+                    Newest First
+                </option>
 
-            </div>
+                <option value="oldest">
+                    Oldest First
+                </option>
 
-            <div class="sort-container">
-
-                <label for="sortDate" class="sort-label">
-
-                    Sort:
-
-                </label>
-
-                <select
-                    id="sortDate"
-                    onchange="sortTransactions()">
-
-                    <option value="newest">
-
-                        Newest First
-
-                    </option>
-
-                    <option value="oldest">
-
-                        Oldest First
-
-                    </option>
-
-                </select>
-
-            </div>
+            </select>
 
         </div>
-
-        <!-- Table -->
 
         <table>
 
@@ -175,13 +148,9 @@
                 <tr>
 
                     <th>Date</th>
-
                     <th>Category</th>
-
                     <th>Amount</th>
-
                     <th>Location</th>
-
                     <th>Actions</th>
 
                 </tr>
@@ -193,14 +162,14 @@
             </tbody>
 
         </table>
+
         <div id="pagination" class="pagination"></div>
 
     </div>
 
 </div>
-<!-- ==========================
-     Edit Transaction Modal
-========================== -->
+
+<!-- ================= Edit Transaction Modal ================= -->
 
 <div id="editModal" class="modal">
 
@@ -214,11 +183,6 @@
             type="text"
             id="editNotes"
             placeholder="Notes">
-
-        <input
-            type="text"
-            id="editCategory"
-            placeholder="Category">
 
         <input
             type="text"
@@ -242,15 +206,11 @@
         <div class="modal-buttons">
 
             <button onclick="saveTransaction()">
-
                 Save
-
             </button>
 
             <button onclick="closeModal()">
-
                 Cancel
-
             </button>
 
         </div>
@@ -262,5 +222,4 @@
 <script src="js/transactions.js"></script>
 
 </body>
-
 </html>
