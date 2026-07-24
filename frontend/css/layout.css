@@ -3,8 +3,11 @@
 =========================================== */
 
 body{
+
     display:flex;
+
     min-height:100vh;
+
 }
 
 /* ===========================================
@@ -15,7 +18,7 @@ body{
 
     width:250px;
 
-    background:rgba(13,19,36,.92);
+    background:var(--surface);
 
     backdrop-filter:blur(18px);
 
@@ -38,6 +41,8 @@ body{
     box-shadow:var(--shadow);
 
     overflow-y:auto;
+
+    transition:var(--transition);
 
 }
 
@@ -65,7 +70,11 @@ body{
 
     border-radius:16px;
 
-    background:linear-gradient(135deg,var(--primary),var(--secondary));
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
 
     display:flex;
 
@@ -73,7 +82,7 @@ body{
 
     justify-content:center;
 
-    color:white;
+    color:#fff;
 
     font-weight:700;
 
@@ -87,7 +96,7 @@ body{
 
     font-size:20px;
 
-    color:white;
+    color:var(--text);
 
 }
 
@@ -153,17 +162,13 @@ body{
 
 .sidebar li:hover a{
 
-    color:white;
+    color:var(--text);
 
 }
 
 .sidebar li.active{
 
-    background:linear-gradient(
-        90deg,
-        rgba(36,214,245,.18),
-        transparent
-    );
+    background:color-mix(in srgb, var(--primary) 15%, transparent);
 
     border-left:4px solid var(--primary);
 
@@ -171,13 +176,14 @@ body{
 
 .sidebar li.active a{
 
-    color:white;
+    color:var(--text);
 
 }
 
 /* ===========================================
    LOGOUT BUTTON
 =========================================== */
+
 .logout-btn{
 
     width:100%;
@@ -191,12 +197,16 @@ body{
     border-radius:14px;
 
     background:linear-gradient(
+
         135deg,
+
         var(--danger),
+
         #ff6b81
+
     );
 
-    color:white;
+    color:#fff;
 
     font-weight:600;
 
@@ -224,16 +234,12 @@ body{
 
     padding:40px;
 
-    display:flex;
+    width:calc(100vw - 270px);
 
-    flex-direction:column;
+    max-width:none;
 
-    gap:30px;
+    overflow-x:hidden;
 
-    max-width:1400px;
-
-    width:100%;
-
-    margin-right:auto;
+    box-sizing:border-box;
 
 }

@@ -4,121 +4,225 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Create Account</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>AI Personal Finance Tracker | Create Account</title>
+
+    <!-- Theme -->
+
+    <script>
+
+        const theme = localStorage.getItem("theme") || "dark";
+
+        document.documentElement.setAttribute("data-theme", theme);
+
+    </script>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
     <!-- Font Awesome -->
+
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Signup CSS -->
+
+    <link rel="stylesheet"
+          href="css/signup.css">
 
 </head>
 
 <body>
 
-<div class="login-page">
+    <!-- ===================================== -->
+    <!-- SIGNUP CONTAINER -->
+    <!-- ===================================== -->
 
-    <div class="login-box">
+    <div class="signup-container">
 
-        <h2>Create Account</h2>
+        <div class="signup-box">
 
-        <!-- Full Name -->
+            <h1>Create Account</h1>
 
-        <input
-            type="text"
-            id="name"
-            placeholder="Full Name"
-            required>
+            <p>
 
-        <!-- Email -->
+                Join AI Personal Finance Tracker and start managing your finances smarter.
 
-        <input
-            type="email"
-            id="email"
-            placeholder="Email Address"
-            required>
+            </p>
 
-        <!-- Password -->
+            <!-- ===================================== -->
+            <!-- SIGNUP FORM -->
+            <!-- ===================================== -->
 
-        <div class="password-container">
+            <form id="signupForm">
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Create Password"
-                minlength="8"
-                required>
+                <!-- Full Name -->
 
-            <span
-                class="toggle-password"
-                onclick="togglePassword('password', this)">
+                <input
 
-                <i class="fa-solid fa-eye"></i>
+                    type="text"
 
-            </span>
+                    id="name"
 
-        </div>
+                    placeholder="Full Name"
 
-        <!-- Confirm Password -->
+                    maxlength="100"
 
-        <div class="password-container">
+                    autocomplete="name"
 
-            <input
-                type="password"
-                id="confirmPassword"
-                placeholder="Confirm Password"
-                required>
+                    required>
 
-            <span
-                class="toggle-password"
-                onclick="togglePassword('confirmPassword', this)">
+                <!-- Email -->
 
-                <i class="fa-solid fa-eye"></i>
+                <input
 
-            </span>
+                    type="email"
 
-        </div>
+                    id="email"
 
-        <!-- Create Account Button -->
+                    placeholder="Email Address"
 
-        <button type="button" onclick="signup()">
+                    maxlength="100"
 
-            Create Account
+                    autocomplete="email"
 
-        </button>
+                    required>
 
-        <!-- Message -->
+                <!-- Password -->
 
-        <p id="message" class="message"></p>
+                <div class="password-container">
 
-        <!-- Login Link -->
+                    <input
 
-        <div class="signup-link">
+                        type="password"
 
-            Already have an account?
+                        id="password"
 
-            <a href="login.html">
+                        placeholder="Create Password"
 
-                Login
+                        minlength="8"
 
-            </a>
+                        maxlength="50"
+
+                        autocomplete="new-password"
+
+                        required>
+
+                    <span
+
+                        class="toggle-password"
+
+                        onclick="togglePassword('password',this)">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </span>
+
+                </div>
+
+                <!-- Confirm Password -->
+
+                <div class="password-container">
+
+                    <input
+
+                        type="password"
+
+                        id="confirmPassword"
+
+                        placeholder="Confirm Password"
+
+                        minlength="8"
+
+                        maxlength="50"
+
+                        autocomplete="new-password"
+
+                        required>
+
+                    <span
+
+                        class="toggle-password"
+
+                        onclick="togglePassword('confirmPassword',this)">
+
+                        <i class="fa-solid fa-eye"></i>
+
+                    </span>
+
+                </div>
+
+                <!-- Create Account Button -->
+
+                <button
+
+                    type="button"
+
+                    id="createAccountBtn"
+
+                    onclick="signup()">
+
+                    Create Account
+
+                </button>
+
+                <!-- Message -->
+
+                <p
+
+                    id="message"
+
+                    class="signup-message">
+
+                </p>
+
+                <!-- Login -->
+
+                <p class="login-link">
+
+                    Already have an account?
+
+                    <a href="login.html">
+
+                        Login
+
+                    </a>
+
+                </p>
+
+            </form>
 
         </div>
 
     </div>
 
-</div>
+    <!-- ===================================== -->
+    <!-- LOADER -->
+    <!-- ===================================== -->
 
-<script src="js/signup.js"></script>
+    <div id="loader" class="loader-overlay">
+
+        <div class="loader"></div>
+
+    </div>
+
+    <!-- ===================================== -->
+    <!-- SCRIPT -->
+    <!-- ===================================== -->
+
+    <script src="js/signup.js"></script>
 
 </body>
 

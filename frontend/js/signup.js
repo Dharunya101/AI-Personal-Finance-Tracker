@@ -1,134 +1,184 @@
 // ======================================
-// Signup Function
+// SIGNUP
 // ======================================
 
 function signup() {
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const message = document.getElementById("message");
 
-    // ===============================
-    // Empty Field Validation
-    // ===============================
+    message.innerHTML = "";
+
+    message.style.color = "";
+
+    const name = document
+        .getElementById("name")
+        .value
+        .trim();
+
+    const email = document
+        .getElementById("email")
+        .value
+        .trim()
+        .toLowerCase();
+
+    const password = document
+        .getElementById("password")
+        .value;
+
+    const confirmPassword = document
+        .getElementById("confirmPassword")
+        .value;
+
+    const button =
+        document.getElementById("createAccountBtn");
+
+    const loader =
+        document.getElementById("loader");
+
+    // ======================================
+    // EMPTY FIELD VALIDATION
+    // ======================================
 
     if (!name || !email || !password || !confirmPassword) {
 
-        alert("Please fill in all the fields.");
+        message.style.color = "#ff5f7a";
+
+        message.innerHTML =
+            "Please fill in all the fields.";
 
         return;
 
     }
 
-    // ===============================
-    // Email Validation
-    // ===============================
+    // ======================================
+    // EMAIL VALIDATION
+    // ======================================
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
 
-        alert("Please enter a valid email address.");
+        message.style.color = "#ff5f7a";
+
+        message.innerHTML =
+            "Please enter a valid email address.";
 
         return;
 
     }
 
-    // ===============================
-    // Password Validation
-    // ===============================
+    // ======================================
+    // PASSWORD VALIDATION
+    // ======================================
 
     const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#])[A-Za-z\d@$!%*?&.#]{8,}$/;
 
     if (!passwordRegex.test(password)) {
 
-        alert(
-`Password must contain:
+        message.style.color = "#ff5f7a";
 
-• Minimum 8 characters
-• One uppercase letter (A-Z)
-• One lowercase letter (a-z)
-• One number (0-9)
-• One special character (@$!%*?&.#)`
-        );
+        message.innerHTML =
+            "Password must contain uppercase, lowercase, number and special character.";
 
         return;
 
     }
 
-    // ===============================
-    // Confirm Password
-    // ===============================
+    // ======================================
+    // PASSWORD MATCH
+    // ======================================
 
     if (password !== confirmPassword) {
 
-        alert("Passwords do not match.");
+        message.style.color = "#ff5f7a";
+
+        message.innerHTML =
+            "Passwords do not match.";
 
         return;
 
     }
 
-    // ===============================
-    // Disable Button
-    // ===============================
+    // ======================================
+    // LOADER
+    // ======================================
 
-    const button = document.querySelector("button");
+    loader.style.display = "flex";
 
     button.disabled = true;
 
-    button.innerHTML = "Creating Account...";
+    button.innerHTML =
+        "Creating Account...";
 
-    // ===============================
-    // Backend Request
-    // ===============================
+    // ======================================
+    // API CALL
+    // ======================================
 
-    fetch("http://127.0.0.1:8002/auth/signup", {
+    fetch(
 
-        method: "POST",
+        "http://127.0.0.1:8002/auth/signup",
 
-        headers: {
+        {
 
-            "Content-Type": "application/json"
+            method: "POST",
 
-        },
+            headers: {
 
-        body: JSON.stringify({
+                "Content-Type":
+                    "application/json"
 
-            name,
+            },
 
-            email,
+            body: JSON.stringify({
 
-            password,
+                name,
 
-            confirmPassword
+                email,
 
-        })
+                password,
 
-    })
+                confirmPassword
+
+            })
+
+        }
+
+    )
 
     .then(response => response.json())
 
     .then(data => {
 
-        document.getElementById("message").innerHTML = data.message;
-
         if (data.message === "Account created successfully.") {
 
-            alert("Account created successfully!");
+            message.style.color = "#37d67a";
 
-            window.location.href = "login.html";
+            message.innerHTML =
+                "Account created successfully! Redirecting...";
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "login.html";
+
+            }, 1500);
 
         }
 
         else {
 
-            alert(data.message);
+            message.style.color = "#ff5f7a";
+
+            message.innerHTML =
+                data.message;
 
             document.getElementById("password").value = "";
 
             document.getElementById("confirmPassword").value = "";
+
+            document.getElementById("password").focus();
 
         }
 
@@ -136,33 +186,39 @@ function signup() {
 
     .catch(error => {
 
-        console.error(error);
+        console.log(error);
 
-        alert("Unable to create account. Please try again.");
+        message.style.color = "#ff5f7a";
+
+        message.innerHTML =
+            "Unable to connect to server.";
 
     })
 
     .finally(() => {
 
+        loader.style.display = "none";
+
         button.disabled = false;
 
-        button.innerHTML = "Create Account";
+        button.innerHTML =
+            "Create Account";
 
     });
 
 }
 
-
-
 // ======================================
-// Show / Hide Password
+// SHOW / HIDE PASSWORD
 // ======================================
 
 function togglePassword(id, element) {
 
-    const input = document.getElementById(id);
+    const input =
+        document.getElementById(id);
 
-    const icon = element.querySelector("i");
+    const icon =
+        element.querySelector("i");
 
     if (input.type === "password") {
 
@@ -185,3 +241,41 @@ function togglePassword(id, element) {
     }
 
 }
+
+// ======================================
+// ENTER KEY SUPPORT
+// ======================================
+
+document.addEventListener(
+
+    "keydown",
+
+    function (event) {
+
+        if (
+
+            event.key === "Enter" &&
+
+            document.activeElement.tagName !== "TEXTAREA"
+
+        ) {
+
+            event.preventDefault();
+
+            signup();
+
+        }
+
+    }
+
+);
+
+// ======================================
+// AUTO FOCUS
+// ======================================
+
+window.onload = function () {
+
+    document.getElementById("name").focus();
+
+};

@@ -118,3 +118,102 @@
     --transition:.35s ease;
 
 }
+/* ===========================================
+   LIGHT THEME
+=========================================== */
+
+body[data-theme="light"]{
+
+    --bg:#F4F7FB;
+
+    --surface:#FFFFFF;
+
+    --surface-light:#EEF4FB;
+
+    --surface-hover:#E3ECF7;
+
+    --primary:#2563EB;
+
+    --primary-dark:#1D4ED8;
+
+    --secondary:#6366F1;
+
+    --success:#16A34A;
+
+    --danger:#DC2626;
+
+    --warning:#D97706;
+
+    --white:#FFFFFF;
+
+    --text:#0F172A;
+
+    --text-light:#334155;
+
+    --text-muted:#64748B;
+
+    --border:rgba(15,23,42,.10);
+
+    --shadow-sm:
+        0 6px 18px rgba(15,23,42,.08);
+
+    --shadow:
+        0 15px 35px rgba(15,23,42,.12);
+
+    --shadow-lg:
+        0 25px 55px rgba(15,23,42,.16);
+
+    --glow:
+        0 0 25px rgba(37,99,235,.18);
+
+}
+
+/* ===========================================
+   DARK THEME (EXPLICIT)
+=========================================== */
+
+body[data-theme="dark"]{
+
+    --bg:#050816;
+
+    --surface:#0D1324;
+
+    --surface-light:#141E33;
+
+    --surface-hover:#1B2944;
+
+    --primary:#24D6F5;
+
+    --primary-dark:#00B8D9;
+
+    --secondary:#8B5CF6;
+
+    --success:#22C55E;
+
+    --danger:#F43F5E;
+
+    --warning:#FBBF24;
+
+    --white:#F8FAFC;
+
+    --text:#E2E8F0;
+
+    --text-light:#CBD5E1;
+
+    --text-muted:#94A3B8;
+
+    --border:rgba(255,255,255,.08);
+
+    --shadow-sm:
+        0 8px 20px rgba(0,0,0,.15);
+
+    --shadow:
+        0 20px 40px rgba(0,0,0,.30);
+
+    --shadow-lg:
+        0 30px 70px rgba(0,0,0,.45);
+
+    --glow:
+        0 0 35px rgba(36,214,245,.30);
+
+}

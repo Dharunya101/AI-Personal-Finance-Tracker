@@ -1,244 +1,353 @@
+// =====================================
+// Logged In User
+// =====================================
+
 const email = localStorage.getItem("loggedInUser");
 
 // =====================================
-// Existing Budgets
+// Currency Formatter
 // =====================================
 
-fetch("http://127.0.0.1:8002/budgets/")
-.then(response => response.json())
-.then(data => {
+const formatter = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR"
+});
 
-    const table = document.getElementById("budgetTable");
+// =====================================
+// Load Budget Overview
+// =====================================
 
-    table.innerHTML = "";
+async function loadBudgets() {
 
-    data.forEach(budget => {
+    try {
 
-        table.innerHTML += `
+        const response = await fetch("http://127.0.0.1:8002/budgets/");
 
-        <tr>
+        const data = await response.json();
 
-            <td>${budget.category}</td>
+        const table = document.getElementById("budgetTable");
 
-            <td>${new Intl.NumberFormat("en-IN",{
-                style:"currency",
-                currency:"INR"
-            }).format(budget.monthly_budget)}</td>
+        table.innerHTML = "";
 
-            <td>
+        let totalBudget = 0;
 
-                <button onclick="changeBudget('${budget.category}', ${budget.monthly_budget})">
+        data.forEach(budget => {
 
-                    ✏️ Change
+            totalBudget += budget.monthly_budget;
 
-                </button>
+            table.innerHTML += `
 
-            </td>
+            <tr>
 
-        </tr>
+                <td>${budget.category}</td>
 
-        `;
+                <td>${formatter.format(budget.monthly_budget)}</td>
 
-    });
+                <td>
 
-})
+                    <button
+                        class="edit-btn"
+                        onclick="changeBudget('${budget.category}',${budget.monthly_budget})">
 
-.catch(error=>console.log(error));
+                        ✏ Edit
 
+                    </button>
+
+                </td>
+
+            </tr>
+
+            `;
+
+        });
+
+        document.getElementById("totalBudgetCard").innerHTML =
+            formatter.format(totalBudget);
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
 
 // =====================================
 // Add Budget
 // =====================================
 
-function addBudget(){
+async function addBudget(){
 
     const budget={
 
         category:document.getElementById("category").value,
 
         monthly_budget:Number(
-
             document.getElementById("monthly_budget").value
-
         )
 
     };
 
-    fetch("http://127.0.0.1:8002/budgets/",{
+    try{
 
-        method:"POST",
+        const response=await fetch(
+            "http://127.0.0.1:8002/budgets/",
+            {
 
-        headers:{
+                method:"POST",
 
-            "Content-Type":"application/json"
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-        },
+                body:JSON.stringify(budget)
 
-        body:JSON.stringify(budget)
+            }
+        );
 
-    })
-
-    .then(response=>response.json())
-
-    .then(data=>{
+        const data=await response.json();
 
         alert(data.message);
 
         location.reload();
 
-    })
+    }
 
-    .catch(error=>{
+    catch(error){
 
         console.log(error);
 
         alert("Unable to add budget.");
 
-    });
+    }
 
 }
 
-
 // =====================================
-// Budget Status
+// Load Budget Status
 // =====================================
 
-fetch(`http://127.0.0.1:8002/budgets/status/${email}`)
+async function loadBudgetStatus(){
 
-.then(response=>response.json())
+    try{
 
-.then(data=>{
+        const response=await fetch(
+            `http://127.0.0.1:8002/budgets/status/${email}`
+        );
 
-    const table=document.getElementById("budgetStatusTable");
+        const data=await response.json();
 
-    table.innerHTML="";
+        const table=document.getElementById("budgetStatusTable");
 
-    data.forEach(item=>{
+        const progress=document.getElementById("budgetProgress");
 
-        const remainingColor=item.remaining<0 ? "red":"limegreen";
+        table.innerHTML="";
 
-        let percentage=(item.spent/item.budget)*100;
+        progress.innerHTML="";
 
-        if(isNaN(percentage))
-            percentage=0;
+        let totalSpent=0;
 
-        if(percentage>100)
-            percentage=100;
+        let totalRemaining=0;
+                data.forEach(item=>{
 
-        let barColor="#2ecc71";
+            totalSpent += item.spent;
 
-        if(percentage>=70)
-            barColor="#f39c12";
+            totalRemaining += item.remaining;
 
-        if(percentage>=90)
-            barColor="#e74c3c";
+            let percentage = 0;
 
-        table.innerHTML+=`
+            if(item.budget>0){
 
-        <tr>
+                percentage = (item.spent/item.budget)*100;
 
-            <td>${item.category}</td>
+            }
 
-            <td>₹${item.budget.toLocaleString()}</td>
+            const displayPercentage = Math.min(percentage,100);
 
-            <td>₹${item.spent.toLocaleString()}</td>
+            let status="Healthy";
 
-            <td style="color:${remainingColor};font-weight:bold;">
+            let statusClass="status-success";
 
-                ₹${item.remaining.toLocaleString()}
+            if(percentage>=70){
 
-            </td>
+                status="Warning";
 
-            <td>
+                statusClass="status-warning";
 
-                <div class="progress-container">
+            }
+
+            if(percentage>=100){
+
+                status="Exceeded";
+
+                statusClass="status-danger";
+
+            }
+
+            table.innerHTML += `
+
+            <tr>
+
+                <td>${item.category}</td>
+
+                <td>${formatter.format(item.budget)}</td>
+
+                <td>${formatter.format(item.spent)}</td>
+
+                <td>${formatter.format(item.remaining)}</td>
+
+                <td>
+
+                    <span class="${statusClass}">
+
+                        ${status}
+
+                    </span>
+
+                </td>
+
+            </tr>
+
+            `;
+
+            progress.innerHTML += `
+
+            <div class="progress-item">
+
+                <div class="progress-header">
+
+                    <h3>${item.category}</h3>
+
+                    <span>${percentage.toFixed(0)}%</span>
+
+                </div>
+
+                <div class="progress-bar">
 
                     <div
-                        class="progress-bar"
-                        style="
-                            width:${percentage}%;
-                            background:${barColor};
-                        ">
+                        class="progress-fill"
+                        style="width:${displayPercentage}%">
 
                     </div>
 
                 </div>
 
-                <div class="progress-text">
+            </div>
 
-                    ${percentage.toFixed(0)}%
+            `;
 
-                </div>
+        });
 
-            </td>
+        document.getElementById("totalSpentCard").innerHTML =
+            formatter.format(totalSpent);
 
-        </tr>
+        document.getElementById("remainingCard").innerHTML =
+            formatter.format(totalRemaining);
 
-        `;
+        const totalBudget =
+            totalSpent + totalRemaining;
 
-    });
+        let usage = 0;
 
-})
+        if(totalBudget>0){
 
-.catch(error=>console.log(error));
+            usage = (totalSpent/totalBudget)*100;
 
+        }
+
+        document.getElementById("usageCard").innerHTML =
+            usage.toFixed(0) + "%";
+
+    }
+
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
 
 // =====================================
 // Budget Alerts
 // =====================================
 
-fetch(`http://127.0.0.1:8002/budgets/alerts/${email}`)
+async function loadBudgetAlerts(){
 
-.then(response=>response.json())
+    try{
 
-.then(data=>{
+        const response=await fetch(
 
-    const alerts=document.getElementById("budgetAlerts");
+            `http://127.0.0.1:8002/budgets/alerts/${email}`
 
-    alerts.innerHTML="";
+        );
 
-    if(data.length===0){
+        const data=await response.json();
 
-        alerts.innerHTML=`
+        const alerts=document.getElementById("budgetAlerts");
 
-        <div class="success-box">
+        alerts.innerHTML="";
 
-            ✅ All budgets are within limits.
+        let recommendation="Excellent! Your budgets are well managed this month.";
 
-        </div>
+        if(data.length===0){
 
-        `;
+            alerts.innerHTML=`
 
-        return;
+                <div class="alert-card alert-success">
+
+                    ✅ All budgets are within limits.
+
+                </div>
+
+            `;
+
+        }
+
+        else{
+
+            recommendation =
+                "Some categories are close to or exceeding their budget. Consider reducing spending in these areas.";
+
+            data.forEach(alert=>{
+
+                alerts.innerHTML += `
+
+                <div class="alert-card alert-warning">
+
+                    ⚠ <strong>${alert.category}</strong><br>
+
+                    ${alert.message}
+
+                </div>
+
+                `;
+
+            });
+
+        }
+
+        document.getElementById("budgetRecommendation").innerHTML =
+            recommendation;
 
     }
 
-    data.forEach(alert=>{
+    catch(error){
 
-        alerts.innerHTML+=`
+        console.log(error);
 
-        <div class="alert-box">
+    }
 
-            ⚠ ${alert.category.toUpperCase()} : ${alert.message}
-
-        </div>
-
-        `;
-
-    });
-
-})
-
-.catch(error=>console.log(error));
-
-
+}
 // =====================================
 // Change Budget
 // =====================================
 
-function changeBudget(category,currentBudget){
+async function changeBudget(category,currentBudget){
 
-    const newBudget=prompt(
+    const newBudget = prompt(
 
         `Current Budget: ₹${currentBudget}\n\nEnter New Budget:`,
 
@@ -246,10 +355,13 @@ function changeBudget(category,currentBudget){
 
     );
 
-    if(newBudget===null)
+    if(newBudget === null){
+
         return;
 
-    if(newBudget==="" || isNaN(newBudget) || Number(newBudget)<=0){
+    }
+
+    if(newBudget === "" || isNaN(newBudget) || Number(newBudget) <= 0){
 
         alert("Please enter a valid budget amount.");
 
@@ -257,42 +369,91 @@ function changeBudget(category,currentBudget){
 
     }
 
-    fetch(`http://127.0.0.1:8002/budgets/${category}`,{
+    try{
 
-        method:"PUT",
+        const response = await fetch(
 
-        headers:{
+            `http://127.0.0.1:8002/budgets/${category}`,
 
-            "Content-Type":"application/json"
+            {
 
-        },
+                method:"PUT",
 
-        body:JSON.stringify({
+                headers:{
+                    "Content-Type":"application/json"
+                },
 
-            category:category,
+                body:JSON.stringify({
 
-            monthly_budget:Number(newBudget)
+                    category:category,
 
-        })
+                    monthly_budget:Number(newBudget)
 
-    })
+                })
 
-    .then(response=>response.json())
+            }
 
-    .then(data=>{
+        );
+
+        const data = await response.json();
 
         alert(data.message);
 
-        location.reload();
+        loadBudgets();
 
-    })
+        loadBudgetStatus();
 
-    .catch(error=>{
+        loadBudgetAlerts();
+
+    }
+
+    catch(error){
 
         console.log(error);
 
         alert("Unable to update budget.");
 
+    }
+
+}
+
+// =====================================
+// Month Filter
+// =====================================
+
+const monthFilter = document.getElementById("monthFilter");
+
+if(monthFilter){
+
+    const today = new Date();
+
+    monthFilter.value =
+        today.toISOString().slice(0,7);
+
+    monthFilter.addEventListener("change",()=>{
+
+        loadBudgets();
+
+        loadBudgetStatus();
+
+        loadBudgetAlerts();
+
     });
 
 }
+
+// =====================================
+// Initialize Page
+// =====================================
+
+async function initializeBudgetPage(){
+
+    await loadBudgets();
+
+    await loadBudgetStatus();
+
+    await loadBudgetAlerts();
+
+}
+
+initializeBudgetPage();

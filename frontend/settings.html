@@ -21,6 +21,10 @@
 </head>
 
 <body>
+    <script>
+const theme = localStorage.getItem("theme") || "dark";
+document.body.setAttribute("data-theme", theme);
+</script>
 
 <script>
 
@@ -101,18 +105,63 @@ function logout(){
     </button>
 
 </div>
+<!-- ==========================================
+                MAIN CONTENT
+========================================== -->
 
-<!-- ================= Main ================= -->
+<main class="main-content">
 
-<div class="main">
+    <div class="dashboard-header">
 
-    <h1>⚙️ Settings</h1>
+        <div>
 
-    <!-- ================= Profile ================= -->
+            <p class="greeting">
+
+                ⚙ Settings
+
+            </p>
+
+            <h1>
+
+                Application Settings
+
+            </h1>
+
+            <p class="subtitle">
+
+                Customize your account, appearance, notifications and application preferences.
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            PROFILE
+    ======================================= -->
 
     <div class="section">
 
-        <h2>Profile Information</h2>
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    👤 Profile Information
+
+                </h2>
+
+                <p>
+
+                    Update your account information.
+
+                </p>
+
+            </div>
+
+        </div>
 
         <input
             type="text"
@@ -132,26 +181,91 @@ function logout(){
 
     </div>
 
-    <!-- ================= Password ================= -->
+    <!-- ======================================
+            APPEARANCE
+    ======================================= -->
 
     <div class="section">
 
-        <h2>Change Password</h2>
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    🎨 Appearance
+
+                </h2>
+
+                <p>
+
+                    Switch between Dark and Light mode.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3>Dark Mode</h3>
+
+                <p>Recommended for low-light environments.</p>
+
+            </div>
+
+            <label class="switch">
+
+                <input
+                    type="checkbox"
+                    id="themeToggle">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+        <!-- ======================================
+            CHANGE PASSWORD
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    🔒 Change Password
+
+                </h2>
+
+                <p>
+
+                    Keep your account secure by updating your password.
+
+                </p>
+
+            </div>
+
+        </div>
 
         <div class="password-container">
 
             <input
-
                 type="password"
-
                 id="oldPassword"
-
                 placeholder="Current Password">
 
             <span
-
                 class="toggle-password"
-
                 onclick="togglePassword('oldPassword',this)">
 
                 <i class="fa-solid fa-eye"></i>
@@ -163,17 +277,12 @@ function logout(){
         <div class="password-container">
 
             <input
-
                 type="password"
-
                 id="newPassword"
-
                 placeholder="New Password">
 
             <span
-
                 class="toggle-password"
-
                 onclick="togglePassword('newPassword',this)">
 
                 <i class="fa-solid fa-eye"></i>
@@ -190,7 +299,115 @@ function logout(){
 
     </div>
 
-</div>
+    <!-- ======================================
+            PREFERENCES
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    🌍 Preferences
+
+                </h2>
+
+                <p>
+
+                    Configure your preferred currency and date format.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="preferences-grid">
+
+            <div>
+
+                <label>Currency</label>
+
+                <select id="currency">
+
+                    <option value="INR">₹ Indian Rupee (INR)</option>
+
+                    <option value="USD">$ US Dollar (USD)</option>
+
+                    <option value="EUR">€ Euro (EUR)</option>
+
+                    <option value="GBP">£ British Pound (GBP)</option>
+
+                </select>
+
+            </div>
+
+            <div>
+
+                <label>Date Format</label>
+
+                <select id="dateFormat">
+
+                    <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+
+                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+
+                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <button onclick="savePreferences()">
+
+            Save Preferences
+
+        </button>
+
+    </div>
+
+    <!-- ======================================
+            DANGER ZONE
+    ======================================= -->
+
+    <div class="section danger-section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    ⚠️ Danger Zone
+
+                </h2>
+
+                <p>
+
+                    These actions cannot be undone.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <button
+            class="danger-btn"
+            onclick="clearAllTransactions()">
+
+            🗑 Clear All Transactions
+
+        </button>
+
+    </div>
+
+</main>
 
 <script src="js/settings.js"></script>
 

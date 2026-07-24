@@ -1,27 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Upload Bank Statement</title>
+    <title>Upload Bank Statement | AI Finance Tracker</title>
 
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Font -->
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Global CSS -->
+
+    <link rel="stylesheet" href="css/variables.css">
+
+    <link rel="stylesheet" href="css/base.css">
+
+    <link rel="stylesheet" href="css/layout.css">
+
+    <link rel="stylesheet" href="css/components.css">
+
+    <link rel="stylesheet" href="css/animations.css">
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="css/upload.css">
+
+    <!-- If you are still using one combined stylesheet -->
+    <!--
     <link rel="stylesheet" href="css/style.css">
+    -->
 
 </head>
+<body>
+
+    <script>
+const theme = localStorage.getItem("theme") || "dark";
+document.body.setAttribute("data-theme", theme);
+</script>
 
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
 
-    window.location.href = "login.html";
+    window.location.href="login.html";
 
 }
 
@@ -29,69 +55,127 @@ function logout(){
 
     localStorage.removeItem("loggedInUser");
 
-    window.location.href = "login.html";
+    window.location.href="login.html";
 
 }
 
 </script>
 
-<body>
-
-<!-- Sidebar -->
+<!-- ==========================================
+                SIDEBAR
+========================================== -->
 
 <div class="sidebar">
 
-    <div class="logo">
+    <div>
 
-        <div class="logo-icon">AI</div>
+        <div class="logo">
 
-        <div class="logo-text">
+            <div class="logo-icon">
 
-            <h2>Finance Tracker</h2>
+                AI
 
-            <p>Financial Intelligence</p>
+            </div>
+
+            <div class="logo-text">
+
+                <h2>Finance Tracker</h2>
+
+                <p>Financial Intelligence</p>
+
+            </div>
 
         </div>
 
+        <ul>
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="transactions.html">
+
+                    💳 Transactions
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="analytics.html">
+
+                    📊 Analytics
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="budget.html">
+
+                    🎯 Budgets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="insights.html">
+
+                    🤖 AI Insights
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="report.html">
+
+                    📄 Reports
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="upload.html">
+
+                    ⬆ Upload
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="settings.html">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
     </div>
 
-    <ul>
-
-        <li class="active">
-            <a href="dashboard.html">🏠 Dashboard</a>
-        </li>
-
-        <li>
-            <a href="transactions.html">💳 Transactions</a>
-        </li>
-
-        <li>
-            <a href="analytics.html">📊 Analytics</a>
-        </li>
-
-        <li>
-            <a href="budget.html">🎯 Budgets</a>
-        </li>
-
-        <li>
-            <a href="insights.html">🤖 AI Insights</a>
-        </li>
-
-        <li>
-            <a href="report.html">📄 Reports</a>
-        </li>
-
-        <li>
-            <a href="upload.html">⬆ Upload</a>
-        </li>
-
-        <li>
-            <a href="settings.html">⚙ Settings</a>
-        </li>
-
-    </ul>
-
-    <button class="logout-btn" onclick="logout()">
+    <button
+        class="logout-btn"
+        onclick="logout()">
 
         Logout
 
@@ -99,64 +183,316 @@ function logout(){
 
 </div>
 
-<!-- Main Content -->
+<!-- ==========================================
+                MAIN CONTENT
+========================================== -->
 
-<div class="main">
+<main class="main-content">
 
-    <h1>📂 Upload Bank Statement</h1>
+    <div class="dashboard-header">
 
-    <div class="section">
+        <div>
 
-        <h2>Upload Statement</h2>
+            <p class="greeting">
 
-        <p style="color:#dbeafe;margin-bottom:25px;">
+                📤 Upload Statement
 
-            Upload your bank statement for automatic transaction extraction,
-            AI expense categorization and dashboard updates.
+            </p>
 
-        </p>
+            <h1>
 
-        <label style="font-size:18px;font-weight:600;color:white;">
+                Upload Bank Statement
 
-            Choose Statement
+            </h1>
 
-        </label>
+            <p class="subtitle">
 
-        <input
-            type="file"
-            id="statementFile"
-            accept=".csv,.pdf">
+                Upload your bank statement and let AI automatically extract, categorize and analyze your transactions.
 
-        <p style="margin-top:10px;color:#dbeafe;">
+            </p>
 
-            ✔ Supported Formats :
-            <strong>CSV (.csv)</strong>,
-            <strong>PDF (.pdf)</strong>
-
-        </p>
-
-        <br>
-
-        <button onclick="uploadCSV()">
-
-            📤 Upload Statement
-
-        </button>
-
-        <br><br>
-
-        <p
-            id="status"
-            style="
-                font-weight:600;
-                font-size:18px;
-                color:white;
-            ">
-        </p>
+        </div>
 
     </div>
 
-</div>
+    <!-- ======================================
+            UPLOAD AREA
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Upload Statement
+
+                </h2>
+
+                <p>
+
+                    CSV and PDF statements are supported.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="upload-zone">
+
+            <div class="upload-icon">
+
+                ☁️
+
+            </div>
+
+            <h2>
+
+                Drag & Drop Statement
+
+            </h2>
+
+            <p>
+
+                or choose a file from your computer
+
+            </p>
+
+            <label
+                for="statementFile"
+                class="upload-btn">
+
+                Choose File
+
+            </label>
+
+            <input
+                type="file"
+                id="statementFile"
+                accept=".csv,.pdf">
+
+            <div class="supported-files">
+
+                <span>CSV</span>
+
+                <span>PDF</span>
+
+            </div>
+
+            <p
+                id="selectedFile"
+                class="selected-file">
+
+                No file selected
+
+            </p>
+
+        </div>
+
+    </div>
+    <!-- ======================================
+            AI PROCESSING
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    AI Processing
+
+                </h2>
+
+                <p>
+
+                    Processing your uploaded statement.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <ul
+            id="processingSteps"
+            class="processing-list">
+
+            <li>📄 Reading Statement</li>
+
+            <li>🧹 Cleaning Transactions</li>
+
+            <li>🤖 Categorizing Expenses</li>
+
+            <li>📊 Detecting Spending Patterns</li>
+
+            <li>💾 Saving to Database</li>
+
+        </ul>
+
+    </div>
+        <!-- ======================================
+            UPLOAD SUMMARY
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Upload Summary
+
+                </h2>
+
+                <p>
+
+                    Summary of the imported statement.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="analytics-cards">
+
+            <div class="analytics-card">
+
+                <div class="card-icon">
+
+                    📄
+
+                </div>
+
+                <h3>
+
+                    Transactions Imported
+
+                </h3>
+
+                <h2 id="transactionCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <div class="card-icon">
+
+                    📂
+
+                </div>
+
+                <h3>
+
+                    Categories Found
+
+                </h3>
+
+                <h2 id="categoryCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <div class="card-icon">
+
+                    💰
+
+                </div>
+
+                <h3>
+
+                    Total Amount
+
+                </h3>
+
+                <h2 id="totalAmount">
+
+                    ₹0
+
+                </h2>
+
+            </div>
+
+            <div class="analytics-card">
+
+                <div class="card-icon">
+
+                    ✅
+
+                </div>
+
+                <h3>
+
+                    Upload Status
+
+                </h3>
+
+                <h2 id="uploadStatus">
+
+                    Waiting
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            ACTION BUTTONS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="upload-actions">
+
+            <button
+                class="primary-btn"
+                onclick="uploadCSV()">
+
+                📤 Upload Statement
+
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="clearUpload()">
+
+                🗑 Clear
+
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="window.location.href='transactions.html'">
+
+                📋 View Transactions
+
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
 
 <script src="js/upload.js"></script>
 
