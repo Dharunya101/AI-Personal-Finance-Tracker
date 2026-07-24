@@ -1,0 +1,331 @@
+/* ===========================================
+   GLOBAL TRANSITIONS
+=========================================== */
+
+*{
+    transition:
+        background-color .35s ease,
+        color .35s ease,
+        border-color .35s ease,
+        transform .35s ease,
+        box-shadow .35s ease;
+}
+
+/* ===========================================
+   PAGE FADE IN
+=========================================== */
+
+body{
+    animation:fadeIn .7s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+/* ===========================================
+   FLOAT UP
+=========================================== */
+
+.fade-up{
+
+    animation:fadeUp .7s ease forwards;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===========================================
+   CARD HOVER
+=========================================== */
+
+.card{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-120%;
+
+    width:120%;
+
+    height:100%;
+
+    background:linear-gradient(
+
+        90deg,
+
+        transparent,
+
+        rgba(255,255,255,.08),
+
+        transparent
+
+    );
+
+    transition:.7s;
+
+}
+
+.card:hover::before{
+
+    left:120%;
+
+}
+
+/* ===========================================
+   BUTTON HOVER
+=========================================== */
+
+.primary-btn{
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.primary-btn::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:50%;
+
+    left:50%;
+
+    width:0;
+
+    height:0;
+
+    background:rgba(255,255,255,.15);
+
+    border-radius:50%;
+
+    transform:translate(-50%,-50%);
+
+    transition:.45s;
+
+}
+
+.primary-btn:hover::after{
+
+    width:350px;
+
+    height:350px;
+
+}
+
+/* ===========================================
+   SIDEBAR ITEMS
+=========================================== */
+
+.sidebar li{
+
+    transform:translateX(0);
+
+}
+
+.sidebar li:hover{
+
+    transform:translateX(6px);
+
+}
+
+/* ===========================================
+   LOGOUT BUTTON
+=========================================== */
+
+.logout-btn:hover{
+
+    transform:
+
+        translateY(-3px)
+
+        scale(1.02);
+
+}
+
+/* ===========================================
+   TABLE ROW
+=========================================== */
+
+tbody tr{
+
+    transform:scale(1);
+
+}
+
+tbody tr:hover{
+
+    transform:scale(1.01);
+
+}
+
+/* ===========================================
+   INPUT FOCUS
+=========================================== */
+
+input:focus,
+select:focus{
+
+    transform:scale(1.01);
+
+}
+
+/* ===========================================
+   CHART CARD
+=========================================== */
+
+.chart-card{
+
+    animation:fadeUp .8s ease;
+
+}
+
+/* ===========================================
+   SECTION
+=========================================== */
+
+.section{
+
+    animation:fadeUp .9s ease;
+
+}
+
+/* ===========================================
+   FLOATING GLOW
+=========================================== */
+
+@keyframes glow{
+
+    0%{
+
+        box-shadow:
+            0 0 12px rgba(36,214,245,.12);
+
+    }
+
+    50%{
+
+        box-shadow:
+            0 0 30px rgba(36,214,245,.28);
+
+    }
+
+    100%{
+
+        box-shadow:
+            0 0 12px rgba(36,214,245,.12);
+
+    }
+
+}
+
+.logo-icon{
+
+    animation:glow 3s infinite;
+
+}
+
+/* ===========================================
+   SCROLL REVEAL
+=========================================== */
+
+.reveal{
+
+    opacity:0;
+
+    transform:translateY(40px);
+
+    transition:.8s ease;
+
+}
+
+.reveal.active{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    width:700px;
+
+    height:700px;
+
+    background:#24d6f520;
+
+    filter:blur(180px);
+
+    top:-150px;
+
+    right:-150px;
+
+    animation:moveGlow 18s ease-in-out infinite alternate;
+
+    z-index:-2;
+
+}
+
+@keyframes moveGlow{
+
+    from{
+
+        transform:translate(0,0);
+
+    }
+
+    to{
+
+        transform:translate(-250px,180px);
+
+    }
+
+}

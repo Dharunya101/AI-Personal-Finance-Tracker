@@ -1,0 +1,120 @@
+/* ===========================================
+   AI PERSONAL FINANCE TRACKER
+   GLOBAL DESIGN TOKENS
+=========================================== */
+
+:root{
+
+    /* ===============================
+       COLORS
+    =============================== */
+
+    --bg:#050816;
+
+    --surface:#0D1324;
+
+    --surface-light:#141E33;
+
+    --surface-hover:#1B2944;
+
+    --primary:#24D6F5;
+
+    --primary-dark:#00B8D9;
+
+    --secondary:#8B5CF6;
+
+    --success:#22C55E;
+
+    --danger:#F43F5E;
+
+    --warning:#FBBF24;
+
+    --white:#F8FAFC;
+
+    --text:#E2E8F0;
+
+    --text-light:#CBD5E1;
+
+    --text-muted:#94A3B8;
+
+    --border:rgba(255,255,255,.08);
+
+    /* ===============================
+       BORDER RADIUS
+    =============================== */
+
+    --radius-xs:8px;
+
+    --radius-sm:12px;
+
+    --radius-md:18px;
+
+    --radius-lg:24px;
+
+    --radius-xl:35px;
+
+    /* ===============================
+       SHADOWS
+    =============================== */
+
+    --shadow-sm:
+
+        0 8px 20px rgba(0,0,0,.15);
+
+    --shadow:
+
+        0 20px 40px rgba(0,0,0,.30);
+
+    --shadow-lg:
+
+        0 30px 70px rgba(0,0,0,.45);
+
+    --glow:
+
+        0 0 35px rgba(36,214,245,.30);
+
+    /* ===============================
+       SPACING
+    =============================== */
+
+    --space-xs:8px;
+
+    --space-sm:12px;
+
+    --space-md:20px;
+
+    --space-lg:30px;
+
+    --space-xl:45px;
+
+    --space-xxl:70px;
+
+    /* ===============================
+       FONT
+    =============================== */
+
+    --font:"Outfit",sans-serif;
+
+    /* ===============================
+       FONT SIZE
+    =============================== */
+
+    --fs-xs:12px;
+
+    --fs-sm:14px;
+
+    --fs-md:16px;
+
+    --fs-lg:20px;
+
+    --fs-xl:28px;
+
+    --fs-xxl:40px;
+
+    /* ===============================
+       TRANSITION
+    =============================== */
+
+    --transition:.35s ease;
+
+}

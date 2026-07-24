@@ -1,33 +1,140 @@
 // ======================================
+// AI PERSONAL FINANCE TRACKER
+// Analytics Dashboard
+// ======================================
+
+
+// ======================================
 // Logged In User
 // ======================================
 
 const email = localStorage.getItem("loggedInUser");
 
-console.log("Logged in user:", email);
+console.log("Logged In User:", email);
+
 
 // ======================================
-// Global Charts
-// ======================================
-
-let budgetExpenseChart = null;
-let stackedBarChart = null;
-let groupedBarChart = null;
-
-// ======================================
-// Month Filter
+// DOM ELEMENTS
 // ======================================
 
 const monthFilter = document.getElementById("monthFilter");
 
-// Default = Current Month
-monthFilter.value = new Date().toISOString().slice(0, 7);
+const incomeCard = document.getElementById("incomeCard");
 
-// Initial Load
+const expenseCard = document.getElementById("expenseCard");
+
+const averageCard = document.getElementById("averageCard");
+
+const topCategoryCard = document.getElementById("topCategoryCard");
+
+const summaryBody = document.getElementById("categorySummaryBody");
+
+const insightText = document.getElementById("analyticsInsight");
+
+
+// ======================================
+// Charts
+// ======================================
+
+let budgetExpenseChart = null;
+
+let groupedBarChart = null;
+
+let stackedBarChart = null;
+
+
+// ======================================
+// Default Month
+// ======================================
+
+monthFilter.value = new Date().toISOString().slice(0,7);
+
+
+// ======================================
+// Page Load
+// ======================================
+
 loadPageData();
 
-// Reload when month changes
-monthFilter.addEventListener("change", loadPageData);
+monthFilter.addEventListener(
+
+    "change",
+
+    loadPageData
+
+);
+
+
+// ======================================
+// Currency Formatter
+// ======================================
+
+function formatCurrency(value){
+
+    return "₹" +
+
+    Number(value).toLocaleString(
+
+        "en-IN",
+
+        {
+
+            maximumFractionDigits:0
+
+        }
+
+    );
+
+}
+
+
+// ======================================
+// Capitalize Text
+// ======================================
+
+function capitalize(text){
+
+    if(!text) return "-";
+
+    return text.charAt(0).toUpperCase()
+
+    + text.slice(1);
+
+}
+
+
+// ======================================
+// Destroy Existing Charts
+// ======================================
+
+function destroyCharts(){
+
+    if(budgetExpenseChart){
+
+        budgetExpenseChart.destroy();
+
+        budgetExpenseChart = null;
+
+    }
+
+    if(groupedBarChart){
+
+        groupedBarChart.destroy();
+
+        groupedBarChart = null;
+
+    }
+
+    if(stackedBarChart){
+
+        stackedBarChart.destroy();
+
+        stackedBarChart = null;
+
+    }
+
+}
+
 
 // ======================================
 // Load Analytics
@@ -38,88 +145,268 @@ function loadPageData(){
     const month = monthFilter.value;
 
     fetch(
+
         `http://127.0.0.1:8002/analytics/category-summary/${email}?month=${month}`
+
     )
 
-    .then(response => response.json())
+    .then(response=>response.json())
 
-    .then(data => {
+    .then(data=>{
 
-        console.log("Analytics Data:", data);
+        console.log(data);
 
-        // =====================================
-        // Budget vs Expense Data
-        // =====================================
+        destroyCharts();
+
+        // ==================================
+        // Extract Data
+        // ==================================
 
         const budgetData = data.budget_vs_expense;
 
-        const categories = Object.keys(budgetData);
+        const monthlySummary =
 
-        if(categories.length === 0){
+            data.monthly_category_summary;
 
-            alert("No transactions available for this month.");
+        const categories =
+
+            Object.keys(budgetData);
+
+        if(categories.length===0){
+
+            alert(
+
+                "No transactions found for this month."
+
+            );
 
             return;
 
         }
 
-        const budgets = categories.map(category =>
+        // ==================================
+        // Totals
+        // ==================================
 
-            budgetData[category].budget
+        let totalBudget = 0;
 
-        );
+        let totalExpense = 0;
 
-        const expenses = categories.map(category =>
+        let highestExpense = 0;
 
-            budgetData[category].expense
+        let highestCategory = "-";
 
-        );
+        categories.forEach(category=>{
 
-        // Destroy previous chart
+            totalBudget +=
 
-        if(budgetExpenseChart){
+                budgetData[category].budget;
 
-            budgetExpenseChart.destroy();
+            totalExpense +=
+
+                budgetData[category].expense;
+
+            if(
+
+                budgetData[category].expense
+
+                >
+
+                highestExpense
+
+            ){
+
+                highestExpense =
+
+                    budgetData[category].expense;
+
+                highestCategory =
+
+                    category;
+
+            }
+
+        });
+
+        const averageExpense =
+
+            totalExpense /
+
+            categories.length;
+                    // ==================================
+        // Populate Summary Cards
+        // ==================================
+
+        incomeCard.innerHTML =
+
+            formatCurrency(totalBudget);
+
+        expenseCard.innerHTML =
+
+            formatCurrency(totalExpense);
+
+        averageCard.innerHTML =
+
+            formatCurrency(averageExpense);
+
+        topCategoryCard.innerHTML =
+
+            capitalize(highestCategory);
+
+        // ==================================
+        // Category Summary Table
+        // ==================================
+
+        summaryBody.innerHTML = "";
+
+        categories.forEach(category=>{
+
+            const budget =
+
+                budgetData[category].budget;
+
+            const expense =
+
+                budgetData[category].expense;
+
+            const percentage =
+
+                budget===0
+
+                ? 0
+
+                : ((expense/budget)*100).toFixed(1);
+
+            summaryBody.innerHTML += `
+
+                <tr>
+
+                    <td>
+
+                        ${capitalize(category)}
+
+                    </td>
+
+                    <td>
+
+                        ${formatCurrency(expense)}
+
+                    </td>
+
+                    <td>
+
+                        ${percentage}%
+
+                    </td>
+
+                    <td>
+
+                        ${formatCurrency(budget)}
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        });
+
+        // ==================================
+        // AI Insight
+        // ==================================
+
+        if(totalExpense>totalBudget){
+
+            insightText.innerHTML=
+
+            `⚠️ You have exceeded your planned budget by
+            <b>${formatCurrency(totalExpense-totalBudget)}</b>.
+            Your highest spending category is
+            <b>${capitalize(highestCategory)}</b>.`;
 
         }
 
-        // =====================================
+        else{
+
+            insightText.innerHTML=
+
+            `✅ Great job! You are within your planned budget.
+            Your highest spending category this month is
+            <b>${capitalize(highestCategory)}</b>.`;
+
+        }
+
+        // ==================================
+        // Budget vs Expense Chart Data
+        // ==================================
+
+        const budgets =
+
+            categories.map(category=>
+
+                budgetData[category].budget
+
+            );
+
+        const expenses =
+
+            categories.map(category=>
+
+                budgetData[category].expense
+
+            );
+
+        // ==================================
         // Budget vs Expense Chart
-        // =====================================
+        // ==================================
 
         budgetExpenseChart = new Chart(
 
-            document.getElementById("budgetExpenseChart"),
+            document.getElementById(
+
+                "budgetExpenseChart"
+
+            ),
 
             {
 
-                type: "bar",
+                type:"bar",
 
-                data: {
+                data:{
 
-                    labels: categories.map(c =>
-                        c.charAt(0).toUpperCase() + c.slice(1)
-                    ),
+                    labels:
 
-                    datasets: [
+                        categories.map(
+
+                            category=>
+
+                            capitalize(category)
+
+                        ),
+
+                    datasets:[
 
                         {
 
-                            label: "Budget",
+                            label:"Budget",
 
-                            data: budgets,
+                            data:budgets,
 
-                            backgroundColor: "#36A2EB"
+                            backgroundColor:"#24d6f5",
+
+                            borderRadius:10
 
                         },
 
                         {
 
-                            label: "Expense",
+                            label:"Expense",
 
-                            data: expenses,
+                            data:expenses,
 
-                            backgroundColor: "#FF6384"
+                            backgroundColor:"#ff6384",
+
+                            borderRadius:10
 
                         }
 
@@ -127,25 +414,25 @@ function loadPageData(){
 
                 },
 
-                options: {
+                options:{
 
-                    responsive: true,
+                    responsive:true,
 
-                    maintainAspectRatio: false,
+                    maintainAspectRatio:false,
 
-                    plugins: {
+                    plugins:{
 
-                        legend: {
+                        legend:{
 
-                            labels: {
+                            labels:{
 
-                                color: "#ffffff",
+                                color:"#ffffff",
 
-                                font: {
+                                font:{
 
-                                    size: 15,
+                                    size:14,
 
-                                    weight: "bold"
+                                    weight:"bold"
 
                                 }
 
@@ -155,37 +442,37 @@ function loadPageData(){
 
                     },
 
-                    scales: {
+                    scales:{
 
-                        x: {
+                        x:{
 
-                            ticks: {
+                            ticks:{
 
-                                color: "#ffffff"
+                                color:"#ffffff"
 
                             },
 
-                            grid: {
+                            grid:{
 
-                                color: "rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
                         },
 
-                        y: {
+                        y:{
 
-                            beginAtZero: true,
+                            beginAtZero:true,
 
-                            ticks: {
+                            ticks:{
 
-                                color: "#ffffff"
+                                color:"#ffffff"
 
                             },
 
-                            grid: {
+                            grid:{
 
-                                color: "rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
@@ -199,19 +486,25 @@ function loadPageData(){
 
         );
 
-        // =====================================
-        // Prepare Monthly Data
-        // =====================================
+        // ==================================
+        // Monthly Summary
+        // ==================================
 
-        const monthlyCategory = data.monthly_category_summary;
+        const months =
 
-        const months = Object.keys(monthlyCategory);
+            Object.keys(monthlySummary);
 
-        const categorySet = new Set();
+        const categorySet =
 
-        months.forEach(month => {
+            new Set();
 
-            Object.keys(monthlyCategory[month]).forEach(category => {
+        months.forEach(month=>{
+
+            Object.keys(
+
+                monthlySummary[month]
+
+            ).forEach(category=>{
 
                 categorySet.add(category);
 
@@ -219,40 +512,41 @@ function loadPageData(){
 
         });
 
-        const categoryList = [...categorySet];
+        const categoryList =
+
+            [...categorySet];
+                    // ==================================
+        // Chart Colors
+        // ==================================
 
         const colors = [
 
-            "#36A2EB",
-            "#FF6384",
-            "#FF9F40",
-            "#4BC0C0",
-            "#9966FF",
-            "#FFD166",
-            "#00C853",
-            "#FF6D00"
+            "#24d6f5",
+            "#4f7cff",
+            "#ff6384",
+            "#ff9f40",
+            "#4bc0c0",
+            "#9966ff",
+            "#00c853",
+            "#ffd166"
 
         ];
 
-        const datasets = [];
+        // ==================================
+        // Create Datasets
+        // ==================================
 
-        categoryList.forEach((category,index)=>{
+        const datasets = categoryList.map((category,index)=>{
 
-            datasets.push({
+            return{
 
-                label:
+                label:capitalize(category),
 
-                    category.charAt(0).toUpperCase()
+                data:months.map(month=>
 
-                    + category.slice(1),
+                    monthlySummary[month][category] || 0
 
-                data:
-
-                    months.map(month =>
-
-                        monthlyCategory[month][category] || 0
-
-                    ),
+                ),
 
                 backgroundColor:
 
@@ -262,30 +556,17 @@ function loadPageData(){
 
                     colors[index % colors.length],
 
+                borderRadius:8,
+
                 borderWidth:1
 
-            });
+            };
 
         });
-                // =====================================
-        // Destroy Existing Charts
-        // =====================================
 
-        if(stackedBarChart){
-
-            stackedBarChart.destroy();
-
-        }
-
-        if(groupedBarChart){
-
-            groupedBarChart.destroy();
-
-        }
-
-        // =====================================
-        // STACKED BAR CHART
-        // =====================================
+        // ==================================
+        // Monthly Category-wise Expenses
+        // ==================================
 
         stackedBarChart = new Chart(
 
@@ -321,7 +602,7 @@ function loadPageData(){
 
                                 font:{
 
-                                    size:14,
+                                    size:13,
 
                                     weight:"bold"
 
@@ -347,7 +628,7 @@ function loadPageData(){
 
                             grid:{
 
-                                color:"rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
@@ -367,7 +648,7 @@ function loadPageData(){
 
                             grid:{
 
-                                color:"rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
@@ -381,9 +662,9 @@ function loadPageData(){
 
         );
 
-        // =====================================
-        // CATEGORY COMPARISON
-        // =====================================
+        // ==================================
+        // Category Comparison Chart
+        // ==================================
 
         groupedBarChart = new Chart(
 
@@ -419,7 +700,7 @@ function loadPageData(){
 
                                 font:{
 
-                                    size:14,
+                                    size:13,
 
                                     weight:"bold"
 
@@ -433,7 +714,7 @@ function loadPageData(){
 
                             display:true,
 
-                            text:"Expense Comparison Across Categories",
+                            text:"Category Expense Comparison",
 
                             color:"#ffffff",
 
@@ -453,8 +734,6 @@ function loadPageData(){
 
                         x:{
 
-                            stacked:false,
-
                             ticks:{
 
                                 color:"#ffffff"
@@ -463,7 +742,7 @@ function loadPageData(){
 
                             grid:{
 
-                                color:"rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
@@ -481,7 +760,7 @@ function loadPageData(){
 
                             grid:{
 
-                                color:"rgba(255,255,255,0.15)"
+                                color:"rgba(255,255,255,.08)"
 
                             }
 
@@ -499,9 +778,29 @@ function loadPageData(){
 
     .catch(error=>{
 
-        console.error("Analytics Error:",error);
+        console.error(
 
-        alert("Unable to load analytics.");
+            "Analytics Error:",
+
+            error
+
+        );
+
+        insightText.innerHTML=
+
+            "Unable to load analytics data.";
+
+        summaryBody.innerHTML=
+
+            `<tr>
+
+                <td colspan="4">
+
+                    Unable to load analytics.
+
+                </td>
+
+            </tr>`;
 
     });
 
