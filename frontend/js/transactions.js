@@ -1,29 +1,57 @@
 // ======================================
+// Logged In User
+// ======================================
+
+const email = localStorage.getItem("loggedInUser");
+
+if (!email) {
+
+    window.location.href = "login.html";
+
+}
+
+// ======================================
 // Global Variables
 // ======================================
 
 let allTransactions = [];
+
 let filteredTransactions = [];
 
 let currentPage = 1;
+
 const rowsPerPage = 5;
+
+// ======================================
+// Initial Load
+// ======================================
+
+loadTransactions();
 
 // ======================================
 // Load Transactions
 // ======================================
 
-loadTransactions();
-
 function loadTransactions() {
 
-    const email = localStorage.getItem("loggedInUser");
+    document.getElementById("transactionTable").innerHTML = `
 
-    if (!email) {
+        <tr>
 
-        window.location.href = "login.html";
-        return;
+            <td colspan="5"
+                style="
+                    text-align:center;
+                    padding:30px;
+                    color:#94A3B8;
+                ">
 
-    }
+                Loading transactions...
+
+            </td>
+
+        </tr>
+
+    `;
 
     fetch(`http://127.0.0.1:8002/transactions/user/${email}`)
 
@@ -70,15 +98,14 @@ function sortTransactions() {
     filteredTransactions.sort((a, b) => {
 
         const dateA = new Date(a.date);
+
         const dateB = new Date(b.date);
 
-        if (order === "newest") {
+        return order === "newest"
 
-            return dateB - dateA;
+            ? dateB - dateA
 
-        }
-
-        return dateA - dateB;
+            : dateA - dateB;
 
     });
 
@@ -98,8 +125,43 @@ function displayTransactions(data) {
 
     table.innerHTML = "";
 
-    document.getElementById("transactionCount").innerHTML =
+    document.getElementById("transactionCount").textContent =
         `(${data.length})`;
+
+    // ==================================
+    // Empty State
+    // ==================================
+
+    if (data.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td colspan="5"
+                    style="
+                        text-align:center;
+                        padding:35px;
+                        color:#94A3B8;
+                    ">
+
+                    No transactions found.
+
+                </td>
+
+            </tr>
+
+        `;
+
+        document.getElementById("pagination").innerHTML = "";
+
+        return;
+
+    }
+
+    // ==================================
+    // Pagination
+    // ==================================
 
     const start = (currentPage - 1) * rowsPerPage;
 
@@ -107,31 +169,65 @@ function displayTransactions(data) {
 
     const pageData = data.slice(start, end);
 
+    let rows = "";
+
     pageData.forEach(t => {
 
-        table.innerHTML += `
+        rows += `
 
         <tr>
 
-            <td>${t.date || "-"}</td>
+            <td>
 
-            <td>${t.category || "Uncategorized"}</td>
+                ${t.date || "-"}
 
-            <td>₹${Number(t.amount || 0).toLocaleString("en-IN")}</td>
-
-            <td>${t.location || "-"}</td>
+            </td>
 
             <td>
 
-                <button onclick="editTransaction('${t._id}')">
+                <span class="category-pill">
 
-                    Edit
+                    ${t.category || "Uncategorized"}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                ₹${Number(t.amount || 0).toLocaleString("en-IN")}
+
+            </td>
+
+            <td>
+
+                ${t.location || "-"}
+
+            </td>
+
+            <td>
+
+                <button
+
+                    class="action-btn edit-btn"
+
+                    title="Edit Transaction"
+
+                    onclick="editTransaction('${t._id}')">
+
+                    ✏️
 
                 </button>
 
-                <button onclick="deleteTransaction('${t._id}')">
+                <button
 
-                    Delete
+                    class="action-btn delete-btn"
+
+                    title="Delete Transaction"
+
+                    onclick="deleteTransaction('${t._id}')">
+
+                    🗑️
 
                 </button>
 
@@ -142,6 +238,8 @@ function displayTransactions(data) {
         `;
 
     });
+
+    table.innerHTML = rows;
 
     renderPagination(data.length);
 
@@ -159,15 +257,15 @@ function renderPagination(totalRows) {
 
     html += `
 
-    <button
+        <button
 
-        ${currentPage === 1 ? "disabled" : ""}
+            ${currentPage === 1 ? "disabled" : ""}
 
-        onclick="changePage(${currentPage - 1})">
+            onclick="changePage(${currentPage - 1})">
 
-        ◀ Previous
+            ◀
 
-    </button>
+        </button>
 
     `;
 
@@ -175,15 +273,15 @@ function renderPagination(totalRows) {
 
         html += `
 
-        <button
+            <button
 
-            class="${i === currentPage ? "active-page" : ""}"
+                class="${i === currentPage ? "active" : ""}"
 
-            onclick="changePage(${i})">
+                onclick="changePage(${i})">
 
-            ${i}
+                ${i}
 
-        </button>
+            </button>
 
         `;
 
@@ -191,15 +289,15 @@ function renderPagination(totalRows) {
 
     html += `
 
-    <button
+        <button
 
-        ${currentPage === totalPages ? "disabled" : ""}
+            ${currentPage === totalPages ? "disabled" : ""}
 
-        onclick="changePage(${currentPage + 1})">
+            onclick="changePage(${currentPage + 1})">
 
-        Next ▶
+            ▶
 
-    </button>
+        </button>
 
     `;
 
@@ -229,7 +327,9 @@ if (searchBox) {
         filteredTransactions = allTransactions.filter(t => {
 
             const category = (t.category || "").toLowerCase();
+
             const notes = (t.notes || "").toLowerCase();
+
             const location = (t.location || "").toLowerCase();
 
             return (
@@ -258,15 +358,24 @@ if (searchBox) {
 
 function addTransaction() {
 
-    const notes = document.getElementById("notes").value.trim();
+    const notes =
+        document.getElementById("notes").value.trim();
 
-    const payment_mode = document.getElementById("payment_mode").value.trim();
+    const payment_mode =
+        document.getElementById("payment_mode").value.trim();
 
-    const location = document.getElementById("location").value.trim();
+    const location =
+        document.getElementById("location").value.trim();
 
-    const amount = Number(document.getElementById("amount").value);
+    const amount =
+        Number(document.getElementById("amount").value);
 
-    const date = document.getElementById("date").value;
+    const date =
+        document.getElementById("date").value;
+
+    // ==========================
+    // Validation
+    // ==========================
 
     if (
 
@@ -290,7 +399,7 @@ function addTransaction() {
 
     const transaction = {
 
-        user_email: localStorage.getItem("loggedInUser"),
+        user_email: email,
 
         notes,
 
@@ -304,19 +413,29 @@ function addTransaction() {
 
     };
 
-    fetch("http://127.0.0.1:8002/transactions/", {
+    // ==========================
+    // Save Transaction
+    // ==========================
 
-        method: "POST",
+    fetch(
 
-        headers: {
+        "http://127.0.0.1:8002/transactions/",
 
-            "Content-Type": "application/json"
+        {
 
-        },
+            method: "POST",
 
-        body: JSON.stringify(transaction)
+            headers: {
 
-    })
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify(transaction)
+
+        }
+
+    )
 
     .then(response => {
 
@@ -334,6 +453,10 @@ function addTransaction() {
 
         alert(data.message);
 
+        // ==========================
+        // Clear Form
+        // ==========================
+
         document.getElementById("notes").value = "";
 
         document.getElementById("payment_mode").value = "";
@@ -343,6 +466,10 @@ function addTransaction() {
         document.getElementById("amount").value = "";
 
         document.getElementById("date").value = "";
+
+        // ==========================
+        // Reload Table
+        // ==========================
 
         loadTransactions();
 
@@ -363,27 +490,32 @@ function addTransaction() {
 
 function editTransaction(id) {
 
-    console.log("Clicked ID:", id);
-    console.log("Transactions:", allTransactions);
-
-    const transaction = allTransactions.find(t => t._id == id);
-
-    console.log("Found:", transaction);
+    const transaction = allTransactions.find(t => t._id === id);
 
     if (!transaction) {
 
-        alert("Transaction not found!");
+        alert("Transaction not found.");
 
         return;
 
     }
 
     document.getElementById("editId").value = transaction._id;
-    document.getElementById("editNotes").value = transaction.notes || "";
-    document.getElementById("editPaymentMode").value = transaction.payment_mode || "";
-    document.getElementById("editLocation").value = transaction.location || "";
-    document.getElementById("editAmount").value = transaction.amount || "";
-    document.getElementById("editDate").value = transaction.date || "";
+
+    document.getElementById("editNotes").value =
+        transaction.notes || "";
+
+    document.getElementById("editPaymentMode").value =
+        transaction.payment_mode || "";
+
+    document.getElementById("editLocation").value =
+        transaction.location || "";
+
+    document.getElementById("editAmount").value =
+        transaction.amount || "";
+
+    document.getElementById("editDate").value =
+        transaction.date || "";
 
     document.getElementById("editModal").style.display = "flex";
 
@@ -420,6 +552,10 @@ async function saveTransaction() {
         date: document.getElementById("editDate").value
 
     };
+
+    // ==========================
+    // Validation
+    // ==========================
 
     if (
 
@@ -496,7 +632,9 @@ async function saveTransaction() {
 async function deleteTransaction(id) {
 
     const confirmDelete = confirm(
+
         "Are you sure you want to delete this transaction?"
+
     );
 
     if (!confirmDelete) {
@@ -542,3 +680,19 @@ async function deleteTransaction(id) {
     }
 
 }
+
+// ======================================
+// Close Modal on Outside Click
+// ======================================
+
+window.onclick = function (event) {
+
+    const modal = document.getElementById("editModal");
+
+    if (event.target === modal) {
+
+        closeModal();
+
+    }
+
+};

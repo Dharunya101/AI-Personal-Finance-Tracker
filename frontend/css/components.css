@@ -1,0 +1,351 @@
+/* ===========================================
+   BUTTONS
+=========================================== */
+
+.primary-btn{
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:white;
+
+    padding:14px 26px;
+
+    border:none;
+
+    border-radius:var(--radius-md);
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+    box-shadow:var(--glow);
+
+}
+
+.primary-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 18px 35px rgba(36,214,245,.35);
+
+}
+
+.secondary-btn{
+
+    background:transparent;
+
+    border:1px solid var(--border);
+
+    color:var(--text);
+
+    padding:14px 24px;
+
+    border-radius:var(--radius-md);
+
+    cursor:pointer;
+
+}
+/* ===========================================
+   GLASS CARD
+=========================================== */
+
+.card{
+
+    background:rgba(17,25,40,.75);
+
+    backdrop-filter:blur(16px);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius-lg);
+
+    padding:24px;
+
+    box-shadow:var(--shadow);
+
+    transition:var(--transition);
+
+}
+
+.card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+
+        0 25px 55px rgba(0,0,0,.35);
+
+}
+
+.card h3{
+
+    color:var(--text-muted);
+
+    font-size:15px;
+
+    margin-bottom:12px;
+
+}
+
+.card h2{
+
+    color:white;
+
+    font-size:34px;
+
+    margin-top:10px;
+
+}
+.cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:24px;
+
+    margin:35px 0;
+
+}
+.section{
+
+    background:rgba(17,25,40,.75);
+
+    border-radius:var(--radius-lg);
+
+    border:1px solid var(--border);
+
+    padding:30px;
+
+    margin-top:35px;
+
+    box-shadow:var(--shadow);
+
+}
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+thead{
+
+    border-bottom:1px solid var(--border);
+
+}
+
+th{
+
+    text-align:left;
+
+    padding:18px;
+
+    color:var(--text-light);
+
+}
+
+td{
+
+    padding:18px;
+
+    color:var(--text-muted);
+
+}
+
+tbody tr{
+
+    transition:var(--transition);
+
+}
+
+tbody tr:hover{
+
+    background:rgba(255,255,255,.04);
+
+}
+input,
+select{
+
+    width:100%;
+
+    padding:14px 18px;
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius-md);
+
+    color:white;
+
+    outline:none;
+
+    transition:var(--transition);
+
+}
+
+input:focus,
+select:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 18px rgba(36,214,245,.20);
+
+}
+.chart-card{
+
+    background:rgba(17,25,40,.75);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius-lg);
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    height:420px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+.chart-card canvas{
+
+    width:100% !important;
+
+    height:320px !important;
+
+    margin-top:20px;
+
+}
+
+.charts{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:28px;
+
+    margin-top:35px;
+
+    align-items:start;
+
+}
+.badge{
+
+    display:inline-block;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+.section h2{
+
+    color:white;
+
+    margin-bottom:20px;
+
+}
+.card-icon{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:18px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    background:
+
+    linear-gradient(
+
+        135deg,
+
+        var(--primary),
+
+        var(--secondary)
+
+    );
+
+    margin-bottom:20px;
+
+    box-shadow:var(--glow);
+
+}
+
+.trend{
+
+    margin-top:15px;
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.positive{
+
+    color:var(--success);
+
+}
+
+.negative{
+
+    color:var(--danger);
+
+}
+/* ===========================================
+   CATEGORY PILLS
+=========================================== */
+
+.category-pill{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    background:rgba(34,211,238,.15);
+
+    color:var(--primary);
+
+    font-size:13px;
+
+    font-weight:600;
+
+    border:1px solid rgba(34,211,238,.25);
+
+}

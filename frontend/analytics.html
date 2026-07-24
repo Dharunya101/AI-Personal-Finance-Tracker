@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Analytics</title>
+    <title>Analytics</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Font -->
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-<link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 
@@ -30,120 +39,405 @@ if(!localStorage.getItem("loggedInUser")){
 function logout(){
 
     localStorage.removeItem("loggedInUser");
-
     window.location.href="login.html";
 
 }
 
 </script>
 
-<!-- ================= Sidebar ================= -->
+<!-- ==========================================
+                SIDEBAR
+========================================== -->
 
 <div class="sidebar">
 
-<h2>Finance Tracker</h2>
+    <div>
 
-<ul>
+        <div class="logo">
 
-<li><a href="dashboard.html">Dashboard</a></li>
+            <div class="logo-icon">AI</div>
 
-<li><a href="transactions.html">Transactions</a></li>
+            <div class="logo-text">
 
-<li><a href="analytics.html" class="active">Analytics</a></li>
+                <h2>Finance Tracker</h2>
 
-<li><a href="budget.html">Budgets</a></li>
+                <p>Financial Intelligence</p>
 
-<li><a href="insights.html">Insights</a></li>
+            </div>
 
-<li><a href="report.html">Reports</a></li>
+        </div>
 
-<li><a href="upload.html">Upload Statement</a></li>
+        <ul>
 
-<li><a href="settings.html">Settings</a></li>
+            <li>
 
-<li><a href="#" onclick="logout()">Logout</a></li>
+                <a href="dashboard.html">
 
-</ul>
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="transactions.html">
+
+                    💳 Transactions
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="analytics.html">
+
+                    📊 Analytics
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="budget.html">
+
+                    🎯 Budgets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="insights.html">
+
+                    🤖 AI Insights
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="report.html">
+
+                    📄 Reports
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="upload.html">
+
+                    ⬆ Upload
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="settings.html">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <button class="logout-btn"
+            onclick="logout()">
+
+        Logout
+
+    </button>
 
 </div>
 
-<!-- ================= Main ================= -->
+<!-- ==========================================
+                MAIN CONTENT
+========================================== -->
 
-<div class="main">
+<main class="main-content">
 
-<h1>Analytics Dashboard</h1>
+    <!-- Header -->
 
-<!-- ==========================
-     Month Filter
-========================== -->
+    <div class="dashboard-header">
 
-<div class="filter-container">
+        <div>
 
-<label for="monthFilter">
+            <p class="greeting">
 
-<b>📅 Month:</b>
+                📊 Financial Analytics
 
-</label>
+            </p>
 
-<input
-type="month"
-id="monthFilter">
+            <h1>
 
-</div>
+                Analytics
 
-<!-- ==========================
-     Budget vs Expense
-========================== -->
+            </h1>
 
-<div class="charts">
+            <p class="subtitle">
 
-<div class="chart-card">
+                Explore spending trends, income patterns and financial performance.
 
-<h2>Budget vs Expense</h2>
+            </p>
 
-<canvas id="budgetExpenseChart"></canvas>
+        </div>
 
-</div>
+    </div>
 
-</div>
+    <!-- ======================================
+            MONTH FILTER
+    ======================================= -->
 
-<br>
+    <div class="section month-section">
 
-<!-- ==========================
-     Monthly Category-wise Expenses
-========================== -->
+        <div>
 
-<div class="charts">
+            <h2>
 
-<div class="chart-card" style="width:100%;">
+                Select Month
 
-<h2>Monthly Category-wise Expenses</h2>
+            </h2>
 
-<canvas id="stackedBarChart"></canvas>
+            <p>
 
-</div>
+                View your analytics for any month.
 
-</div>
+            </p>
 
-<br>
+        </div>
 
-<!-- ==========================
-     Category Comparison
-========================== -->
+        <input
+            type="month"
+            id="monthFilter">
 
-<div class="charts">
+    </div>
 
-<div class="chart-card" style="width:100%;">
+    <!-- ======================================
+            SUMMARY CARDS
+    ======================================= -->
 
-<h2>Category Comparison</h2>
+    <div class="analytics-cards">
 
-<canvas id="groupedBarChart"></canvas>
+        <div class="analytics-card">
 
-</div>
+            <div class="card-icon">
 
-</div>
+                💰
 
-</div>
+            </div>
+
+            <h3>Total Income</h3>
+
+            <h2 id="incomeCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                💸
+
+            </div>
+
+            <h3>Total Expense</h3>
+
+            <h2 id="expenseCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                📈
+
+            </div>
+
+            <h3>Average Expense</h3>
+
+            <h2 id="averageCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                🏆
+
+            </div>
+
+            <h3>Top Category</h3>
+
+            <h2 id="topCategoryCard">
+
+                -
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            CHART GRID
+    ======================================= -->
+
+    <div class="chart-grid">
+
+        <div class="chart-card">
+
+            <h2>
+
+                Budget vs Expense
+
+            </h2>
+
+            <canvas id="budgetExpenseChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <h2>
+
+                Category Comparison
+
+            </h2>
+
+            <canvas id="groupedBarChart"></canvas>
+
+        </div>
+
+    </div>
+        <div class="chart-card full-width">
+
+        <h2>
+
+            Monthly Category-wise Expenses
+
+        </h2>
+
+        <canvas id="stackedBarChart"></canvas>
+
+    </div>
+
+    <!-- ======================================
+            CATEGORY SUMMARY
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Category Summary
+
+                </h2>
+
+                <p>
+
+                    Overview of spending across all categories.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="analytics-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Category</th>
+
+                        <th>Total Expense</th>
+
+                        <th>Transactions</th>
+
+                        <th>Average</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="categorySummaryBody">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            AI INSIGHT CARD
+    ======================================= -->
+
+    <div class="section analytics-insight">
+
+        <div class="insight-icon">
+
+            🤖
+
+        </div>
+
+        <div>
+
+            <h2>
+
+                AI Financial Insight
+
+            </h2>
+
+            <p id="analyticsInsight">
+
+                Loading financial insights...
+
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ==========================================
+                JAVASCRIPT
+========================================== -->
 
 <script src="js/analytics.js"></script>
 

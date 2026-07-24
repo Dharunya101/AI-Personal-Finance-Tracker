@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard</title>
+    <title>Dashboard | AI Personal Finance Tracker</title>
 
+    <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
+    <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
 
+    <!-- ChartJS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -28,161 +32,352 @@ if(!localStorage.getItem("loggedInUser")){
 }
 
 function logout(){
+
     localStorage.removeItem("loggedInUser");
+
     window.location.href="login.html";
+
 }
 
 </script>
 
-<!-- Sidebar -->
+<!-- =======================================================
+                        SIDEBAR
+======================================================= -->
 
-<div class="sidebar">
+<aside class="sidebar">
 
-<h2>Finance Tracker</h2>
+    <!-- Logo -->
 
-<ul>
+    <div>
 
-<li><a href="dashboard.html">Dashboard</a></li>
+        <div class="logo">
 
-<li><a href="transactions.html">Transactions</a></li>
+            <div class="logo-icon">
 
-<li><a href="analytics.html">Analytics</a></li>
+                AI
 
-<li><a href="budget.html">Budgets</a></li>
+            </div>
 
-<li><a href="insights.html">Insights</a></li>
+            <div class="logo-text">
 
-<li><a href="report.html">Reports</a></li>
+                <h2>Finance Tracker</h2>
 
-<li><a href="upload.html">Upload Statement</a></li>
+                <p>Financial Intelligence</p>
 
-<li><a href="settings.html">Settings</a></li>
+            </div>
 
-<li><a href="#" onclick="logout()">Logout</a></li>
+        </div>
 
-</ul>
+        <!-- Navigation -->
 
-</div>
+        <ul>
 
-<!-- Main -->
+            <li class="active">
+                <a href="dashboard.html">
+                    🏠 Dashboard
+                </a>
+            </li>
 
-<div class="main">
+            <li>
+                <a href="transactions.html">
+                    💳 Transactions
+                </a>
+            </li>
 
-<h1>
+            <li>
+                <a href="analytics.html">
+                    📊 Analytics
+                </a>
+            </li>
 
-Welcome,
+            <li>
+                <a href="budget.html">
+                    🎯 Budgets
+                </a>
+            </li>
 
-<span id="userName"></span>
+            <li>
+                <a href="insights.html">
+                    🤖 AI Insights
+                </a>
+            </li>
 
-</h1>
+            <li>
+                <a href="report.html">
+                    📄 Reports
+                </a>
+            </li>
 
-<!-- =========================
-     Month Filter
-========================= -->
+            <li>
+                <a href="upload.html">
+                    ⬆ Upload Statement
+                </a>
+            </li>
 
-<div class="filter-container">
+            <li>
+                <a href="settings.html">
+                    ⚙ Settings
+                </a>
+            </li>
 
-<label for="monthFilter"><b>📅 Month:</b></label>
+        </ul>
 
-<input
-type="month"
-id="monthFilter">
+    </div>
 
-</div>
+    <!-- Logout -->
 
-<!-- Dashboard Cards -->
+    <button class="logout-btn" onclick="logout()">
 
-<div class="cards">
+        Logout
 
-<div class="card">
+    </button>
 
-<h3>Total Income</h3>
+</aside>
 
-<h2 id="income">₹0</h2>
+<!-- =======================================================
+                    MAIN CONTENT
+======================================================= -->
 
-</div>
+<main class="main-content">
 
-<div class="card">
+    <!-- Dashboard Header -->
 
-<h3>Total Expense</h3>
+    <div class="dashboard-header">
 
-<h2 id="expense">₹0</h2>
+        <div>
 
-</div>
+            <p class="greeting">
 
-<div class="card">
+                👋 Good Morning
 
-<h3>Savings</h3>
+            </p>
 
-<h2 id="savings">₹0</h2>
+            <h1>
 
-</div>
+                Welcome,
 
-<div class="card">
+                <span id="userName"></span>
 
-<h3>Budget Left</h3>
+            </h1>
 
-<h2 id="budget">₹0</h2>
+            <p class="subtitle">
 
-</div>
+                AI Personal Finance Tracker
 
-</div>
+            </p>
 
-<!-- Recent Transactions -->
+        </div>
 
-<div class="section">
+    </div>
 
-<h2>Recent Transactions</h2>
+    <!-- =======================================================
+                        MONTH FILTER
+    ======================================================= -->
 
-<table>
+    <div class="filter-card">
 
-<thead>
+        <div>
 
-<tr>
+            <h3>
 
-<th>Date</th>
+                Select Month
 
-<th>Category</th>
+            </h3>
 
-<th>Amount</th>
+            <p>
 
-<th>Location</th>
+                View your financial summary for any month.
 
-</tr>
+            </p>
 
-</thead>
+        </div>
 
-<tbody id="transactionTable">
+        <input
+            type="month"
+            id="monthFilter">
 
-</tbody>
+    </div>
+        <!-- =======================================================
+                        KPI CARDS
+    ======================================================= -->
 
-</table>
+    <div class="cards">
 
-</div>
+        <!-- Income -->
 
-<!-- Charts -->
+        <div class="card fade-up">
 
-<div class="charts">
+            <div class="card-icon">
 
-<div class="chart-card">
+                💰
 
-<h2>Expense by Category</h2>
+            </div>
 
-<canvas id="pieChart"></canvas>
+            <h3>Total Income</h3>
 
-</div>
+            <h2 id="income">₹0</h2>
 
-<div class="chart-card">
+            <p class="trend positive">
 
-<h2>Top Spending Categories</h2>
+                ▲ Income this month
 
-<canvas id="barChart"></canvas>
+            </p>
 
-</div>
+        </div>
 
-</div>
+        <!-- Expense -->
 
-</div>
+        <div class="card fade-up">
+
+            <div class="card-icon">
+
+                💸
+
+            </div>
+
+            <h3>Total Expense</h3>
+
+            <h2 id="expense">₹0</h2>
+
+            <p class="trend negative">
+
+                ▼ Expenses this month
+
+            </p>
+
+        </div>
+
+        <!-- Savings -->
+
+        <div class="card fade-up">
+
+            <div class="card-icon">
+
+                🏦
+
+            </div>
+
+            <h3>Savings</h3>
+
+            <h2 id="savings">₹0</h2>
+
+            <p class="trend positive">
+
+                ▲ Current Savings
+
+            </p>
+
+        </div>
+
+        <!-- Budget -->
+
+        <div class="card fade-up">
+
+            <div class="card-icon">
+
+                🎯
+
+            </div>
+
+            <h3>Budget Left</h3>
+
+            <h2 id="budget">₹0</h2>
+
+            <p class="trend positive">
+
+                Budget Remaining
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- =======================================================
+                        DASHBOARD CHARTS
+    ======================================================= -->
+
+    <div class="charts">
+
+        <!-- Pie Chart -->
+
+        <div class="chart-card">
+
+            <h2>
+
+                Expense by Category
+
+            </h2>
+
+            <canvas id="pieChart"></canvas>
+
+        </div>
+
+        <!-- Bar Chart -->
+
+        <div class="chart-card">
+
+            <h2>
+
+                Top Spending Categories
+
+            </h2>
+
+            <canvas id="barChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- =======================================================
+                    RECENT TRANSACTIONS
+    ======================================================= -->
+
+    <div class="section">
+
+        <h2>
+
+            Recent Transactions
+
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Category</th>
+
+                    <th>Amount</th>
+
+                    <th>Location</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="transactionTable">
+
+                <!-- Dashboard JS loads data here -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+        <!-- =======================================================
+                        END OF MAIN CONTENT
+    ======================================================= -->
+
+</main>
+
+<!-- =======================================================
+                    DASHBOARD SCRIPT
+======================================================= -->
 
 <script src="js/dashboard.js"></script>
 
