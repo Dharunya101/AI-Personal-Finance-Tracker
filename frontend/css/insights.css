@@ -1,0 +1,836 @@
+/* ===========================================
+   AI INSIGHTS PAGE
+=========================================== */
+
+.analytics-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+/* ===========================================
+   KPI CARDS
+=========================================== */
+
+.analytics-card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    transition:var(--transition);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.analytics-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(36,214,245,.12),
+        transparent
+    );
+
+    opacity:0;
+
+    transition:.35s;
+
+}
+
+.analytics-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.35);
+
+}
+
+.analytics-card:hover::before{
+
+    opacity:1;
+
+}
+
+.card-icon{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    margin-bottom:18px;
+
+    box-shadow:var(--glow);
+
+}
+
+.analytics-card h3{
+
+    color:var(--text-muted);
+
+    font-size:15px;
+
+    font-weight:500;
+
+    margin-bottom:10px;
+
+}
+
+.analytics-card h2{
+
+    color:white;
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+/* ===========================================
+   AI SUMMARY CARD
+=========================================== */
+
+.analytics-insight{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-bottom:35px;
+
+}
+
+.insight-icon{
+
+    width:85px;
+
+    height:85px;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:38px;
+
+    box-shadow:var(--glow);
+
+    flex-shrink:0;
+
+}
+
+.analytics-insight h2{
+
+    color:white;
+
+    font-size:28px;
+
+    margin-bottom:10px;
+
+}
+
+.analytics-insight p{
+
+    color:var(--text-muted);
+
+    line-height:1.8;
+
+    font-size:15px;
+
+}
+
+/* ===========================================
+   CHART GRID
+=========================================== */
+
+.chart-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+
+    gap:30px;
+
+    margin-bottom:35px;
+
+}
+
+.chart-card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    transition:.3s;
+
+    min-height:560px;
+
+}
+
+.chart-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.chart-card canvas{
+
+    margin-top:20px;
+
+    width:100% !important;
+
+    height:420px !important;
+
+    max-height:none;
+
+}
+
+/* ===========================================
+   SECTION TITLES
+=========================================== */
+
+.section-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:18px;
+
+}
+
+.section-title h2{
+
+    color:white;
+
+    font-size:26px;
+
+    margin-bottom:5px;
+
+}
+
+.section-title p{
+
+    color:var(--text-muted);
+
+    font-size:14px;
+
+}
+/* ===========================================
+   RECOMMENDATIONS
+=========================================== */
+
+.recommendation-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:22px;
+
+    margin-top:20px;
+
+}
+
+.recommendation-card{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    gap:16px;
+
+    padding:22px;
+
+    background:rgba(36,214,245,.08);
+
+    border:1px solid rgba(36,214,245,.15);
+
+    border-radius:18px;
+
+    transition:.35s;
+
+}
+
+.recommendation-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:0 15px 30px rgba(0,0,0,.25);
+
+    border-color:var(--primary);
+
+}
+
+.recommendation-icon{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:24px;
+
+    flex-shrink:0;
+
+    box-shadow:var(--glow);
+
+}
+
+.recommendation-content h3{
+
+    color:white;
+
+    margin-bottom:8px;
+
+    font-size:18px;
+
+}
+
+.recommendation-content p{
+
+    color:var(--text-muted);
+
+    line-height:1.7;
+
+    font-size:14px;
+
+}
+
+/* ===========================================
+   FINANCIAL SNAPSHOT
+=========================================== */
+
+.timeline-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:22px;
+
+    margin-top:20px;
+
+}
+
+.timeline-card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+    transition:.3s;
+
+    text-align:center;
+
+}
+
+.timeline-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:var(--shadow);
+
+}
+
+.timeline-card h3{
+
+    color:var(--text-muted);
+
+    font-size:15px;
+
+    margin-bottom:14px;
+
+}
+
+.timeline-card h2{
+
+    color:white;
+
+    font-size:30px;
+
+    font-weight:700;
+
+}
+
+/* ===========================================
+   SMART SAVINGS
+=========================================== */
+
+.saving-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+    gap:24px;
+
+    margin-top:20px;
+
+}
+
+.saving-card{
+
+    position:relative;
+
+    overflow:hidden;
+
+    padding:24px;
+
+    border-radius:20px;
+
+    background:linear-gradient(
+        135deg,
+        rgba(36,214,245,.12),
+        rgba(79,124,255,.08)
+    );
+
+    border:1px solid rgba(36,214,245,.18);
+
+    transition:.35s;
+
+}
+
+.saving-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.25);
+
+}
+
+.saving-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-40px;
+
+    right:-40px;
+
+    width:100px;
+
+    height:100px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.05);
+
+}
+
+.saving-card h3{
+
+    color:white;
+
+    margin-bottom:12px;
+
+    font-size:20px;
+
+}
+
+.saving-card p{
+
+    color:var(--text-muted);
+
+    line-height:1.8;
+
+    font-size:14px;
+
+}
+
+.saving-amount{
+
+    display:inline-block;
+
+    margin-top:16px;
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    background:rgba(34,197,94,.15);
+
+    color:#22c55e;
+
+    font-weight:600;
+
+}
+
+/* ===========================================
+   SECTION SPACING
+=========================================== */
+
+.section{
+
+    margin-bottom:35px;
+
+}
+/* ===========================================
+   AI SUMMARY ANIMATION
+=========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.analytics-card,
+.chart-card,
+.section,
+.analytics-insight,
+.timeline-card,
+.recommendation-card,
+.saving-card{
+
+    animation:fadeUp .7s ease forwards;
+
+}
+
+/* ===========================================
+   STAGGERED ANIMATION
+=========================================== */
+
+.analytics-card:nth-child(1){
+
+    animation-delay:.1s;
+
+}
+
+.analytics-card:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.analytics-card:nth-child(3){
+
+    animation-delay:.3s;
+
+}
+
+.analytics-card:nth-child(4){
+
+    animation-delay:.4s;
+
+}
+
+.chart-card:nth-child(1){
+
+    animation-delay:.45s;
+
+}
+
+.chart-card:nth-child(2){
+
+    animation-delay:.55s;
+
+}
+
+/* ===========================================
+   HOVER EFFECTS
+=========================================== */
+
+.analytics-card:hover .card-icon{
+
+    transform:scale(1.08) rotate(6deg);
+
+    transition:.35s;
+
+}
+
+.analytics-insight:hover .insight-icon{
+
+    transform:rotate(-8deg) scale(1.08);
+
+    transition:.35s;
+
+}
+
+.recommendation-card:hover .recommendation-icon{
+
+    transform:rotate(8deg) scale(1.08);
+
+    transition:.35s;
+
+}
+
+/* ===========================================
+   CUSTOM SCROLLBAR
+=========================================== */
+
+.chart-card::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.chart-card::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+.chart-card::-webkit-scrollbar-track{
+
+    background:rgba(255,255,255,.05);
+
+}
+
+/* ===========================================
+   RESPONSIVE
+=========================================== */
+
+@media(max-width:1200px){
+
+    .analytics-cards{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+    .chart-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .analytics-insight{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .timeline-grid{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .analytics-cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .recommendation-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .saving-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .timeline-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .chart-card{
+
+        padding:22px;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    .analytics-card{
+
+        padding:22px;
+
+    }
+
+    .analytics-card h2{
+
+        font-size:28px;
+
+    }
+
+    .section-title h2{
+
+        font-size:22px;
+
+    }
+
+    .insight-icon{
+
+        width:70px;
+
+        height:70px;
+
+        font-size:30px;
+
+    }
+
+    .recommendation-icon{
+
+        width:46px;
+
+        height:46px;
+
+        font-size:20px;
+
+    }
+
+}
+
+/* ===========================================
+   PERFORMANCE
+=========================================== */
+
+.analytics-card,
+.chart-card,
+.analytics-insight,
+.recommendation-card,
+.timeline-card,
+.saving-card{
+
+    will-change:transform;
+
+}
+
+/* ===========================================
+   EMPTY STATE
+=========================================== */
+
+.empty-state{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:40px;
+
+    text-align:center;
+
+    color:var(--text-muted);
+
+}
+
+.empty-state h3{
+
+    color:white;
+
+    margin-top:15px;
+
+    margin-bottom:10px;
+
+}
+
+.empty-state p{
+
+    max-width:400px;
+
+    line-height:1.7;
+
+}

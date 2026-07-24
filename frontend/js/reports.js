@@ -1,124 +1,152 @@
 // ======================================
-// Logged In User
+// USER & ELEMENTS
 // ======================================
 
 const email = localStorage.getItem("loggedInUser");
 
-// ======================================
-// Month Filter
-// ======================================
-
 const monthFilter = document.getElementById("monthFilter");
 
-// Default = Current Month
-monthFilter.value = new Date().toISOString().slice(0, 7);
+const income = document.getElementById("income");
+const expense = document.getElementById("expense");
+const savings = document.getElementById("savings");
+const totalTransactions = document.getElementById("totalTransactions");
 
-// Initial Load
+const categorySummary =
+    document.getElementById("categorySummary");
+
+const reportTable =
+    document.getElementById("reportTable");
+
+const aiInsights =
+    document.getElementById("aiInsights");
+
+// ======================================
+// PAGINATION
+// ======================================
+
+const rowsPerPage = 5;
+
+let currentPage = 1;
+
+let allTransactions = [];
+
+// ======================================
+// INITIALIZE
+// ======================================
+
+monthFilter.value =
+    new Date().toISOString().slice(0,7);
+
+document.getElementById("reportEmail").textContent =
+    email;
+
+document.getElementById("generatedDate").textContent =
+    new Date().toLocaleString();
+
+monthFilter.addEventListener(
+    "change",
+    loadPageData
+);
+
 loadPageData();
 
-// Reload when month changes
-monthFilter.addEventListener("change", loadPageData);
-
 // ======================================
-// Load Report
+// FORMATTERS
 // ======================================
 
-function loadPageData() {
+function formatCurrency(amount){
+
+    return new Intl.NumberFormat(
+
+        "en-IN",
+
+        {
+
+            style:"currency",
+
+            currency:"INR"
+
+        }
+
+    ).format(amount || 0);
+
+}
+
+function formatDate(date){
+
+    if(!date) return "-";
+
+    return new Date(date).toLocaleDateString("en-IN");
+
+}
+
+// ======================================
+// LOAD REPORT DATA
+// ======================================
+
+function loadPageData(){
 
     const month = monthFilter.value;
 
     fetch(
+
         `http://127.0.0.1:8002/reports/${email}?month=${month}`
+
     )
 
     .then(response => response.json())
 
     .then(data => {
 
-        // ==========================================
-        // User Information
-        // ==========================================
+        allTransactions = data.transactions;
 
-        document.getElementById("reportEmail").innerHTML = email;
+        currentPage = 1;
 
-        document.getElementById("generatedDate").innerHTML =
-            new Date().toLocaleString();
+        // ==================================
+        // SUMMARY CARDS
+        // ==================================
 
-        // ==========================================
-        // Summary Cards
-        // ==========================================
+        income.textContent =
+            formatCurrency(data.total_income);
 
-        document.getElementById("income").innerHTML =
-            new Intl.NumberFormat("en-IN", {
+        expense.textContent =
+            formatCurrency(data.total_expense);
 
-                style: "currency",
+        savings.textContent =
+            formatCurrency(data.savings);
 
-                currency: "INR"
+        totalTransactions.textContent =
+            allTransactions.length;
 
-            }).format(data.total_income);
+        // ==================================
+        // CATEGORY SUMMARY
+        // ==================================
 
-        document.getElementById("expense").innerHTML =
-            new Intl.NumberFormat("en-IN", {
-
-                style: "currency",
-
-                currency: "INR"
-
-            }).format(data.total_expense);
-
-        document.getElementById("savings").innerHTML =
-            new Intl.NumberFormat("en-IN", {
-
-                style: "currency",
-
-                currency: "INR"
-
-            }).format(data.savings);
-
-        document.getElementById("totalTransactions").innerHTML =
-            data.transactions.length;
-
-        // ==========================================
-        // Category Summary
-        // ==========================================
-
-        const categoryTable =
-            document.getElementById("categorySummary");
-
-        categoryTable.innerHTML = "";
+        categorySummary.innerHTML = "";
 
         const categoryTotals = {};
 
-        data.transactions.forEach(transaction => {
+        allTransactions.forEach(transaction => {
 
-            if (!categoryTotals[transaction.category]) {
+            const category =
+                transaction.category || "Others";
 
-                categoryTotals[transaction.category] = 0;
-
-            }
-
-            categoryTotals[transaction.category] +=
-                Number(transaction.amount);
+            categoryTotals[category] =
+                (categoryTotals[category] || 0)
+                + Number(transaction.amount);
 
         });
 
-        Object.keys(categoryTotals).forEach(category => {
+        if(Object.keys(categoryTotals).length === 0){
 
-            categoryTable.innerHTML += `
+            categorySummary.innerHTML = `
 
             <tr>
 
-                <td>${category}</td>
+                <td colspan="2"
+                style="text-align:center;padding:20px;">
 
-                <td>
-
-                    ${new Intl.NumberFormat("en-IN", {
-
-                        style: "currency",
-
-                        currency: "INR"
-
-                    }).format(categoryTotals[category])}
+                    No category data available.
 
                 </td>
 
@@ -126,213 +154,398 @@ function loadPageData() {
 
             `;
 
-        });
+        }
 
-        // ==========================================
-        // AI Insights
-        // ==========================================
+        else{
 
-        const aiInsights =
-            document.getElementById("aiInsights");
+            Object.entries(categoryTotals)
+
+            .sort((a,b)=>b[1]-a[1])
+
+            .forEach(([category,total])=>{
+
+                categorySummary.innerHTML += `
+
+                <tr>
+
+                    <td>${category}</td>
+
+                    <td>${formatCurrency(total)}</td>
+
+                </tr>
+
+                `;
+
+            });
+
+        }
+
+        // ==================================
+        // AI INSIGHTS
+        // ==================================
 
         aiInsights.innerHTML = "";
 
-        let highestCategory = "";
+        const highestCategory =
+            Object.entries(categoryTotals)
 
-        let highestAmount = 0;
+            .sort((a,b)=>b[1]-a[1])[0];
 
-        Object.keys(categoryTotals).forEach(category => {
+        aiInsights.innerHTML += `
 
-            if (categoryTotals[category] > highestAmount) {
+        <li>
 
-                highestAmount = categoryTotals[category];
+            💰 Monthly Income:
+            <strong>${formatCurrency(data.total_income)}</strong>
 
-                highestCategory = category;
+        </li>
+
+        `;
+
+        aiInsights.innerHTML += `
+
+        <li>
+
+            💸 Monthly Expense:
+            <strong>${formatCurrency(data.total_expense)}</strong>
+
+        </li>
+
+        `;
+
+        aiInsights.innerHTML += `
+
+        <li>
+
+            💵 Net Savings:
+            <strong>${formatCurrency(data.savings)}</strong>
+
+        </li>
+
+        `;
+
+        if(highestCategory){
+
+            aiInsights.innerHTML += `
+
+            <li>
+
+                📊 Highest Spending Category:
+                <strong>${highestCategory[0]}</strong>
+
+                (${formatCurrency(highestCategory[1])})
+
+            </li>
+
+            `;
+
+        }
+
+        if(data.total_income > 0){
+
+            const savingsRate = (
+
+                (data.savings / data.total_income) * 100
+
+            ).toFixed(1);
+
+            aiInsights.innerHTML += `
+
+            <li>
+
+                📈 Savings Rate:
+                <strong>${savingsRate}%</strong>
+
+            </li>
+
+            `;
+
+            if(savingsRate >= 30){
+
+                aiInsights.innerHTML += `
+
+                <li>
+
+                    ✅ Excellent saving habits this month.
+
+                </li>
+
+                `;
 
             }
 
-        });
+            else if(savingsRate >= 15){
 
-        aiInsights.innerHTML += `
-
-            <li>
-
-            💰 Total Income :
-            ${new Intl.NumberFormat("en-IN", {
-
-                style: "currency",
-
-                currency: "INR"
-
-            }).format(data.total_income)}
-
-            </li>
-
-        `;
-
-        aiInsights.innerHTML += `
-
-            <li>
-
-            💸 Total Expense :
-            ${new Intl.NumberFormat("en-IN", {
-
-                style: "currency",
-
-                currency: "INR"
-
-            }).format(data.total_expense)}
-
-            </li>
-
-        `;
-
-        aiInsights.innerHTML += `
-
-            <li>
-
-            💵 Savings :
-            ${new Intl.NumberFormat("en-IN", {
-
-                style: "currency",
-
-                currency: "INR"
-
-            }).format(data.savings)}
-
-            </li>
-
-        `;
-
-        if (highestCategory !== "") {
-
-            aiInsights.innerHTML += `
+                aiInsights.innerHTML += `
 
                 <li>
 
-                📊 Highest Spending Category :
-                <b>${highestCategory}</b>
+                    👍 Your finances are stable, but there's room to save more.
 
                 </li>
 
-            `;
+                `;
 
-        }
+            }
 
-        if (data.total_income > 0) {
+            else{
 
-            const savingsRate =
-                ((data.savings / data.total_income) * 100).toFixed(1);
-
-            aiInsights.innerHTML += `
+                aiInsights.innerHTML += `
 
                 <li>
 
-                ⭐ Savings Rate :
-                <b>${savingsRate}%</b>
+                    ⚠️ Savings are relatively low. Consider reducing discretionary expenses.
 
                 </li>
 
-            `;
+                `;
+
+            }
 
         }
 
-        if (highestCategory !== "") {
+        // ==================================
+        // PAGINATED TRANSACTION TABLE
+        // ==================================
 
-            aiInsights.innerHTML += `
+        renderTransactionTable();
 
-                <li>
-
-                💡 Recommendation :
-
-                Try reducing spending on
-                <b>${highestCategory}</b>
-                to improve your monthly savings.
-
-                </li>
-
-            `;
-
-        }
-
-        // ==========================================
-        // Transaction Table
-        // ==========================================
-
-        const table =
-            document.getElementById("reportTable");
-
-        table.innerHTML = "";
-
-        if (data.transactions.length === 0) {
-
-            table.innerHTML = `
-
-            <tr>
-
-                <td colspan="5"
-                style="text-align:center;padding:20px;">
-
-                No transactions found for this month.
-
-                </td>
-
-            </tr>
-
-            `;
-
-            return;
-
-        }
-
-        data.transactions.forEach(transaction => {
-
-            table.innerHTML += `
-
-            <tr>
-
-                <td>${transaction.date}</td>
-
-                <td>${transaction.notes}</td>
-
-                <td>${transaction.category}</td>
-
-                <td>${transaction.payment_mode}</td>
-
-                <td>
-
-                    ${new Intl.NumberFormat("en-IN", {
-
-                        style: "currency",
-
-                        currency: "INR"
-
-                    }).format(transaction.amount)}
-
-                </td>
-
-            </tr>
-
-            `;
-
-        });
+        renderPagination();
 
     })
 
-    .catch(error => {
+    .catch(error=>{
 
-        console.log(error);
+        console.error("Report Error:",error);
 
-        alert("Unable to load report.");
+        categorySummary.innerHTML = `
+
+        <tr>
+
+            <td colspan="2">
+
+                Unable to load report.
+
+            </td>
+
+        </tr>
+
+        `;
+
+        reportTable.innerHTML = `
+
+        <tr>
+
+            <td colspan="5">
+
+                Unable to load report.
+
+            </td>
+
+        </tr>
+
+        `;
+
+        aiInsights.innerHTML =
+
+            "<li>Unable to generate AI insights.</li>";
 
     });
 
 }
 // ======================================
-// Download CSV
+// RENDER TRANSACTION TABLE
 // ======================================
 
-function downloadCSV() {
+function renderTransactionTable(){
+
+    reportTable.innerHTML = "";
+
+    if(allTransactions.length === 0){
+
+        reportTable.innerHTML = `
+
+        <tr>
+
+            <td colspan="5"
+            style="text-align:center;padding:30px;">
+
+                No transactions found for this month.
+
+            </td>
+
+        </tr>
+
+        `;
+
+        return;
+
+    }
+
+    const start =
+        (currentPage - 1) * rowsPerPage;
+
+    const end =
+        start + rowsPerPage;
+
+    const pageTransactions =
+        allTransactions.slice(start, end);
+
+    pageTransactions.forEach(transaction => {
+
+        reportTable.innerHTML += `
+
+        <tr>
+
+            <td>${formatDate(transaction.date)}</td>
+
+            <td>${transaction.notes || "-"}</td>
+
+            <td>${transaction.category}</td>
+
+            <td>${transaction.payment_mode}</td>
+
+            <td>${formatCurrency(transaction.amount)}</td>
+
+        </tr>
+
+        `;
+
+    });
+
+}
+
+// ======================================
+// RENDER PAGINATION
+// ======================================
+
+function renderPagination(){
+
+    const paginationInfo =
+        document.getElementById("paginationInfo");
+
+    const paginationControls =
+        document.getElementById("paginationControls");
+
+    paginationControls.innerHTML = "";
+
+    if(allTransactions.length === 0){
+
+        paginationInfo.textContent =
+            "Showing 0 transactions";
+
+        return;
+
+    }
+
+    const totalPages =
+        Math.ceil(allTransactions.length / rowsPerPage);
+
+    const start =
+        (currentPage - 1) * rowsPerPage + 1;
+
+    const end =
+        Math.min(
+            currentPage * rowsPerPage,
+            allTransactions.length
+        );
+
+    paginationInfo.textContent =
+
+        `Showing ${start}-${end} of ${allTransactions.length} transactions`;
+
+    // ==========================
+    // Previous Button
+    // ==========================
+
+    const prevBtn =
+        document.createElement("button");
+
+    prevBtn.innerHTML = "◀";
+
+    prevBtn.className = "page-btn";
+
+    prevBtn.disabled =
+        currentPage === 1;
+
+    prevBtn.onclick = () => {
+
+        currentPage--;
+
+        renderTransactionTable();
+
+        renderPagination();
+
+    };
+
+    paginationControls.appendChild(prevBtn);
+
+    // ==========================
+    // Page Numbers
+    // ==========================
+
+    for(let i = 1; i <= totalPages; i++){
+
+        const btn =
+            document.createElement("button");
+
+        btn.innerHTML = i;
+
+        btn.className = "page-btn";
+
+        if(i === currentPage){
+
+            btn.classList.add("active");
+
+        }
+
+        btn.onclick = () => {
+
+            currentPage = i;
+
+            renderTransactionTable();
+
+            renderPagination();
+
+        };
+
+        paginationControls.appendChild(btn);
+
+    }
+
+    // ==========================
+    // Next Button
+    // ==========================
+
+    const nextBtn =
+        document.createElement("button");
+
+    nextBtn.innerHTML = "▶";
+
+    nextBtn.className = "page-btn";
+
+    nextBtn.disabled =
+        currentPage === totalPages;
+
+    nextBtn.onclick = () => {
+
+        currentPage++;
+
+        renderTransactionTable();
+
+        renderPagination();
+
+    };
+
+    paginationControls.appendChild(nextBtn);
+
+}
+
+// ======================================
+// EXPORT FUNCTIONS
+// ======================================
+
+function downloadCSV(){
 
     const month = monthFilter.value;
 
@@ -346,12 +559,7 @@ function downloadCSV() {
 
 }
 
-
-// ======================================
-// Download PDF
-// ======================================
-
-function downloadPDF() {
+function downloadPDF(){
 
     const month = monthFilter.value;
 
@@ -365,92 +573,49 @@ function downloadPDF() {
 
 }
 
-
-// ======================================
-// Print Report
-// ======================================
-
-function printReport() {
+function printReport(){
 
     window.print();
 
 }
 
-
-// ======================================
-// Refresh Report
-// ======================================
-
-function refreshReport() {
+function refreshReport(){
 
     loadPageData();
 
 }
 
-
 // ======================================
-// Export Summary (Optional)
+// SUMMARY DATA
 // ======================================
 
-function getSummaryData() {
+function getSummaryData(){
 
-    return {
+    return{
 
-        email: email,
+        email,
 
-        month: monthFilter.value,
+        month:monthFilter.value,
 
-        income: document.getElementById("income").innerText,
+        income:income.innerText,
 
-        expense: document.getElementById("expense").innerText,
+        expense:expense.innerText,
 
-        savings: document.getElementById("savings").innerText,
+        savings:savings.innerText,
 
-        transactions:
-            document.getElementById("totalTransactions").innerText
+        transactions:totalTransactions.innerText
 
     };
 
 }
 
-
 // ======================================
-// Format Currency
-// ======================================
-
-function formatCurrency(amount) {
-
-    return new Intl.NumberFormat("en-IN", {
-
-        style: "currency",
-
-        currency: "INR"
-
-    }).format(amount);
-
-}
-
-
-// ======================================
-// Format Date
+// KEYBOARD SHORTCUT
 // ======================================
 
-function formatDate(dateString) {
+document.addEventListener("keydown",event=>{
 
-    if (!dateString) return "";
-
-    return new Date(dateString).toLocaleDateString("en-IN");
-
-}
-
-
-// ======================================
-// Print Shortcut
-// ======================================
-
-document.addEventListener("keydown", function (event) {
-
-    if (event.ctrlKey && event.key === "p") {
+    if(event.ctrlKey && event.key==="p"){
 
         event.preventDefault();
 
@@ -460,28 +625,12 @@ document.addEventListener("keydown", function (event) {
 
 });
 
-
 // ======================================
-// Download Button Events
+// PAGE READY
 // ======================================
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded",()=>{
 
-    const buttons = document.querySelectorAll(".report-buttons button");
-
-    if (buttons.length >= 2) {
-
-        buttons[0].addEventListener("click", downloadCSV);
-
-        buttons[1].addEventListener("click", downloadPDF);
-
-    }
+    console.log("Reports page loaded successfully.");
 
 });
-
-
-// ======================================
-// Page Loaded
-// ======================================
-
-console.log("Reports page loaded successfully.");

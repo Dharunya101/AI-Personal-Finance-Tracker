@@ -1,0 +1,800 @@
+/* ===========================================
+   BUDGET PAGE
+=========================================== */
+
+.analytics-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+
+    gap:25px;
+
+    margin-bottom:30px;
+
+}
+
+/* ===========================================
+   SUMMARY CARDS
+=========================================== */
+
+.analytics-card{
+
+    background:var(--surface);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    box-shadow:var(--shadow);
+
+    transition:var(--transition);
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.analytics-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:linear-gradient(
+        135deg,
+        rgba(36,214,245,.12),
+        transparent
+    );
+
+    opacity:0;
+
+    transition:.35s;
+
+}
+
+.analytics-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 18px 35px rgba(0,0,0,.35);
+
+}
+
+.analytics-card:hover::before{
+
+    opacity:1;
+
+}
+
+.card-icon{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:18px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:28px;
+
+    margin-bottom:18px;
+
+    box-shadow:var(--glow);
+
+}
+
+.analytics-card h3{
+
+    color:var(--text-muted);
+
+    font-size:15px;
+
+    font-weight:500;
+
+    margin-bottom:10px;
+
+}
+
+.analytics-card h2{
+
+    color:white;
+
+    font-size:34px;
+
+    font-weight:700;
+
+}
+
+/* ===========================================
+   MONTH FILTER
+=========================================== */
+
+.month-section{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+}
+
+.month-section p{
+
+    color:var(--text-muted);
+
+    margin-top:6px;
+
+}
+
+#monthFilter{
+
+    padding:14px 18px;
+
+    border-radius:14px;
+
+    border:1px solid var(--border);
+
+    background:var(--surface-hover);
+
+    color:white;
+
+    outline:none;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+#monthFilter:focus{
+
+    border-color:var(--primary);
+
+    box-shadow:0 0 0 4px rgba(36,214,245,.18);
+
+}
+
+/* ===========================================
+   ADD BUDGET FORM
+=========================================== */
+
+.section input{
+
+    width:100%;
+
+    margin-top:16px;
+
+    margin-bottom:18px;
+
+}
+
+.section button{
+
+    width:220px;
+
+    padding:15px 30px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:var(--glow);
+
+}
+
+.section button:hover{
+
+    transform:translateY(-3px);
+
+}
+/* ===========================================
+   SECTION TITLE
+=========================================== */
+
+.section-title{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:22px;
+
+}
+
+.section-title h2{
+
+    color:white;
+
+    font-size:28px;
+
+    margin-bottom:6px;
+
+}
+
+.section-title p{
+
+    color:var(--text-muted);
+
+    font-size:15px;
+
+}
+
+/* ===========================================
+   TABLE CONTAINER
+=========================================== */
+
+.table-container{
+
+    overflow-x:auto;
+
+    border-radius:18px;
+
+}
+
+/* ===========================================
+   BUDGET TABLE
+=========================================== */
+
+.budget-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:18px;
+
+}
+
+.budget-table thead{
+
+    background:rgba(36,214,245,.08);
+
+}
+
+.budget-table th{
+
+    color:var(--text-light);
+
+    font-size:15px;
+
+    font-weight:600;
+
+    text-align:left;
+
+    padding:18px;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.budget-table td{
+
+    color:var(--text-muted);
+
+    padding:18px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.budget-table tbody tr{
+
+    transition:.3s;
+
+}
+
+.budget-table tbody tr:hover{
+
+    background:rgba(36,214,245,.05);
+
+}
+
+/* ===========================================
+   ACTION BUTTONS
+=========================================== */
+
+.edit-btn{
+
+    background:#24d6f5;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    margin-right:8px;
+
+    transition:.3s;
+
+}
+
+.edit-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(36,214,245,.25);
+
+}
+
+.delete-btn{
+
+    background:#ef4444;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 16px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.delete-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(239,68,68,.25);
+
+}
+
+/* ===========================================
+   PROGRESS SECTION
+=========================================== */
+
+#budgetProgress{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+
+    margin-top:20px;
+
+}
+
+.progress-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.progress-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.progress-header h3{
+
+    color:white;
+
+    font-size:17px;
+
+}
+
+.progress-header span{
+
+    color:var(--text-muted);
+
+    font-size:14px;
+
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:12px;
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    overflow:hidden;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:30px;
+
+    background:linear-gradient(
+        90deg,
+        #24d6f5,
+        #4f7cff
+    );
+
+    transition:width .6s ease;
+
+}
+
+/* ===========================================
+   ALERTS
+=========================================== */
+
+#budgetAlerts{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.alert-card{
+
+    padding:18px 22px;
+
+    border-radius:16px;
+
+    border-left:5px solid #f59e0b;
+
+    background:rgba(245,158,11,.10);
+
+    color:white;
+
+}
+
+.alert-success{
+
+    border-left-color:#22c55e;
+
+    background:rgba(34,197,94,.10);
+
+}
+
+.alert-warning{
+
+    border-left-color:#f59e0b;
+
+    background:rgba(245,158,11,.10);
+
+}
+
+.alert-danger{
+
+    border-left-color:#ef4444;
+
+    background:rgba(239,68,68,.10);
+
+}
+/* ===========================================
+   AI RECOMMENDATION
+=========================================== */
+
+.analytics-insight{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+    margin-top:30px;
+
+}
+
+.insight-icon{
+
+    width:80px;
+
+    height:80px;
+
+    border-radius:22px;
+
+    background:linear-gradient(
+        135deg,
+        var(--primary),
+        var(--secondary)
+    );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:36px;
+
+    box-shadow:var(--glow);
+
+    flex-shrink:0;
+
+}
+
+.analytics-insight h2{
+
+    color:white;
+
+    margin-bottom:10px;
+
+    font-size:28px;
+
+}
+
+.analytics-insight p{
+
+    color:var(--text-muted);
+
+    line-height:1.8;
+
+    font-size:15px;
+
+}
+
+/* ===========================================
+   FADE ANIMATION
+=========================================== */
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.analytics-card,
+.section,
+.analytics-insight{
+
+    animation:fadeUp .7s ease forwards;
+
+}
+
+/* ===========================================
+   STAGGERED CARD ANIMATION
+=========================================== */
+
+.analytics-card:nth-child(1){
+
+    animation-delay:.1s;
+
+}
+
+.analytics-card:nth-child(2){
+
+    animation-delay:.2s;
+
+}
+
+.analytics-card:nth-child(3){
+
+    animation-delay:.3s;
+
+}
+
+.analytics-card:nth-child(4){
+
+    animation-delay:.4s;
+
+}
+
+/* ===========================================
+   HOVER EFFECTS
+=========================================== */
+
+.analytics-card:hover .card-icon{
+
+    transform:scale(1.08) rotate(6deg);
+
+    transition:.35s;
+
+}
+
+.section:hover{
+
+    transform:translateY(-3px);
+
+    transition:.3s;
+
+}
+
+/* ===========================================
+   CUSTOM SCROLLBAR
+=========================================== */
+
+.table-container::-webkit-scrollbar{
+
+    height:8px;
+
+}
+
+.table-container::-webkit-scrollbar-track{
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:20px;
+
+}
+
+.table-container::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+/* ===========================================
+   RESPONSIVE
+=========================================== */
+
+@media(max-width:1200px){
+
+    .analytics-cards{
+
+        grid-template-columns:repeat(2,1fr);
+
+    }
+
+}
+
+@media(max-width:900px){
+
+    .month-section{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+    }
+
+    #monthFilter{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .analytics-cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .analytics-insight{
+
+        flex-direction:column;
+
+        text-align:center;
+
+    }
+
+    .budget-table th,
+    .budget-table td{
+
+        padding:14px;
+
+        font-size:14px;
+
+    }
+
+    .section button{
+
+        width:100%;
+
+    }
+
+}
+
+@media(max-width:500px){
+
+    .analytics-card{
+
+        padding:22px;
+
+    }
+
+    .analytics-card h2{
+
+        font-size:28px;
+
+    }
+
+    .section-title h2{
+
+        font-size:24px;
+
+    }
+
+    .insight-icon{
+
+        width:70px;
+
+        height:70px;
+
+        font-size:30px;
+
+    }
+
+}
+
+/* ===========================================
+   PERFORMANCE
+=========================================== */
+
+.analytics-card,
+.section,
+.analytics-insight{
+
+    will-change:transform;
+
+}

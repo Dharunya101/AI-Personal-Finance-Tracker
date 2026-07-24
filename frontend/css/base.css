@@ -18,7 +18,15 @@ html{
 
 }
 
+/* ===========================================
+   BODY
+=========================================== */
+
 body{
+
+    margin:0;
+
+    padding:0;
 
     background:var(--bg);
 
@@ -26,9 +34,9 @@ body{
 
     font-family:var(--font);
 
-    overflow-x:hidden;
-
-    line-height:1.6;
+    transition:
+        background-color .35s ease,
+        color .35s ease;
 
 }
 
@@ -66,7 +74,7 @@ h1{
 
     font-weight:800;
 
-    color:white;
+    color:var(--text);
 
 }
 
@@ -76,6 +84,8 @@ h2{
 
     font-weight:700;
 
+    color:var(--text);
+
 }
 
 h3{
@@ -84,11 +94,27 @@ h3{
 
     font-weight:600;
 
+    color:var(--text);
+
+}
+
+h4,
+h5,
+h6{
+
+    color:var(--text);
+
 }
 
 p{
 
     color:var(--text-muted);
+
+}
+
+span{
+
+    color:inherit;
 
 }
 
@@ -115,5 +141,36 @@ button{
     cursor:pointer;
 
     border:none;
+
+}
+
+/* ===========================================
+   GLOBAL TRANSITIONS
+=========================================== */
+
+body,
+.sidebar,
+.section,
+.card,
+input,
+textarea,
+select,
+button,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span{
+
+    transition:
+        background-color .35s ease,
+        color .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease,
+        transform .25s ease;
 
 }

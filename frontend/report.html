@@ -4,91 +4,168 @@
 <head>
 
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>Financial Reports</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
-
 <body>
+
+    <script>
+const theme = localStorage.getItem("theme") || "dark";
+document.body.setAttribute("data-theme", theme);
+</script>
 
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
+
     window.location.href="login.html";
+
 }
 
 function logout(){
+
     localStorage.removeItem("loggedInUser");
+
     window.location.href="login.html";
+
 }
 
 </script>
 
-<!-- Sidebar -->
+<!-- ==========================================
+                SIDEBAR
+========================================== -->
 
 <div class="sidebar">
 
-    <div class="logo">
+    <div>
 
-        <div class="logo-icon">AI</div>
+        <div class="logo">
 
-        <div class="logo-text">
+            <div class="logo-icon">
 
-            <h2>Finance Tracker</h2>
+                AI
 
-            <p>Financial Intelligence</p>
+            </div>
+
+            <div class="logo-text">
+
+                <h2>Finance Tracker</h2>
+
+                <p>Financial Intelligence</p>
+
+            </div>
 
         </div>
 
+        <ul>
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="transactions.html">
+
+                    💳 Transactions
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="analytics.html">
+
+                    📊 Analytics
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="budget.html">
+
+                    🎯 Budgets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="insights.html">
+
+                    🤖 AI Insights
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="report.html">
+
+                    📄 Reports
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="upload.html">
+
+                    ⬆ Upload
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="settings.html">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
     </div>
 
-    <ul>
-
-        <li class="active">
-            <a href="dashboard.html">🏠 Dashboard</a>
-        </li>
-
-        <li>
-            <a href="transactions.html">💳 Transactions</a>
-        </li>
-
-        <li>
-            <a href="analytics.html">📊 Analytics</a>
-        </li>
-
-        <li>
-            <a href="budget.html">🎯 Budgets</a>
-        </li>
-
-        <li>
-            <a href="insights.html">🤖 AI Insights</a>
-        </li>
-
-        <li>
-            <a href="report.html">📄 Reports</a>
-        </li>
-
-        <li>
-            <a href="upload.html">⬆ Upload</a>
-        </li>
-
-        <li>
-            <a href="settings.html">⚙ Settings</a>
-        </li>
-
-    </ul>
-
-    <button class="logout-btn" onclick="logout()">
+    <button
+        class="logout-btn"
+        onclick="logout()">
 
         Logout
 
@@ -96,25 +173,59 @@ function logout(){
 
 </div>
 
-<!-- Main -->
+<!-- ==========================================
+                MAIN CONTENT
+========================================== -->
 
-<div class="main">
+<main class="main-content">
 
-    <div class="report-header">
+    <div class="dashboard-header">
 
-        <h1>📑 Monthly Financial Report</h1>
+        <div>
 
-        <p>
-            AI Personal Finance Tracker
-        </p>
+            <p class="greeting">
+
+                📄 Financial Reports
+
+            </p>
+
+            <h1>
+
+                Monthly Financial Report
+
+            </h1>
+
+            <p class="subtitle">
+
+                View, analyze and export your monthly financial reports.
+
+            </p>
+
+        </div>
 
     </div>
 
-    <!-- Month -->
+    <!-- ======================================
+            FILTERS
+    ======================================= -->
 
-    <div class="filter-container">
+    <div class="section month-section">
 
-        <label><b>📅 Select Month</b></label>
+        <div>
+
+            <h2>
+
+                Generate Report
+
+            </h2>
+
+            <p>
+
+                Select a month to generate your financial report.
+
+            </p>
+
+        </div>
 
         <input
             type="month"
@@ -122,11 +233,31 @@ function logout(){
 
     </div>
 
-    <!-- User Information -->
+    <!-- ======================================
+            USER INFO
+    ======================================= -->
 
     <div class="section">
 
-        <h2>👤 User Information</h2>
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    User Information
+
+                </h2>
+
+                <p>
+
+                    Report details.
+
+                </p>
+
+            </div>
+
+        </div>
 
         <div class="report-user-grid">
 
@@ -150,144 +281,314 @@ function logout(){
 
     </div>
 
-    <!-- Summary -->
+    <!-- ======================================
+            SUMMARY CARDS
+    ======================================= -->
 
-    <div class="cards">
+    <div class="analytics-cards">
 
-        <div class="card">
+        <div class="analytics-card">
 
-            <h3>💰 Total Income</h3>
+            <div class="card-icon">
 
-            <h2 id="income">₹0</h2>
+                💰
+
+            </div>
+
+            <h3>
+
+                Total Income
+
+            </h3>
+
+            <h2 id="income">
+
+                ₹0
+
+            </h2>
 
         </div>
 
-        <div class="card">
+        <div class="analytics-card">
 
-            <h3>💸 Total Expense</h3>
+            <div class="card-icon">
 
-            <h2 id="expense">₹0</h2>
+                💸
+
+            </div>
+
+            <h3>
+
+                Total Expense
+
+            </h3>
+
+            <h2 id="expense">
+
+                ₹0
+
+            </h2>
 
         </div>
 
-        <div class="card">
+        <div class="analytics-card">
 
-            <h3>💵 Savings</h3>
+            <div class="card-icon">
 
-            <h2 id="savings">₹0</h2>
+                💵
+
+            </div>
+
+            <h3>
+
+                Savings
+
+            </h3>
+
+            <h2 id="savings">
+
+                ₹0
+
+            </h2>
 
         </div>
 
-        <div class="card">
+        <div class="analytics-card">
 
-            <h3>📊 Transactions</h3>
+            <div class="card-icon">
 
-            <h2 id="totalTransactions">0</h2>
+                📊
+
+            </div>
+
+            <h3>
+
+                Transactions
+
+            </h3>
+
+            <h2 id="totalTransactions">
+
+                0
+
+            </h2>
 
         </div>
 
     </div>
-
-    <!-- Category Summary -->
+        <!-- ======================================
+            CATEGORY SUMMARY
+    ======================================= -->
 
     <div class="section">
 
-        <h2>📊 Category Summary</h2>
+        <div class="section-title">
 
-        <table>
+            <div>
 
-            <thead>
+                <h2>
 
-                <tr>
+                    Category Summary
 
-                    <th>Category</th>
-                    <th>Total Amount</th>
+                </h2>
 
-                </tr>
+                <p>
 
-            </thead>
+                    Total expenses grouped by category.
 
-            <tbody id="categorySummary">
+                </p>
 
-            </tbody>
+            </div>
 
-        </table>
+        </div>
+
+        <div class="table-container">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Category</th>
+
+                        <th>Total Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="categorySummary">
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
-    <!-- Transactions -->
+    <!-- ======================================
+            TRANSACTION HISTORY
+    ======================================= -->
 
     <div class="section">
 
-        <h2>📋 Transaction History</h2>
+        <div class="section-title">
 
-        <table>
+            <div>
 
-            <thead>
+                <h2>
 
-                <tr>
+                    Transaction History
 
-                    <th>Date</th>
-                    <th>Description</th>
-                    <th>Category</th>
-                    <th>Payment</th>
-                    <th>Amount</th>
+                </h2>
 
-                </tr>
+                <p>
 
-            </thead>
+                    Complete list of transactions for the selected month.
 
-            <tbody id="reportTable">
+                </p>
 
-            </tbody>
+            </div>
 
-        </table>
+        </div>
+
+        <div class="table-container">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+
+                        <th>Description</th>
+
+                        <th>Category</th>
+
+                        <th>Payment</th>
+
+                        <th>Amount</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="reportTable">
+
+                </tbody>
+
+            </table>
+
+</div>
+
+<div class="pagination-container">
+
+    <div id="paginationInfo">
+
+        Showing 1-5 of 0 transactions
 
     </div>
 
-    <!-- AI Insights -->
-
-    <div class="section">
-
-        <h2>🤖 AI Insights</h2>
-
-        <ul id="aiInsights">
-
-            <li>Loading insights...</li>
-
-        </ul>
-
-    </div>
-
-    <!-- Download -->
-
-    <div class="section report-buttons">
-
-        <button onclick="downloadCSV()">
-
-            📥 Download CSV
-
-        </button>
-
-        <button onclick="window.print()">
-
-            📄 Download PDF
-
-        </button>
+    <div id="paginationControls">
 
     </div>
 
 </div>
+
+</div>
+
+    <!-- ======================================
+            AI REPORT SUMMARY
+    ======================================= -->
+
+    <div class="section analytics-insight">
+
+        <div class="insight-icon">
+
+            🤖
+
+        </div>
+
+        <div>
+
+            <h2>
+
+                AI Report Summary
+
+            </h2>
+
+            <ul id="aiInsights">
+
+                <li>Loading report insights...</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            EXPORT REPORTS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Export Reports
+
+                </h2>
+
+                <p>
+
+                    Download your financial report in different formats.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="report-buttons">
+
+            <button onclick="downloadCSV()">
+
+                📥 Export CSV
+
+            </button>
+
+            <button onclick="window.print()">
+
+                📄 Export PDF
+
+            </button>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ======================================
+        JAVASCRIPT
+====================================== -->
 
 <script src="js/reports.js"></script>
 
 <script>
 
 document.getElementById("reportEmail").innerHTML =
-localStorage.getItem("loggedInUser");
+    localStorage.getItem("loggedInUser");
 
 document.getElementById("generatedDate").innerHTML =
-new Date().toLocaleString();
+    new Date().toLocaleString();
 
 </script>
 

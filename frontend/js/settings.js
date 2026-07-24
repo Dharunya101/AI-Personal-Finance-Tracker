@@ -1,119 +1,114 @@
 // ======================================
-// Protect Page
+// PROTECT PAGE
 // ======================================
 
 const email = localStorage.getItem("loggedInUser");
 
 if (!email) {
-
     window.location.href = "login.html";
-
 }
 
 // ======================================
-// Load User Details
+// LOAD USER DETAILS
 // ======================================
 
-fetch(`http://127.0.0.1:8002/users/${email}`)
+fetch(`http://127.0.0.1:8002/users/${encodeURIComponent(email)}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Unable to fetch user.");
+        }
+        return response.json();
+    })
+    .then(data => {
 
-.then(response => response.json())
+        console.log("User Loaded:", data);
 
-.then(data => {
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("email").value = data.email || "";
 
-    document.getElementById("name").value = data.name;
+    })
+    .catch(error => {
 
-    document.getElementById("email").value = data.email;
+        console.error(error);
+        alert("Unable to load profile.");
 
-})
-
-.catch(error => {
-
-    console.log(error);
-
-    alert("Unable to load profile.");
-
-});
-
+    });
 
 // ======================================
-// Save Profile
+// SAVE PROFILE
 // ======================================
 
-function saveProfile(){
+function saveProfile() {
 
     const user = {
 
-        name: document.getElementById("name").value,
-
+        name: document.getElementById("name").value.trim(),
         email: document.getElementById("email").value
 
     };
 
-    fetch("http://127.0.0.1:8002/users/update",{
+    fetch("http://127.0.0.1:8002/users/update", {
 
-        method:"PUT",
+        method: "PUT",
 
-        headers:{
-
-            "Content-Type":"application/json"
-
+        headers: {
+            "Content-Type": "application/json"
         },
 
-        body:JSON.stringify(user)
+        body: JSON.stringify(user)
 
     })
 
-    .then(response=>response.json())
+    .then(response => {
 
-    .then(data=>{
+        if (!response.ok) {
+            throw new Error("Update failed");
+        }
 
-        alert(data.message);
+        return response.json();
 
     })
 
-    .catch(error=>{
+    .then(data => {
 
-        console.log(error);
+        alert(data.message || "Profile updated successfully.");
 
+    })
+
+    .catch(error => {
+
+        console.error(error);
         alert("Unable to update profile.");
 
     });
 
 }
 
-
 // ======================================
-// Change Password
+// CHANGE PASSWORD
 // ======================================
 
-function changePassword(){
+function changePassword() {
 
     const currentPassword =
-
         document.getElementById("oldPassword").value;
 
     const newPassword =
-
         document.getElementById("newPassword").value;
 
-    if(currentPassword==="" || newPassword===""){
+    if (currentPassword === "" || newPassword === "") {
 
         alert("Please fill all fields.");
-
         return;
 
     }
 
-    // Same validation as Signup
-
     const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#])[A-Za-z\d@$!%*?&.#]{8,}$/;
 
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#])[A-Za-z\d@$!%*?&.#]{8,}$/;
-
-    if(!passwordRegex.test(newPassword)){
+    if (!passwordRegex.test(newPassword)) {
 
         alert(
-
 `Password must contain:
 
 • Minimum 8 characters
@@ -121,103 +116,208 @@ function changePassword(){
 • One lowercase letter
 • One number
 • One special character`
-
         );
 
         return;
 
     }
 
-    fetch(
+    fetch("http://127.0.0.1:8002/users/change-password", {
 
-        "http://127.0.0.1:8002/users/change-password",
+        method: "POST",
 
-        {
+        headers: {
+            "Content-Type": "application/json"
+        },
 
-            method:"POST",
+        body: JSON.stringify({
 
-            headers:{
+            email: email,
+            current_password: currentPassword,
+            new_password: newPassword
 
-                "Content-Type":"application/json"
-
-            },
-
-            body:JSON.stringify({
-
-                email:email,
-
-                current_password:currentPassword,
-
-                new_password:newPassword
-
-            })
-
-        }
-
-    )
-
-    .then(response=>response.json())
-
-    .then(data=>{
-
-        alert(data.message);
-
-        document.getElementById("oldPassword").value="";
-
-        document.getElementById("newPassword").value="";
+        })
 
     })
 
-    .catch(error=>{
+    .then(response => {
 
-        console.log(error);
+        if (!response.ok) {
+            throw new Error("Password change failed.");
+        }
 
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        alert(data.message || "Password updated successfully.");
+
+        document.getElementById("oldPassword").value = "";
+        document.getElementById("newPassword").value = "";
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
         alert("Unable to update password.");
 
     });
 
 }
 
-
 // ======================================
-// Show / Hide Password
+// SHOW / HIDE PASSWORD
 // ======================================
 
-function togglePassword(id, element){
+function togglePassword(id, element) {
 
     const input = document.getElementById(id);
 
     const icon = element.querySelector("i");
 
-    if(input.type==="password"){
+    if (input.type === "password") {
 
-        input.type="text";
+        input.type = "text";
 
         icon.classList.remove("fa-eye");
-
         icon.classList.add("fa-eye-slash");
 
-    }
+    } else {
 
-    else{
-
-        input.type="password";
+        input.type = "password";
 
         icon.classList.remove("fa-eye-slash");
-
         icon.classList.add("fa-eye");
 
     }
 
 }
+
 // ======================================
-// Logout
+// DARK / LIGHT THEME
 // ======================================
 
-function logout(){
+const themeToggle = document.getElementById("themeToggle");
+
+const savedTheme =
+    localStorage.getItem("theme") || "dark";
+
+document.body.setAttribute("data-theme", savedTheme);
+
+if (themeToggle) {
+
+    themeToggle.checked = savedTheme === "dark";
+
+    themeToggle.addEventListener("change", () => {
+
+        const theme =
+            themeToggle.checked ? "dark" : "light";
+
+        document.body.setAttribute("data-theme", theme);
+
+        localStorage.setItem("theme", theme);
+
+    });
+
+}
+
+// ======================================
+// PREFERENCES
+// ======================================
+
+const currency =
+    document.getElementById("currency");
+
+const dateFormat =
+    document.getElementById("dateFormat");
+
+if (currency) {
+
+    currency.value =
+        localStorage.getItem("currency") || "INR";
+
+}
+
+if (dateFormat) {
+
+    dateFormat.value =
+        localStorage.getItem("dateFormat") ||
+        "DD/MM/YYYY";
+
+}
+
+function savePreferences() {
+
+    localStorage.setItem(
+        "currency",
+        currency.value
+    );
+
+    localStorage.setItem(
+        "dateFormat",
+        dateFormat.value
+    );
+
+    alert("Preferences saved successfully.");
+
+}
+// ======================================
+// CLEAR ALL TRANSACTIONS
+// ======================================
+
+function clearAllTransactions() {
+
+    const confirmDelete = confirm(
+        "This will permanently delete all your transactions.\n\nDo you want to continue?"
+    );
+
+    if (!confirmDelete) return;
+
+    fetch(
+        `http://127.0.0.1:8002/transactions/clear/${encodeURIComponent(email)}`,
+        {
+            method: "DELETE"
+        }
+    )
+
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Delete failed");
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
+
+        alert(data.message || "Transactions deleted successfully.");
+
+    })
+
+    .catch(error => {
+
+        console.error(error);
+        alert("Unable to clear transactions.");
+
+    });
+
+}
+
+// ======================================
+// LOGOUT
+// ======================================
+
+function logout() {
 
     localStorage.removeItem("loggedInUser");
 
-    window.location.href="login.html";
+    window.location.href = "login.html";
 
 }
+
+console.log("Settings loaded successfully.");

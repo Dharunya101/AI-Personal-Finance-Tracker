@@ -1,18 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
     <title>Budgets</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Font -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/style.css">
 
 </head>
+
+<body>
+    <script>
+const theme = localStorage.getItem("theme") || "dark";
+document.body.setAttribute("data-theme", theme);
+</script>
+
 <script>
 
 if(!localStorage.getItem("loggedInUser")){
@@ -31,63 +51,120 @@ function logout(){
 
 </script>
 
-<body>
-
-<!-- Sidebar -->
+<!-- ==========================================
+                SIDEBAR
+========================================== -->
 
 <div class="sidebar">
 
-    <div class="logo">
+    <div>
 
-        <div class="logo-icon">AI</div>
+        <div class="logo">
 
-        <div class="logo-text">
+            <div class="logo-icon">
 
-            <h2>Finance Tracker</h2>
+                AI
 
-            <p>Financial Intelligence</p>
+            </div>
+
+            <div class="logo-text">
+
+                <h2>Finance Tracker</h2>
+
+                <p>Financial Intelligence</p>
+
+            </div>
 
         </div>
 
+        <ul>
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="transactions.html">
+
+                    💳 Transactions
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="analytics.html">
+
+                    📊 Analytics
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="budget.html">
+
+                    🎯 Budgets
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="insights.html">
+
+                    🤖 AI Insights
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="report.html">
+
+                    📄 Reports
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="upload.html">
+
+                    ⬆ Upload
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="settings.html">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
     </div>
 
-    <ul>
-
-        <li class="active">
-            <a href="dashboard.html">🏠 Dashboard</a>
-        </li>
-
-        <li>
-            <a href="transactions.html">💳 Transactions</a>
-        </li>
-
-        <li>
-            <a href="analytics.html">📊 Analytics</a>
-        </li>
-
-        <li>
-            <a href="budget.html">🎯 Budgets</a>
-        </li>
-
-        <li>
-            <a href="insights.html">🤖 AI Insights</a>
-        </li>
-
-        <li>
-            <a href="report.html">📄 Reports</a>
-        </li>
-
-        <li>
-            <a href="upload.html">⬆ Upload</a>
-        </li>
-
-        <li>
-            <a href="settings.html">⚙ Settings</a>
-        </li>
-
-    </ul>
-
-    <button class="logout-btn" onclick="logout()">
+    <button class="logout-btn"
+            onclick="logout()">
 
         Logout
 
@@ -95,41 +172,175 @@ function logout(){
 
 </div>
 
+<!-- ==========================================
+                MAIN CONTENT
+========================================== -->
 
-<!-- Main -->
+<main class="main-content">
 
-<div class="main">
+    <!-- Header -->
 
-    <h1>Budgets</h1>
+    <div class="dashboard-header">
 
-    <div class="section">
+        <div>
 
-        <table>
+            <p class="greeting">
 
-            <thead>
+                🎯 Smart Budget Planner
 
-                <tr>
-    <th>Category</th>
-    <th>Monthly Budget</th>
-    <th>Action</th>
-</tr>
+            </p>
 
-            </thead>
+            <h1>
 
-            <tbody id="budgetTable">
+                Budgets
 
-            </tbody>
+            </h1>
 
-        </table>
+            <p class="subtitle">
+
+                Plan your monthly budget and monitor your spending efficiently.
+
+            </p>
+
+        </div>
 
     </div>
 
+    <!-- ======================================
+            MONTH FILTER
+    ======================================= -->
 
-    <!-- Add Budget -->
+    <div class="section month-section">
+
+        <div>
+
+            <h2>
+
+                Select Month
+
+            </h2>
+
+            <p>
+
+                View budgets for a specific month.
+
+            </p>
+
+        </div>
+
+        <input
+            type="month"
+            id="monthFilter">
+
+    </div>
+
+    <!-- ======================================
+            SUMMARY CARDS
+    ======================================= -->
+
+    <div class="analytics-cards">
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                💰
+
+            </div>
+
+            <h3>
+
+                Total Budget
+
+            </h3>
+
+            <h2 id="totalBudgetCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                💸
+
+            </div>
+
+            <h3>
+
+                Total Spent
+
+            </h3>
+
+            <h2 id="totalSpentCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                💵
+
+            </div>
+
+            <h3>
+
+                Remaining
+
+            </h3>
+
+            <h2 id="remainingCard">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                📈
+
+            </div>
+
+            <h3>
+
+                Budget Usage
+
+            </h3>
+
+            <h2 id="usageCard">
+
+                0%
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            ADD / UPDATE BUDGET
+    ======================================= -->
 
     <div class="section">
 
-        <h2>Add Budget</h2>
+        <h2>
+
+            Add / Update Budget
+
+        </h2>
 
         <input
             type="text"
@@ -142,46 +353,223 @@ function logout(){
             placeholder="Monthly Budget">
 
         <button onclick="addBudget()">
-            Add Budget
+
+            Save Budget
+
         </button>
 
     </div>
+        <!-- ======================================
+            BUDGET OVERVIEW
+    ======================================= -->
+
     <div class="section">
 
-    <h2>⚠ Budget Alerts</h2>
+        <div class="section-title">
 
-    <div id="budgetAlerts">
+            <div>
+
+                <h2>
+
+                    Budget Overview
+
+                </h2>
+
+                <p>
+
+                    Manage all your monthly budgets in one place.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="budget-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Category</th>
+
+                        <th>Budget</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="budgetTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     </div>
 
-</div>
+    <!-- ======================================
+            BUDGET STATUS
+    ======================================= -->
+
     <div class="section">
 
-    <h2>Budget Status</h2>
+        <div class="section-title">
 
-    <table>
+            <div>
 
-        <thead>
+                <h2>
 
-            <tr>
-    <th>Category</th>
-    <th>Budget</th>
-    <th>Spent</th>
-    <th>Remaining</th>
-    <th>Progress</th>
-</tr>
+                    Budget Status
 
-        </thead>
+                </h2>
 
-        <tbody id="budgetStatusTable">
+                <p>
 
-        </tbody>
+                    Track your budget performance for every category.
 
-    </table>
+                </p>
 
-</div>
+            </div>
 
-</div>
+        </div>
+
+        <div class="table-container">
+
+            <table class="budget-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Category</th>
+
+                        <th>Budget</th>
+
+                        <th>Spent</th>
+
+                        <th>Remaining</th>
+
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="budgetStatusTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            PROGRESS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Budget Progress
+
+                </h2>
+
+                <p>
+
+                    Visual overview of your spending progress.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="budgetProgress">
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            ALERTS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Budget Alerts
+
+                </h2>
+
+                <p>
+
+                    Categories approaching or exceeding budget.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="budgetAlerts">
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            AI RECOMMENDATION
+    ======================================= -->
+
+    <div class="section analytics-insight">
+
+        <div class="insight-icon">
+
+            🤖
+
+        </div>
+
+        <div>
+
+            <h2>
+
+                AI Budget Recommendation
+
+            </h2>
+
+            <p id="budgetRecommendation">
+
+                Loading recommendations...
+
+            </p>
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ==========================================
+                JAVASCRIPT
+========================================== -->
 
 <script src="js/budget.js"></script>
 

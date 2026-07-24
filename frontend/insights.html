@@ -1,21 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>Insights</title>
+    <title>AI Insights</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="css/style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
+
+<body>
+    <script>
+const theme = localStorage.getItem("theme") || "dark";
+document.body.setAttribute("data-theme", theme);
+</script>
 
 <script>
 
@@ -35,61 +51,121 @@ function logout(){
 
 </script>
 
-<body>
+<!-- ==========================
+        SIDEBAR
+========================== -->
 
 <div class="sidebar">
 
-    <div class="logo">
+    <div>
 
-        <div class="logo-icon">AI</div>
+        <div class="logo">
 
-        <div class="logo-text">
+            <div class="logo-icon">
 
-            <h2>Finance Tracker</h2>
+                AI
 
-            <p>Financial Intelligence</p>
+            </div>
+
+            <div class="logo-text">
+
+                <h2>Finance Tracker</h2>
+
+                <p>Financial Intelligence</p>
+
+            </div>
 
         </div>
 
+        <ul>
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    🏠 Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="transactions.html">
+
+                    💳 Transactions
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="analytics.html">
+
+                    📊 Analytics
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="budget.html">
+
+                    🎯 Budgets
+
+                </a>
+
+            </li>
+
+            <li class="active">
+
+                <a href="insights.html">
+
+                    🤖 AI Insights
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="report.html">
+
+                    📄 Reports
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="upload.html">
+
+                    ⬆ Upload
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="settings.html">
+
+                    ⚙ Settings
+
+                </a>
+
+            </li>
+
+        </ul>
+
     </div>
 
-    <ul>
-
-        <li class="active">
-            <a href="dashboard.html">🏠 Dashboard</a>
-        </li>
-
-        <li>
-            <a href="transactions.html">💳 Transactions</a>
-        </li>
-
-        <li>
-            <a href="analytics.html">📊 Analytics</a>
-        </li>
-
-        <li>
-            <a href="budget.html">🎯 Budgets</a>
-        </li>
-
-        <li>
-            <a href="insights.html">🤖 AI Insights</a>
-        </li>
-
-        <li>
-            <a href="report.html">📄 Reports</a>
-        </li>
-
-        <li>
-            <a href="upload.html">⬆ Upload</a>
-        </li>
-
-        <li>
-            <a href="settings.html">⚙ Settings</a>
-        </li>
-
-    </ul>
-
-    <button class="logout-btn" onclick="logout()">
+    <button
+        class="logout-btn"
+        onclick="logout()">
 
         Logout
 
@@ -97,74 +173,186 @@ function logout(){
 
 </div>
 
+<!-- ==========================
+        MAIN CONTENT
+========================== -->
 
-<div class="main">
+<main class="main-content">
 
-    <h1>Financial Insights</h1>
+    <div class="dashboard-header">
 
-    <div class="cards">
+        <div>
 
-        <div class="card">
-            <h3>Total Income</h3>
-            <h2 id="income"></h2>
-        </div>
+            <p class="greeting">
 
-        <div class="card">
-            <h3>Total Expense</h3>
-            <h2 id="expense"></h2>
-        </div>
+                🤖 AI Financial Advisor
 
-        <div class="card">
-            <h3>Savings</h3>
-            <h2 id="savings"></h2>
-        </div>
+            </p>
 
-        <div class="card">
-            <h3>Highest Spending</h3>
-            <h2 id="highest"></h2>
+            <h1>
+
+                AI Insights
+
+            </h1>
+
+            <p class="subtitle">
+
+                Personalized financial analysis powered by AI.
+
+            </p>
+
         </div>
 
     </div>
 
-    <div class="section">
+    <!-- KPI CARDS -->
 
-        <h2>Summary</h2>
+    <div class="analytics-cards">
 
-        <table>
+        <div class="analytics-card">
 
-            <thead>
+            <div class="card-icon">
 
-                <tr>
+                ❤️
 
-                    <th>Total Transactions</th>
+            </div>
 
-                    <th>Highest Spending Category</th>
+            <h3>
 
-                </tr>
+                Financial Health
 
-            </thead>
+            </h3>
 
-            <tbody>
+            <h2 id="healthScore">
 
-                <tr>
+                0
 
-                    <td id="transactions"></td>
+            </h2>
 
-                    <td id="highestCategory"></td>
+        </div>
 
-                </tr>
+        <div class="analytics-card">
 
-            </tbody>
+            <div class="card-icon">
 
-        </table>
+                💰
+
+            </div>
+
+            <h3>
+
+                Savings
+
+            </h3>
+
+            <h2 id="savings">
+
+                ₹0
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                📊
+
+            </div>
+
+            <h3>
+
+                Top Expense
+
+            </h3>
+
+            <h2 id="highest">
+
+                -
+
+            </h2>
+
+        </div>
+
+        <div class="analytics-card">
+
+            <div class="card-icon">
+
+                ⚠️
+
+            </div>
+
+            <h3>
+
+                Risk Level
+
+            </h3>
+
+            <h2 id="riskLevel">
+
+                Low
+
+            </h2>
+
+        </div>
 
     </div>
 
-    <div class="charts">
+    <!-- AI SUMMARY -->
+
+    <div class="section analytics-insight">
+
+        <div class="insight-icon">
+
+            🤖
+
+        </div>
+
+        <div>
+
+            <h2>
+
+                AI Financial Summary
+
+            </h2>
+
+            <p id="aiSummary">
+
+                Loading AI insights...
+
+            </p>
+
+        </div>
+
+    </div>
+        <!-- ======================================
+            CHARTS
+    ======================================= -->
+
+    <div class="chart-grid">
 
         <div class="chart-card">
 
-            <h2>Category Distribution</h2>
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+
+                        Category Distribution
+
+                    </h2>
+
+                    <p>
+
+                        Expense breakdown by category.
+
+                    </p>
+
+                </div>
+
+            </div>
 
             <canvas id="pieChart"></canvas>
 
@@ -172,7 +360,25 @@ function logout(){
 
         <div class="chart-card">
 
-            <h2>Expense by Category</h2>
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+
+                        Expense by Category
+
+                    </h2>
+
+                    <p>
+
+                        Compare spending across categories.
+
+                    </p>
+
+                </div>
+
+            </div>
 
             <canvas id="barChart"></canvas>
 
@@ -180,7 +386,173 @@ function logout(){
 
     </div>
 
-</div>
+    <!-- ======================================
+            RECOMMENDATIONS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Personalized Recommendations
+
+                </h2>
+
+                <p>
+
+                    AI-generated suggestions to improve your finances.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="recommendationList"
+             class="recommendation-list">
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            FINANCIAL TIMELINE
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Financial Snapshot
+
+                </h2>
+
+                <p>
+
+                    Quick overview of your current financial position.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="timeline-grid">
+
+            <div class="timeline-card">
+
+                <h3>
+
+                    Total Income
+
+                </h3>
+
+                <h2 id="income">
+
+                    ₹0
+
+                </h2>
+
+            </div>
+
+            <div class="timeline-card">
+
+                <h3>
+
+                    Total Expense
+
+                </h3>
+
+                <h2 id="expense">
+
+                    ₹0
+
+                </h2>
+
+            </div>
+
+            <div class="timeline-card">
+
+                <h3>
+
+                    Transactions
+
+                </h3>
+
+                <h2 id="transactions">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="timeline-card">
+
+                <h3>
+
+                    Top Category
+
+                </h3>
+
+                <h2 id="highestCategory">
+
+                    -
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+            SMART SAVINGS
+    ======================================= -->
+
+    <div class="section">
+
+        <div class="section-title">
+
+            <div>
+
+                <h2>
+
+                    Smart Saving Opportunities
+
+                </h2>
+
+                <p>
+
+                    Areas where you could potentially save more.
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="savingTips"
+             class="saving-grid">
+
+        </div>
+
+    </div>
+
+</main>
+
+<!-- ======================================
+        JAVASCRIPT
+====================================== -->
 
 <script src="js/insights.js"></script>
 

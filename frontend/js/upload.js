@@ -1,22 +1,76 @@
 // ======================================
-// Upload Bank Statement (CSV / PDF)
+// Upload Bank Statement
 // ======================================
 
-function uploadCSV() {
+const fileInput = document.getElementById("statementFile");
 
-    // Get file input
-    const fileInput = document.getElementById("statementFile");
+const selectedFile = document.getElementById("selectedFile");
 
-    if (!fileInput) {
+const progressFill = document.getElementById("progressFill");
 
-        console.error("File input not found!");
+const progressText = document.getElementById("progressText");
 
-        return;
+const status = document.getElementById("status");
 
-    }
+// ======================================
+// Show Selected File
+// ======================================
 
-    // Check if a file is selected
-    if (fileInput.files.length === 0) {
+if(fileInput){
+
+    fileInput.addEventListener("change",()=>{
+
+        if(fileInput.files.length>0){
+
+            selectedFile.innerHTML="📄 "+fileInput.files[0].name;
+
+        }
+
+        else{
+
+            selectedFile.innerHTML="No file selected";
+
+        }
+
+    });
+
+}
+
+// ======================================
+// Clear Upload
+// ======================================
+
+function clearUpload(){
+
+    fileInput.value="";
+
+    selectedFile.innerHTML="No file selected";
+
+    progressFill.style.width="0%";
+
+    progressText.innerHTML="0%";
+
+    status.style.color="var(--primary)";
+
+    status.innerHTML="Waiting for file upload...";
+
+    document.getElementById("transactionCount").innerHTML="0";
+
+    document.getElementById("categoryCount").innerHTML="0";
+
+    document.getElementById("totalAmount").innerHTML="₹0";
+
+    document.getElementById("uploadStatus").innerHTML="Waiting";
+
+}
+
+// ======================================
+// Upload Statement
+// ======================================
+
+function uploadCSV(){
+
+    if(fileInput.files.length===0){
 
         alert("Please choose a CSV or PDF file.");
 
@@ -24,15 +78,17 @@ function uploadCSV() {
 
     }
 
-    const file = fileInput.files[0];
+    const file=fileInput.files[0];
 
-    const fileName = file.name.toLowerCase();
+    const fileName=file.name.toLowerCase();
 
-    // Validate file type
-    if (
+    if(
+
         !fileName.endsWith(".csv") &&
+
         !fileName.endsWith(".pdf")
-    ) {
+
+    ){
 
         alert("Only CSV and PDF files are supported.");
 
@@ -40,33 +96,34 @@ function uploadCSV() {
 
     }
 
-    // Prepare form data
-    const formData = new FormData();
+    const formData=new FormData();
 
-    formData.append("file", file);
+    formData.append("file",file);
 
     formData.append(
+
         "user_email",
+
         localStorage.getItem("loggedInUser")
+
     );
 
-    // Show uploading status
-    document.getElementById("status").style.color = "white";
-    document.getElementById("status").innerHTML =
-        "Uploading statement...";
+    status.style.color="white";
 
-    // Send to backend
-    fetch("http://127.0.0.1:8002/upload/statement", {
+    status.innerHTML="Uploading statement...";
 
-        method: "POST",
+    animateProgress();
+        fetch("http://127.0.0.1:8002/upload/statement",{
 
-        body: formData
+        method:"POST",
+
+        body:formData
 
     })
 
-    .then(response => {
+    .then(response=>{
 
-        if (!response.ok) {
+        if(!response.ok){
 
             throw new Error("Upload failed.");
 
@@ -76,40 +133,175 @@ function uploadCSV() {
 
     })
 
-    .then(data => {
+    .then(data=>{
 
-        document.getElementById("status").style.color = "#00e676";
+        progressFill.style.width="100%";
 
-        document.getElementById("status").innerHTML =
+        progressText.innerHTML="100%";
 
-            "✅ " + data.message +
+        status.style.color="#00e676";
 
-            "<br><br>Transactions Added: " +
+        status.innerHTML=
+
+            "✅ "+data.message+
+
+            "<br><br>Transactions Added : "+
 
             data.rows_inserted;
 
-        // Clear file input
-        fileInput.value = "";
+        document.getElementById("transactionCount").innerHTML=
 
-        // Redirect
-        setTimeout(() => {
+            data.rows_inserted ?? 0;
 
-            window.location.href = "transactions.html";
+        if(data.categories_found!==undefined){
 
-        }, 2000);
+            document.getElementById("categoryCount").innerHTML=
+
+                data.categories_found;
+
+        }
+
+        if(data.total_amount!==undefined){
+
+            document.getElementById("totalAmount").innerHTML=
+
+                "₹"+Number(data.total_amount).toLocaleString();
+
+        }
+
+        document.getElementById("uploadStatus").innerHTML=
+
+            "Completed";
+
+        fileInput.value="";
+
+        selectedFile.innerHTML="No file selected";
+
+        setTimeout(()=>{
+
+            window.location.href="transactions.html";
+
+        },2000);
 
     })
 
-    .catch(error => {
+    .catch(error=>{
 
         console.error(error);
 
-        document.getElementById("status").style.color = "#ff5252";
+        progressFill.style.width="0%";
 
-        document.getElementById("status").innerHTML =
+        progressText.innerHTML="0%";
+
+        status.style.color="#ff5252";
+
+        status.innerHTML=
 
             "❌ Upload Failed.<br>Please try again.";
+
+        document.getElementById("uploadStatus").innerHTML=
+
+            "Failed";
 
     });
 
 }
+// ======================================
+// Animated Progress
+// ======================================
+
+function animateProgress(){
+
+    let progress = 0;
+
+    progressFill.style.width = "0%";
+
+    progressText.innerHTML = "0%";
+
+    const interval = setInterval(() => {
+
+        progress += 5;
+
+        if(progress >= 90){
+
+            clearInterval(interval);
+
+            return;
+
+        }
+
+        progressFill.style.width = progress + "%";
+
+        progressText.innerHTML = progress + "%";
+
+    },100);
+
+}
+
+// ======================================
+// Drag & Drop Upload
+// ======================================
+
+const uploadZone = document.querySelector(".upload-zone");
+
+if(uploadZone){
+
+    ["dragenter","dragover"].forEach(eventName => {
+
+        uploadZone.addEventListener(eventName,e=>{
+
+            e.preventDefault();
+
+            uploadZone.classList.add("drag-over");
+
+        });
+
+    });
+
+    ["dragleave","dragend"].forEach(eventName => {
+
+        uploadZone.addEventListener(eventName,e=>{
+
+            e.preventDefault();
+
+            uploadZone.classList.remove("drag-over");
+
+        });
+
+    });
+
+    uploadZone.addEventListener("drop",e=>{
+
+        e.preventDefault();
+
+        uploadZone.classList.remove("drag-over");
+
+        if(e.dataTransfer.files.length){
+
+            fileInput.files = e.dataTransfer.files;
+
+            selectedFile.innerHTML =
+
+                "📄 " + e.dataTransfer.files[0].name;
+
+        }
+
+    });
+
+}
+
+// ======================================
+// Prevent Browser Opening File
+// ======================================
+
+document.addEventListener("dragover",e=>{
+
+    e.preventDefault();
+
+});
+
+document.addEventListener("drop",e=>{
+
+    e.preventDefault();
+
+});
