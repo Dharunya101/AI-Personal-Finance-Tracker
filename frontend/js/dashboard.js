@@ -5,9 +5,10 @@
 const email = localStorage.getItem("loggedInUser");
 
 if (!email) {
-    window.location.href = "login.html";
-}
 
+    window.location.href = "login.html";
+
+}
 // ======================================
 // Welcome Message
 // ======================================
@@ -15,22 +16,29 @@ if (!email) {
 const name = email.split("@")[0];
 
 document.getElementById("userName").textContent =
-    name.charAt(0).toUpperCase() + name.slice(1);
+    name.charAt(0).toUpperCase() +
+    name.slice(1);
+
 
 // ======================================
 // Global Variables
 // ======================================
 
 let pieChart = null;
+
 let barChart = null;
 
-const monthFilter = document.getElementById("monthFilter");
+const monthFilter =
+    document.getElementById("monthFilter");
+
 
 // ======================================
 // Default Month
 // ======================================
 
-monthFilter.value = new Date().toISOString().slice(0, 7);
+monthFilter.value =
+    new Date().toISOString().slice(0, 7);
+
 
 // ======================================
 // Events
@@ -38,8 +46,118 @@ monthFilter.value = new Date().toISOString().slice(0, 7);
 
 loadPageData();
 
-monthFilter.addEventListener("change", loadPageData);
+monthFilter.addEventListener(
 
+    "change",
+
+    loadPageData
+
+);
+
+
+// ======================================
+// Animated Counter
+// ======================================
+
+function animateValue(id, endValue) {
+
+    const element = document.getElementById(id);
+
+    const duration = 1200;
+
+    const startValue = 0;
+
+    const startTime = performance.now();
+
+    function update(currentTime) {
+
+        const progress = Math.min(
+
+            (currentTime - startTime) / duration,
+
+            1
+
+        );
+
+        const currentValue = Math.floor(
+
+            startValue +
+
+            (endValue - startValue) * progress
+
+        );
+
+        element.textContent =
+            "₹" +
+            currentValue.toLocaleString("en-IN");
+
+        if (progress < 1) {
+
+            requestAnimationFrame(update);
+
+        }
+
+    }
+
+    requestAnimationFrame(update);
+
+}
+
+
+// ======================================
+// Animate Table Rows
+// ======================================
+
+function animateTableRows(tableBody) {
+
+    const rows = tableBody.querySelectorAll("tr");
+
+    rows.forEach((row, index) => {
+
+        row.style.opacity = "0";
+
+        row.style.transform = "translateY(25px)";
+
+        row.style.transition =
+            "all .5s ease";
+
+        setTimeout(() => {
+
+            row.style.opacity = "1";
+
+            row.style.transform =
+                "translateY(0)";
+
+        }, index * 120);
+
+    });
+
+}
+
+
+// ======================================
+// Destroy Existing Charts
+// ======================================
+
+function destroyCharts() {
+
+    if (pieChart) {
+
+        pieChart.destroy();
+
+        pieChart = null;
+
+    }
+
+    if (barChart) {
+
+        barChart.destroy();
+
+        barChart = null;
+
+    }
+
+}
 // ======================================
 // Load Dashboard
 // ======================================
@@ -47,17 +165,22 @@ monthFilter.addEventListener("change", loadPageData);
 function loadPageData() {
 
     const month = monthFilter.value;
-
-    // ==================================
+        // ==================================
     // Dashboard Insights
     // ==================================
 
-    fetch(`http://127.0.0.1:8002/insights/${email}?month=${month}`)
+    fetch(
+
+        `http://127.0.0.1:8002/insights/${email}?month=${month}`
+
+    )
 
     .then(response => {
 
         if (!response.ok) {
-            throw new Error("Failed to load insights.");
+
+            throw new Error("Failed to load dashboard insights.");
+
         }
 
         return response.json();
@@ -67,47 +190,84 @@ function loadPageData() {
     .then(data => {
 
         // ==================================
-        // Summary Cards
+        // Animated KPI Cards
         // ==================================
 
-        document.getElementById("income").textContent =
-            "₹" + Number(data.total_income || 0).toLocaleString("en-IN");
+        animateValue(
 
-        document.getElementById("expense").textContent =
-            "₹" + Number(data.total_expense || 0).toLocaleString("en-IN");
+            "income",
 
-        document.getElementById("savings").textContent =
-            "₹" + Number(data.savings || 0).toLocaleString("en-IN");
+            Number(data.total_income || 0)
 
-        document.getElementById("budget").textContent =
-            "₹" +
-            Number(
-                (data.total_income || 0) -
-                (data.total_expense || 0)
-            ).toLocaleString("en-IN");
+        );
+
+        animateValue(
+
+            "expense",
+
+            Number(data.total_expense || 0)
+
+        );
+
+        animateValue(
+
+            "savings",
+
+            Number(data.savings || 0)
+
+        );
+
+        animateValue(
+
+            "budget",
+
+            Number(data.total_income || 0) -
+
+            Number(data.total_expense || 0)
+
+        );
 
         // ==================================
-        // Destroy Old Charts
+        // Refresh Charts
         // ==================================
 
-        if (pieChart) {
-            pieChart.destroy();
-        }
-
-        if (barChart) {
-            barChart.destroy();
-        }
+        destroyCharts();
 
         // ==================================
         // Category Summary
         // ==================================
 
         const categorySummary =
+
             data.category_summary || {};
 
-        const labels = Object.keys(categorySummary);
+        const labels =
 
-        const values = Object.values(categorySummary);
+            Object.keys(categorySummary);
+
+        const values =
+
+            Object.values(categorySummary);
+
+        // ==================================
+        // Top Spending Categories
+        // ==================================
+
+        const topCategories =
+
+            Object.entries(categorySummary)
+
+            .sort(
+
+                (a, b) => b[1] - a[1]
+
+            )
+
+            .slice(0, 5);
+
+        // ==================================
+        // Pie Chart
+        // ==================================
                 // ==================================
         // Pie Chart
         // ==================================
@@ -143,11 +303,13 @@ function loadPageData() {
 
                             ],
 
-                            borderColor: "rgba(255,255,255,.12)",
+                            borderColor: "rgba(255,255,255,.08)",
 
-                            borderWidth: 1,
+                            borderWidth: 2,
 
-                            hoverOffset: 20
+                            hoverBorderWidth: 3,
+
+                            hoverOffset: 28
 
                         }
 
@@ -163,9 +325,13 @@ function loadPageData() {
 
                     animation: {
 
-                        duration: 1400,
+                        animateRotate: true,
 
-                        easing: "easeOutQuart"
+                        animateScale: true,
+
+                        duration: 1800,
+
+                        easing: "easeOutExpo"
 
                     },
 
@@ -195,6 +361,20 @@ function loadPageData() {
 
                             }
 
+                        },
+
+                        tooltip: {
+
+                            backgroundColor: "#111827",
+
+                            titleColor: "#ffffff",
+
+                            bodyColor: "#CBD5E1",
+
+                            cornerRadius: 12,
+
+                            padding: 12
+
                         }
 
                     }
@@ -205,15 +385,7 @@ function loadPageData() {
 
         );
 
-        // ==================================
-        // Top Spending Categories
-        // ==================================
 
-        const topCategories = Object.entries(categorySummary)
-
-            .sort((a, b) => b[1] - a[1])
-
-            .slice(0, 5);
 
         // ==================================
         // Bar Chart
@@ -229,10 +401,11 @@ function loadPageData() {
 
                 data: {
 
-                    labels: topCategories.map(item =>
+                    labels: topCategories.map(category =>
 
-                        item[0].charAt(0).toUpperCase() +
-                        item[0].slice(1)
+                        category[0].charAt(0).toUpperCase() +
+
+                        category[0].slice(1)
 
                     ),
 
@@ -242,7 +415,11 @@ function loadPageData() {
 
                             label: "Amount Spent",
 
-                            data: topCategories.map(item => item[1]),
+                            data: topCategories.map(category =>
+
+                                category[1]
+
+                            ),
 
                             backgroundColor: [
 
@@ -254,11 +431,21 @@ function loadPageData() {
 
                             ],
 
-                            borderRadius: 15,
+                            borderRadius: 18,
 
                             borderSkipped: false,
 
-                            barThickness: 25
+                            barThickness: 24,
+
+                            hoverBackgroundColor: [
+
+                                "#67E8F9",
+                                "#A78BFA",
+                                "#34D399",
+                                "#FBBF24",
+                                "#F87171"
+
+                            ]
 
                         }
 
@@ -276,9 +463,15 @@ function loadPageData() {
 
                     animation: {
 
-                        duration: 1400,
+                        duration: 1800,
 
-                        easing: "easeOutQuart"
+                        easing: "easeOutExpo",
+
+                        delay(context) {
+
+                            return context.dataIndex * 150;
+
+                        }
 
                     },
 
@@ -287,6 +480,20 @@ function loadPageData() {
                         legend: {
 
                             display: false
+
+                        },
+
+                        tooltip: {
+
+                            backgroundColor: "#111827",
+
+                            titleColor: "#ffffff",
+
+                            bodyColor: "#CBD5E1",
+
+                            cornerRadius: 12,
+
+                            padding: 12
 
                         }
 
@@ -300,13 +507,13 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "white",
+                                color: "#E2E8F0",
 
                                 font: {
 
                                     size: 13,
 
-                                    weight: "bold"
+                                    weight: "600"
 
                                 }
 
@@ -324,13 +531,13 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "white",
+                                color: "#E2E8F0",
 
                                 font: {
 
                                     size: 13,
 
-                                    weight: "bold"
+                                    weight: "600"
 
                                 }
 
@@ -359,18 +566,22 @@ function loadPageData() {
         console.error("Insights Error:", error);
 
     });
+        // ======================================
+    // Load Recent Transactions
     // ======================================
-// Load Recent Transactions
-// ======================================
 
     fetch(
+
         `http://127.0.0.1:8002/transactions/user/${email}?month=${month}`
+
     )
 
     .then(response => {
 
         if (!response.ok) {
+
             throw new Error("Failed to load transactions.");
+
         }
 
         return response.json();
@@ -381,17 +592,23 @@ function loadPageData() {
 
         data.sort(
 
-            (a, b) => new Date(b.date) - new Date(a.date)
+            (a, b) =>
+
+                new Date(b.date) -
+
+                new Date(a.date)
 
         );
 
-        const table = document.getElementById("transactionTable");
+        const table =
+
+            document.getElementById("transactionTable");
 
         table.innerHTML = "";
 
-        // ==========================
+        // ==================================
         // Empty State
-        // ==========================
+        // ==================================
 
         if (data.length === 0) {
 
@@ -402,8 +619,9 @@ function loadPageData() {
                     <td colspan="4"
                         style="
                             text-align:center;
-                            padding:30px;
+                            padding:35px;
                             color:#94A3B8;
+                            font-weight:500;
                         ">
 
                         No transactions found for this month.
@@ -418,19 +636,25 @@ function loadPageData() {
 
         }
 
-        // ==========================
-        // Build Rows
-        // ==========================
+        // ==================================
+        // Recent Transactions
+        // ==================================
 
-        let rows = "";
+        data
 
-        data.slice(0, 5).forEach(transaction => {
+            .slice(0, 5)
 
-            rows += `
+            .forEach(transaction => {
 
-                <tr>
+                const row = document.createElement("tr");
 
-                    <td>${transaction.date}</td>
+                row.innerHTML = `
+
+                    <td>
+
+                        ${transaction.date}
+
+                    </td>
 
                     <td>
 
@@ -454,19 +678,29 @@ function loadPageData() {
 
                     </td>
 
-                </tr>
+                `;
 
-            `;
+                table.appendChild(row);
 
-        });
+            });
 
-        table.innerHTML = rows;
+        // ==================================
+        // Animate Table Rows
+        // ==================================
+
+        animateTableRows(table);
 
     })
 
     .catch(error => {
 
-        console.error("Transaction Error:", error);
+        console.error(
+
+            "Transaction Error:",
+
+            error
+
+        );
 
     });
 

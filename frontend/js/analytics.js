@@ -1,40 +1,53 @@
-// ======================================
+// =====================================================
 // AI PERSONAL FINANCE TRACKER
-// Analytics Dashboard
-// ======================================
+// PREMIUM ANALYTICS DASHBOARD
+// =====================================================
 
 
-// ======================================
+// =====================================================
 // Logged In User
-// ======================================
+// =====================================================
 
 const email = localStorage.getItem("loggedInUser");
+
+if (!email) {
+
+    window.location.href = "login.html";
+
+}
 
 console.log("Logged In User:", email);
 
 
-// ======================================
+// =====================================================
 // DOM ELEMENTS
-// ======================================
+// =====================================================
 
-const monthFilter = document.getElementById("monthFilter");
+const monthFilter =
+    document.getElementById("monthFilter");
 
-const incomeCard = document.getElementById("incomeCard");
+const incomeCard =
+    document.getElementById("incomeCard");
 
-const expenseCard = document.getElementById("expenseCard");
+const expenseCard =
+    document.getElementById("expenseCard");
 
-const averageCard = document.getElementById("averageCard");
+const averageCard =
+    document.getElementById("averageCard");
 
-const topCategoryCard = document.getElementById("topCategoryCard");
+const topCategoryCard =
+    document.getElementById("topCategoryCard");
 
-const summaryBody = document.getElementById("categorySummaryBody");
+const summaryBody =
+    document.getElementById("categorySummaryBody");
 
-const insightText = document.getElementById("analyticsInsight");
+const insightText =
+    document.getElementById("analyticsInsight");
 
 
-// ======================================
+// =====================================================
 // Charts
-// ======================================
+// =====================================================
 
 let budgetExpenseChart = null;
 
@@ -43,16 +56,17 @@ let groupedBarChart = null;
 let stackedBarChart = null;
 
 
-// ======================================
+// =====================================================
 // Default Month
-// ======================================
+// =====================================================
 
-monthFilter.value = new Date().toISOString().slice(0,7);
+monthFilter.value =
+    new Date().toISOString().slice(0, 7);
 
 
-// ======================================
-// Page Load
-// ======================================
+// =====================================================
+// Events
+// =====================================================
 
 loadPageData();
 
@@ -65,51 +79,147 @@ monthFilter.addEventListener(
 );
 
 
-// ======================================
+// =====================================================
 // Currency Formatter
-// ======================================
+// =====================================================
 
-function formatCurrency(value){
+function formatCurrency(value) {
 
     return "₹" +
 
-    Number(value).toLocaleString(
+        Number(value).toLocaleString(
 
-        "en-IN",
+            "en-IN",
 
-        {
+            {
 
-            maximumFractionDigits:0
+                maximumFractionDigits: 0
 
-        }
+            }
 
-    );
+        );
 
 }
 
 
-// ======================================
+// =====================================================
 // Capitalize Text
-// ======================================
+// =====================================================
 
-function capitalize(text){
+function capitalize(text) {
 
-    if(!text) return "-";
+    if (!text) return "-";
 
     return text.charAt(0).toUpperCase()
 
-    + text.slice(1);
+        + text.slice(1);
 
 }
 
 
-// ======================================
+// =====================================================
+// Animated Counter
+// =====================================================
+
+function animateValue(element, endValue, prefix = "₹") {
+
+    const duration = 1200;
+
+    const startValue = 0;
+
+    const startTime = performance.now();
+
+    function update(currentTime) {
+
+        const progress = Math.min(
+
+            (currentTime - startTime) / duration,
+
+            1
+
+        );
+
+        const value = Math.floor(
+
+            startValue +
+
+            (endValue - startValue) * progress
+
+        );
+
+        if (prefix === "") {
+
+            element.textContent = value;
+
+        }
+
+        else {
+
+            element.textContent =
+
+                prefix +
+
+                value.toLocaleString("en-IN");
+
+        }
+
+        if (progress < 1) {
+
+            requestAnimationFrame(update);
+
+        }
+
+    }
+
+    requestAnimationFrame(update);
+
+}
+
+
+// =====================================================
+// Animate Table Rows
+// =====================================================
+
+function animateTableRows() {
+
+    const rows =
+
+        summaryBody.querySelectorAll("tr");
+
+    rows.forEach((row, index) => {
+
+        row.style.opacity = "0";
+
+        row.style.transform =
+
+            "translateY(25px)";
+
+        row.style.transition =
+
+            "all .5s ease";
+
+        setTimeout(() => {
+
+            row.style.opacity = "1";
+
+            row.style.transform =
+
+                "translateY(0)";
+
+        }, index * 120);
+
+    });
+
+}
+
+
+// =====================================================
 // Destroy Existing Charts
-// ======================================
+// =====================================================
 
-function destroyCharts(){
+function destroyCharts() {
 
-    if(budgetExpenseChart){
+    if (budgetExpenseChart) {
 
         budgetExpenseChart.destroy();
 
@@ -117,7 +227,7 @@ function destroyCharts(){
 
     }
 
-    if(groupedBarChart){
+    if (groupedBarChart) {
 
         groupedBarChart.destroy();
 
@@ -125,7 +235,7 @@ function destroyCharts(){
 
     }
 
-    if(stackedBarChart){
+    if (stackedBarChart) {
 
         stackedBarChart.destroy();
 
@@ -136,13 +246,83 @@ function destroyCharts(){
 }
 
 
-// ======================================
-// Load Analytics
-// ======================================
+// =====================================================
+// Shared Chart Options
+// =====================================================
 
-function loadPageData(){
+function commonChartOptions() {
+
+    return {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        animation: {
+
+            duration: 1800,
+
+            easing: "easeOutExpo",
+
+            delay(context) {
+
+                return context.dataIndex * 120;
+
+            }
+
+        },
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+
+                    color: "#ffffff",
+
+                    font: {
+
+                        size: 13,
+
+                        weight: "600"
+
+                    }
+
+                }
+
+            },
+
+            tooltip: {
+
+                backgroundColor: "#111827",
+
+                titleColor: "#ffffff",
+
+                bodyColor: "#CBD5E1",
+
+                cornerRadius: 12,
+
+                padding: 12
+
+            }
+
+        }
+
+    };
+
+}
+
+
+// =====================================================
+// Load Analytics
+// =====================================================
+
+function loadPageData() {
 
     const month = monthFilter.value;
+        // =====================================================
+    // Fetch Analytics Data
+    // =====================================================
 
     fetch(
 
@@ -150,43 +330,81 @@ function loadPageData(){
 
     )
 
-    .then(response=>response.json())
+    .then(response => {
 
-    .then(data=>{
+        if (!response.ok) {
+
+            throw new Error("Unable to load analytics.");
+
+        }
+
+        return response.json();
+
+    })
+
+    .then(data => {
 
         console.log(data);
 
         destroyCharts();
 
-        // ==================================
+        // =====================================================
         // Extract Data
-        // ==================================
+        // =====================================================
 
-        const budgetData = data.budget_vs_expense;
+        const budgetData =
+            data.budget_vs_expense || {};
 
         const monthlySummary =
-
-            data.monthly_category_summary;
+            data.monthly_category_summary || {};
 
         const categories =
-
             Object.keys(budgetData);
 
-        if(categories.length===0){
+        // =====================================================
+        // Empty State
+        // =====================================================
 
-            alert(
+        if (categories.length === 0) {
 
-                "No transactions found for this month."
+            incomeCard.textContent = "₹0";
 
-            );
+            expenseCard.textContent = "₹0";
+
+            averageCard.textContent = "₹0";
+
+            topCategoryCard.textContent = "-";
+
+            summaryBody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="4"
+                        style="
+                            text-align:center;
+                            padding:35px;
+                            color:#94A3B8;
+                        ">
+
+                        No analytics available for this month.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            insightText.innerHTML =
+
+                "No analytics available for the selected month.";
 
             return;
 
         }
 
-        // ==================================
-        // Totals
-        // ==================================
+        // =====================================================
+        // Calculate Totals
+        // =====================================================
 
         let totalBudget = 0;
 
@@ -196,33 +414,23 @@ function loadPageData(){
 
         let highestCategory = "-";
 
-        categories.forEach(category=>{
+        categories.forEach(category => {
 
-            totalBudget +=
+            const budget =
+                Number(budgetData[category].budget || 0);
 
-                budgetData[category].budget;
+            const expense =
+                Number(budgetData[category].expense || 0);
 
-            totalExpense +=
+            totalBudget += budget;
 
-                budgetData[category].expense;
+            totalExpense += expense;
 
-            if(
+            if (expense > highestExpense) {
 
-                budgetData[category].expense
+                highestExpense = expense;
 
-                >
-
-                highestExpense
-
-            ){
-
-                highestExpense =
-
-                    budgetData[category].expense;
-
-                highestCategory =
-
-                    category;
+                highestCategory = category;
 
             }
 
@@ -230,52 +438,65 @@ function loadPageData(){
 
         const averageExpense =
 
-            totalExpense /
-
-            categories.length;
-                    // ==================================
-        // Populate Summary Cards
-        // ==================================
-
-        incomeCard.innerHTML =
-
-            formatCurrency(totalBudget);
-
-        expenseCard.innerHTML =
-
-            formatCurrency(totalExpense);
-
-        averageCard.innerHTML =
-
-            formatCurrency(averageExpense);
-
-        topCategoryCard.innerHTML =
-
-            capitalize(highestCategory);
-
-        // ==================================
-        // Category Summary Table
-        // ==================================
-
-        summaryBody.innerHTML = "";
-
-        categories.forEach(category=>{
-
-            const budget =
-
-                budgetData[category].budget;
-
-            const expense =
-
-                budgetData[category].expense;
-
-            const percentage =
-
-                budget===0
+            categories.length === 0
 
                 ? 0
 
-                : ((expense/budget)*100).toFixed(1);
+                : totalExpense / categories.length;
+
+        // =====================================================
+        // Animated Summary Cards
+        // =====================================================
+
+        animateValue(
+
+            incomeCard,
+
+            totalBudget
+
+        );
+
+        animateValue(
+
+            expenseCard,
+
+            totalExpense
+
+        );
+
+        animateValue(
+
+            averageCard,
+
+            averageExpense
+
+        );
+
+        topCategoryCard.textContent =
+
+            capitalize(highestCategory);
+
+        // =====================================================
+        // Category Summary Table
+        // =====================================================
+
+        summaryBody.innerHTML = "";
+
+        categories.forEach(category => {
+
+            const budget =
+                Number(budgetData[category].budget || 0);
+
+            const expense =
+                Number(budgetData[category].expense || 0);
+
+            const percentage =
+
+                budget === 0
+
+                    ? 0
+
+                    : ((expense / budget) * 100).toFixed(1);
 
             summaryBody.innerHTML += `
 
@@ -311,38 +532,40 @@ function loadPageData(){
 
         });
 
-        // ==================================
+        animateTableRows();
+
+        // =====================================================
         // AI Insight
-        // ==================================
+        // =====================================================
 
-        if(totalExpense>totalBudget){
+        if (totalExpense > totalBudget) {
 
-            insightText.innerHTML=
+            insightText.innerHTML =
 
-            `⚠️ You have exceeded your planned budget by
-            <b>${formatCurrency(totalExpense-totalBudget)}</b>.
-            Your highest spending category is
-            <b>${capitalize(highestCategory)}</b>.`;
-
-        }
-
-        else{
-
-            insightText.innerHTML=
-
-            `✅ Great job! You are within your planned budget.
-            Your highest spending category this month is
-            <b>${capitalize(highestCategory)}</b>.`;
+                `⚠️ You exceeded your planned budget by
+                <b>${formatCurrency(totalExpense - totalBudget)}</b>.
+                Your highest spending category is
+                <b>${capitalize(highestCategory)}</b>.`;
 
         }
 
-        // ==================================
-        // Budget vs Expense Chart Data
-        // ==================================
+        else {
+
+            insightText.innerHTML =
+
+                `✅ Great job! You stayed within your planned budget.
+                Your highest spending category this month is
+                <b>${capitalize(highestCategory)}</b>.`;
+
+        }
+
+        // =====================================================
+        // Prepare Chart Data
+        // =====================================================
 
         const budgets =
 
-            categories.map(category=>
+            categories.map(category =>
 
                 budgetData[category].budget
 
@@ -350,161 +573,25 @@ function loadPageData(){
 
         const expenses =
 
-            categories.map(category=>
+            categories.map(category =>
 
                 budgetData[category].expense
 
             );
 
-        // ==================================
-        // Budget vs Expense Chart
-        // ==================================
-
-        budgetExpenseChart = new Chart(
-
-            document.getElementById(
-
-                "budgetExpenseChart"
-
-            ),
-
-            {
-
-                type:"bar",
-
-                data:{
-
-                    labels:
-
-                        categories.map(
-
-                            category=>
-
-                            capitalize(category)
-
-                        ),
-
-                    datasets:[
-
-                        {
-
-                            label:"Budget",
-
-                            data:budgets,
-
-                            backgroundColor:"#24d6f5",
-
-                            borderRadius:10
-
-                        },
-
-                        {
-
-                            label:"Expense",
-
-                            data:expenses,
-
-                            backgroundColor:"#ff6384",
-
-                            borderRadius:10
-
-                        }
-
-                    ]
-
-                },
-
-                options:{
-
-                    responsive:true,
-
-                    maintainAspectRatio:false,
-
-                    plugins:{
-
-                        legend:{
-
-                            labels:{
-
-                                color:"#ffffff",
-
-                                font:{
-
-                                    size:14,
-
-                                    weight:"bold"
-
-                                }
-
-                            }
-
-                        }
-
-                    },
-
-                    scales:{
-
-                        x:{
-
-                            ticks:{
-
-                                color:"#ffffff"
-
-                            },
-
-                            grid:{
-
-                                color:"rgba(255,255,255,.08)"
-
-                            }
-
-                        },
-
-                        y:{
-
-                            beginAtZero:true,
-
-                            ticks:{
-
-                                color:"#ffffff"
-
-                            },
-
-                            grid:{
-
-                                color:"rgba(255,255,255,.08)"
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-        );
-
-        // ==================================
-        // Monthly Summary
-        // ==================================
-
         const months =
-
             Object.keys(monthlySummary);
 
         const categorySet =
-
             new Set();
 
-        months.forEach(month=>{
+        months.forEach(month => {
 
             Object.keys(
 
                 monthlySummary[month]
 
-            ).forEach(category=>{
+            ).forEach(category => {
 
                 categorySet.add(category);
 
@@ -513,11 +600,7 @@ function loadPageData(){
         });
 
         const categoryList =
-
             [...categorySet];
-                    // ==================================
-        // Chart Colors
-        // ==================================
 
         const colors = [
 
@@ -532,81 +615,112 @@ function loadPageData(){
 
         ];
 
-        // ==================================
-        // Create Datasets
-        // ==================================
+        const datasets =
 
-        const datasets = categoryList.map((category,index)=>{
+            categoryList.map((category, index) => ({
 
-            return{
+                label: capitalize(category),
 
-                label:capitalize(category),
-
-                data:months.map(month=>
+                data: months.map(month =>
 
                     monthlySummary[month][category] || 0
 
                 ),
 
                 backgroundColor:
-
                     colors[index % colors.length],
 
                 borderColor:
-
                     colors[index % colors.length],
 
-                borderRadius:8,
+                borderRadius: 10,
 
-                borderWidth:1
+                borderWidth: 1
 
-            };
+            }));
 
-        });
+        // =====================================================
+        // Budget vs Expense Chart
+        // =====================================================
+                // =====================================================
+        // Budget vs Expense Chart
+        // =====================================================
 
-        // ==================================
-        // Monthly Category-wise Expenses
-        // ==================================
+        budgetExpenseChart = new Chart(
 
-        stackedBarChart = new Chart(
-
-            document.getElementById("stackedBarChart"),
+            document.getElementById("budgetExpenseChart"),
 
             {
 
-                type:"bar",
+                type: "bar",
 
-                data:{
+                data: {
 
-                    labels:months,
+                    labels: categories.map(category =>
 
-                    datasets:datasets
+                        capitalize(category)
+
+                    ),
+
+                    datasets: [
+
+                        {
+
+                            label: "Budget",
+
+                            data: budgets,
+
+                            backgroundColor: "#24D6F5",
+
+                            borderRadius: 12,
+
+                            borderSkipped: false,
+
+                            barThickness: 22
+
+                        },
+
+                        {
+
+                            label: "Expense",
+
+                            data: expenses,
+
+                            backgroundColor: "#FF6384",
+
+                            borderRadius: 12,
+
+                            borderSkipped: false,
+
+                            barThickness: 22
+
+                        }
+
+                    ]
 
                 },
 
-                options:{
+                options: {
 
-                    responsive:true,
+                    ...commonChartOptions(),
 
-                    maintainAspectRatio:false,
+                    plugins: {
 
-                    plugins:{
+                        ...commonChartOptions().plugins,
 
-                        legend:{
+                        title: {
 
-                            position:"top",
+                            display: true,
 
-                            labels:{
+                            text: "Budget vs Expense",
 
-                                color:"#ffffff",
+                            color: "#ffffff",
 
-                                font:{
+                            font: {
 
-                                    size:13,
+                                size: 18,
 
-                                    weight:"bold"
-
-                                }
+                                weight: "700"
 
                             }
 
@@ -614,41 +728,37 @@ function loadPageData(){
 
                     },
 
-                    scales:{
+                    scales: {
 
-                        x:{
+                        x: {
 
-                            stacked:true,
+                            ticks: {
 
-                            ticks:{
-
-                                color:"#ffffff"
+                                color: "#ffffff"
 
                             },
 
-                            grid:{
+                            grid: {
 
-                                color:"rgba(255,255,255,.08)"
+                                color: "rgba(255,255,255,.08)"
 
                             }
 
                         },
 
-                        y:{
+                        y: {
 
-                            stacked:true,
+                            beginAtZero: true,
 
-                            beginAtZero:true,
+                            ticks: {
 
-                            ticks:{
-
-                                color:"#ffffff"
+                                color: "#ffffff"
 
                             },
 
-                            grid:{
+                            grid: {
 
-                                color:"rgba(255,255,255,.08)"
+                                color: "rgba(255,255,255,.08)"
 
                             }
 
@@ -662,9 +772,11 @@ function loadPageData(){
 
         );
 
-        // ==================================
+
+
+        // =====================================================
         // Category Comparison Chart
-        // ==================================
+        // =====================================================
 
         groupedBarChart = new Chart(
 
@@ -672,57 +784,37 @@ function loadPageData(){
 
             {
 
-                type:"bar",
+                type: "bar",
 
-                data:{
+                data: {
 
-                    labels:months,
+                    labels: months,
 
-                    datasets:datasets
+                    datasets: datasets
 
                 },
 
-                options:{
+                options: {
 
-                    responsive:true,
+                    ...commonChartOptions(),
 
-                    maintainAspectRatio:false,
+                    plugins: {
 
-                    plugins:{
+                        ...commonChartOptions().plugins,
 
-                        legend:{
+                        title: {
 
-                            position:"top",
+                            display: true,
 
-                            labels:{
+                            text: "Category Expense Comparison",
 
-                                color:"#ffffff",
+                            color: "#ffffff",
 
-                                font:{
+                            font: {
 
-                                    size:13,
+                                size: 18,
 
-                                    weight:"bold"
-
-                                }
-
-                            }
-
-                        },
-
-                        title:{
-
-                            display:true,
-
-                            text:"Category Expense Comparison",
-
-                            color:"#ffffff",
-
-                            font:{
-
-                                size:18,
-
-                                weight:"bold"
+                                weight: "700"
 
                             }
 
@@ -730,37 +822,37 @@ function loadPageData(){
 
                     },
 
-                    scales:{
+                    scales: {
 
-                        x:{
+                        x: {
 
-                            ticks:{
+                            ticks: {
 
-                                color:"#ffffff"
+                                color: "#ffffff"
 
                             },
 
-                            grid:{
+                            grid: {
 
-                                color:"rgba(255,255,255,.08)"
+                                color: "rgba(255,255,255,.08)"
 
                             }
 
                         },
 
-                        y:{
+                        y: {
 
-                            beginAtZero:true,
+                            beginAtZero: true,
 
-                            ticks:{
+                            ticks: {
 
-                                color:"#ffffff"
+                                color: "#ffffff"
 
                             },
 
-                            grid:{
+                            grid: {
 
-                                color:"rgba(255,255,255,.08)"
+                                color: "rgba(255,255,255,.08)"
 
                             }
 
@@ -774,9 +866,138 @@ function loadPageData(){
 
         );
 
+
+
+        // =====================================================
+        // Monthly Category-wise Expense Chart
+        // =====================================================
+
+        stackedBarChart = new Chart(
+
+            document.getElementById("stackedBarChart"),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: months,
+
+                    datasets: datasets
+
+                },
+
+                options: {
+
+                    ...commonChartOptions(),
+
+                    plugins: {
+
+                        ...commonChartOptions().plugins,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Monthly Category-wise Expenses",
+
+                            color: "#ffffff",
+
+                            font: {
+
+                                size: 18,
+
+                                weight: "700"
+
+                            }
+
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            stacked: true,
+
+                            ticks: {
+
+                                color: "#ffffff"
+
+                            },
+
+                            grid: {
+
+                                color: "rgba(255,255,255,.08)"
+
+                            }
+
+                        },
+
+                        y: {
+
+                            stacked: true,
+
+                            beginAtZero: true,
+
+                            ticks: {
+
+                                color: "#ffffff"
+
+                            },
+
+                            grid: {
+
+                                color: "rgba(255,255,255,.08)"
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        );
+                // =====================================================
+        // Refresh Animations
+        // =====================================================
+
+        animateTableRows();
+
+        document.querySelectorAll(".analytics-card").forEach(
+
+            (card, index) => {
+
+                card.style.opacity = "0";
+
+                card.style.transform = "translateY(25px)";
+
+                card.style.transition = "all .5s ease";
+
+                setTimeout(() => {
+
+                    card.style.opacity = "1";
+
+                    card.style.transform = "translateY(0)";
+
+                }, index * 120);
+
+            }
+
+        );
+
     })
 
-    .catch(error=>{
+    // =====================================================
+    // Error Handling
+    // =====================================================
+
+    .catch(error => {
 
         console.error(
 
@@ -786,22 +1007,221 @@ function loadPageData(){
 
         );
 
-        insightText.innerHTML=
+        insightText.innerHTML =
 
             "Unable to load analytics data.";
 
-        summaryBody.innerHTML=
+        summaryBody.innerHTML =
 
-            `<tr>
+            `
 
-                <td colspan="4">
+            <tr>
+
+                <td colspan="4"
+
+                    style="
+
+                        text-align:center;
+
+                        padding:25px;
+
+                        color:#EF4444;
+
+                    ">
 
                     Unable to load analytics.
 
                 </td>
 
-            </tr>`;
+            </tr>
+
+            `;
+
+        destroyCharts();
 
     });
 
 }
+// =====================================================
+// Premium Page Entrance Animation
+// =====================================================
+
+window.addEventListener("load", () => {
+
+    document.body.classList.add("loaded");
+
+    document.querySelectorAll(
+
+        ".fade-up, .fade-left, .fade-right, .zoom-in"
+
+    ).forEach((element, index) => {
+
+        element.style.opacity = "0";
+
+        element.style.transform = "translateY(25px)";
+
+        setTimeout(() => {
+
+            element.style.transition = "all .6s ease";
+
+            element.style.opacity = "1";
+
+            element.style.transform = "translateY(0)";
+
+        }, index * 80);
+
+    });
+
+});
+
+
+// =====================================================
+// Refresh Analytics without Flicker
+// =====================================================
+
+function refreshAnalytics(){
+
+    document.querySelectorAll(
+
+        ".chart-card"
+
+    ).forEach(card=>{
+
+        card.style.opacity=".5";
+
+        card.style.transition=".3s";
+
+    });
+
+    loadPageData();
+
+    setTimeout(()=>{
+
+        document.querySelectorAll(
+
+            ".chart-card"
+
+        ).forEach(card=>{
+
+            card.style.opacity="1";
+
+        });
+
+    },500);
+
+}
+
+
+// =====================================================
+// Animate Cards on Scroll
+// =====================================================
+
+const observer = new IntersectionObserver(
+
+(entries)=>{
+
+    entries.forEach(entry=>{
+
+        if(entry.isIntersecting){
+
+            entry.target.classList.add("show");
+
+        }
+
+    });
+
+},
+
+{
+
+    threshold:0.15
+
+}
+
+);
+
+document.querySelectorAll(
+
+".analytics-card,.chart-card,.table-card,.insight-card"
+
+).forEach(card=>{
+
+    observer.observe(card);
+
+});
+
+
+// =====================================================
+// Smooth Counter Refresh
+// =====================================================
+
+function updateCounter(element,newValue){
+
+    animateValue(
+
+        element,
+
+        Number(newValue)
+
+    );
+
+}
+
+
+// =====================================================
+// Auto Refresh Every 5 Minutes
+// =====================================================
+
+setInterval(()=>{
+
+    console.log("Refreshing analytics...");
+
+    refreshAnalytics();
+
+},300000);
+
+
+// =====================================================
+// Window Resize Handling
+// =====================================================
+
+window.addEventListener(
+
+    "resize",
+
+    ()=>{
+
+        if(budgetExpenseChart){
+
+            budgetExpenseChart.resize();
+
+        }
+
+        if(groupedBarChart){
+
+            groupedBarChart.resize();
+
+        }
+
+        if(stackedBarChart){
+
+            stackedBarChart.resize();
+
+        }
+
+    }
+
+);
+
+
+// =====================================================
+// Console Message
+// =====================================================
+
+console.log(
+
+    "%cPremium Analytics Loaded",
+
+    "color:#24d6f5;font-size:18px;font-weight:bold;"
+
+);

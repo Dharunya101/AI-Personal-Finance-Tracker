@@ -21,6 +21,7 @@
 </head>
 
 <body>
+    <div class="background-particles"></div>
     <script>
 const theme = localStorage.getItem("theme") || "dark";
 document.body.setAttribute("data-theme", theme);
@@ -298,115 +299,7 @@ function logout(){
         </button>
 
     </div>
-
-    <!-- ======================================
-            PREFERENCES
-    ======================================= -->
-
-    <div class="section">
-
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-
-                    🌍 Preferences
-
-                </h2>
-
-                <p>
-
-                    Configure your preferred currency and date format.
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="preferences-grid">
-
-            <div>
-
-                <label>Currency</label>
-
-                <select id="currency">
-
-                    <option value="INR">₹ Indian Rupee (INR)</option>
-
-                    <option value="USD">$ US Dollar (USD)</option>
-
-                    <option value="EUR">€ Euro (EUR)</option>
-
-                    <option value="GBP">£ British Pound (GBP)</option>
-
-                </select>
-
-            </div>
-
-            <div>
-
-                <label>Date Format</label>
-
-                <select id="dateFormat">
-
-                    <option value="DD/MM/YYYY">DD/MM/YYYY</option>
-
-                    <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-
-                    <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <button onclick="savePreferences()">
-
-            Save Preferences
-
-        </button>
-
-    </div>
-
-    <!-- ======================================
-            DANGER ZONE
-    ======================================= -->
-
-    <div class="section danger-section">
-
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-
-                    ⚠️ Danger Zone
-
-                </h2>
-
-                <p>
-
-                    These actions cannot be undone.
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <button
-            class="danger-btn"
-            onclick="clearAllTransactions()">
-
-            🗑 Clear All Transactions
-
-        </button>
-
-    </div>
-
+ 
 </main>
 
 <script src="js/settings.js"></script>
