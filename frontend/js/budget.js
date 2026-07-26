@@ -145,7 +145,11 @@ async function loadBudgetStatus(){
 
         table.innerHTML="";
 
-        progress.innerHTML="";
+        if(progress){
+
+    progress.innerHTML = "";
+
+}
 
         let totalSpent=0;
 
