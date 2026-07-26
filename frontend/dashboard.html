@@ -12,34 +12,50 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- ChartJS -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Apply Theme Before Page Renders -->
+    <script>
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+
+        document.documentElement.setAttribute("data-theme", savedTheme);
+
+    </script>
 
 </head>
 
 <body>
-    <script>
-const theme = localStorage.getItem("theme") || "dark";
-document.body.setAttribute("data-theme", theme);
-</script>
-
+<div class="background-particles"></div>
 <script>
 
-if(!localStorage.getItem("loggedInUser")){
-    window.location.href="login.html";
+const theme = localStorage.getItem("theme") || "dark";
+
+document.body.setAttribute("data-theme", theme);
+
+// Redirect if user is not logged in
+
+if (!localStorage.getItem("loggedInUser")) {
+
+    window.location.href = "login.html";
+
 }
 
-function logout(){
+// Logout
+
+function logout() {
 
     localStorage.removeItem("loggedInUser");
 
-    window.location.href="login.html";
+    window.location.href = "login.html";
 
 }
 
@@ -49,13 +65,13 @@ function logout(){
                         SIDEBAR
 ======================================================= -->
 
-<aside class="sidebar">
-
-    <!-- Logo -->
+<aside class="sidebar fade-left">
 
     <div>
 
-        <div class="logo">
+        <!-- Logo -->
+
+        <div class="logo zoom-in">
 
             <div class="logo-icon">
 
@@ -77,85 +93,112 @@ function logout(){
 
         <ul>
 
-            <li class="active">
+            <li class="active fade-left delay-1">
+
                 <a href="dashboard.html">
+
                     🏠 Dashboard
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left delay-2">
+
                 <a href="transactions.html">
+
                     💳 Transactions
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left delay-3">
+
                 <a href="analytics.html">
+
                     📊 Analytics
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left delay-4">
+
                 <a href="budget.html">
+
                     🎯 Budgets
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left delay-5">
+
                 <a href="insights.html">
+
                     🤖 AI Insights
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left">
+
                 <a href="report.html">
+
                     📄 Reports
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left">
+
                 <a href="upload.html">
+
                     ⬆ Upload Statement
+
                 </a>
+
             </li>
 
-            <li>
+            <li class="fade-left">
+
                 <a href="settings.html">
+
                     ⚙ Settings
+
                 </a>
+
             </li>
 
         </ul>
 
     </div>
 
-    <!-- Logout -->
+    <!-- Logout Button -->
 
-    <button class="logout-btn" onclick="logout()">
+    <button class="logout-btn hover-lift glow-hover" onclick="logout()">
 
         Logout
 
     </button>
 
 </aside>
-
 <!-- =======================================================
                     MAIN CONTENT
 ======================================================= -->
 
 <main class="main-content">
 
-    <!-- Dashboard Header -->
+    <!-- =======================================================
+                        DASHBOARD HEADER
+    ======================================================= -->
 
-    <div class="dashboard-header">
+    <div class="dashboard-header fade-up">
 
         <div>
-
-            <p class="greeting">
-
-                👋 Good Morning
-
-            </p>
 
             <h1>
 
@@ -179,7 +222,7 @@ function logout(){
                         MONTH FILTER
     ======================================================= -->
 
-    <div class="filter-card">
+    <div class="filter-card fade-up delay-1 hover-lift glow-hover">
 
         <div>
 
@@ -202,7 +245,8 @@ function logout(){
             id="monthFilter">
 
     </div>
-        <!-- =======================================================
+
+    <!-- =======================================================
                         KPI CARDS
     ======================================================= -->
 
@@ -210,7 +254,7 @@ function logout(){
 
         <!-- Income -->
 
-        <div class="card fade-up">
+        <div class="card fade-up delay-1 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -232,7 +276,7 @@ function logout(){
 
         <!-- Expense -->
 
-        <div class="card fade-up">
+        <div class="card fade-up delay-2 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -254,7 +298,7 @@ function logout(){
 
         <!-- Savings -->
 
-        <div class="card fade-up">
+        <div class="card fade-up delay-3 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -276,7 +320,7 @@ function logout(){
 
         <!-- Budget -->
 
-        <div class="card fade-up">
+        <div class="card fade-up delay-4 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -299,14 +343,21 @@ function logout(){
     </div>
 
     <!-- =======================================================
-                        DASHBOARD CHARTS
+                    DASHBOARD CHARTS
     ======================================================= -->
+    <!-- =======================================================
+                    DASHBOARD CHARTS
+======================================================= -->
 
-    <div class="charts">
+<div class="charts">
 
-        <!-- Pie Chart -->
+    <!-- =======================
+            Pie Chart
+    ======================== -->
 
-        <div class="chart-card">
+    <div class="chart-card fade-up delay-5 hover-lift glow-hover">
+
+        <div class="section-header">
 
             <h2>
 
@@ -314,13 +365,19 @@ function logout(){
 
             </h2>
 
-            <canvas id="pieChart"></canvas>
-
         </div>
 
-        <!-- Bar Chart -->
+        <canvas id="pieChart"></canvas>
 
-        <div class="chart-card">
+    </div>
+
+    <!-- =======================
+            Bar Chart
+    ======================== -->
+
+    <div class="chart-card fade-up delay-5 hover-lift glow-hover">
+
+        <div class="section-header">
 
             <h2>
 
@@ -328,17 +385,21 @@ function logout(){
 
             </h2>
 
-            <canvas id="barChart"></canvas>
-
         </div>
+
+        <canvas id="barChart"></canvas>
 
     </div>
 
-    <!-- =======================================================
-                    RECENT TRANSACTIONS
-    ======================================================= -->
+</div>
 
-    <div class="section">
+<!-- =======================================================
+                RECENT TRANSACTIONS
+======================================================= -->
+
+<div class="section fade-up delay-5 hover-lift glow-hover">
+
+    <div class="section-header">
 
         <h2>
 
@@ -346,42 +407,38 @@ function logout(){
 
         </h2>
 
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>Date</th>
-
-                    <th>Category</th>
-
-                    <th>Amount</th>
-
-                    <th>Location</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="transactionTable">
-
-                <!-- Dashboard JS loads data here -->
-
-            </tbody>
-
-        </table>
-
     </div>
-        <!-- =======================================================
-                        END OF MAIN CONTENT
-    ======================================================= -->
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>Date</th>
+
+                <th>Category</th>
+
+                <th>Amount</th>
+
+                <th>Location</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody id="transactionTable">
+
+            <!-- Dashboard JS loads data here -->
+
+        </tbody>
+
+    </table>
+
+</div>
 
 </main>
 
-<!-- =======================================================
-                    DASHBOARD SCRIPT
-======================================================= -->
 
 <script src="js/dashboard.js"></script>
 

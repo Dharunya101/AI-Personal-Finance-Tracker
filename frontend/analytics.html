@@ -4,10 +4,11 @@
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Analytics</title>
+    <title>Analytics | AI Personal Finance Tracker</title>
 
     <!-- Google Font -->
 
@@ -21,29 +22,59 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
 
+    <!-- Main CSS -->
+
     <link rel="stylesheet"
           href="css/style.css">
 
+    <!-- Chart.js -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Apply Theme Before Rendering -->
+
+    <script>
+
+        const savedTheme =
+            localStorage.getItem("theme") || "dark";
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            savedTheme
+        );
+
+    </script>
 
 </head>
 
 <body>
-     <script>
-const theme = localStorage.getItem("theme") || "dark";
-document.body.setAttribute("data-theme", theme);
-</script>
+    <div class="background-particles"></div>
 
 <script>
 
-if(!localStorage.getItem("loggedInUser")){
-    window.location.href="login.html";
+const theme =
+    localStorage.getItem("theme") || "dark";
+
+document.body.setAttribute(
+    "data-theme",
+    theme
+);
+
+// Redirect if not logged in
+
+if (!localStorage.getItem("loggedInUser")) {
+
+    window.location.href = "login.html";
+
 }
 
-function logout(){
+// Logout
+
+function logout() {
 
     localStorage.removeItem("loggedInUser");
-    window.location.href="login.html";
+
+    window.location.href = "login.html";
 
 }
 
@@ -53,27 +84,43 @@ function logout(){
                 SIDEBAR
 ========================================== -->
 
-<div class="sidebar">
+<div class="sidebar fade-left">
 
     <div>
 
-        <div class="logo">
+        <!-- Logo -->
 
-            <div class="logo-icon">AI</div>
+        <div class="logo zoom-in">
+
+            <div class="logo-icon">
+
+                AI
+
+            </div>
 
             <div class="logo-text">
 
-                <h2>Finance Tracker</h2>
+                <h2>
 
-                <p>Financial Intelligence</p>
+                    Finance Tracker
+
+                </h2>
+
+                <p>
+
+                    Financial Intelligence
+
+                </p>
 
             </div>
 
         </div>
 
+        <!-- Navigation -->
+
         <ul>
 
-            <li>
+            <li class="fade-left delay-1">
 
                 <a href="dashboard.html">
 
@@ -83,7 +130,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left delay-2">
 
                 <a href="transactions.html">
 
@@ -93,7 +140,7 @@ function logout(){
 
             </li>
 
-            <li class="active">
+            <li class="active fade-left delay-3">
 
                 <a href="analytics.html">
 
@@ -103,7 +150,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left delay-4">
 
                 <a href="budget.html">
 
@@ -113,7 +160,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left delay-5">
 
                 <a href="insights.html">
 
@@ -123,7 +170,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left">
 
                 <a href="report.html">
 
@@ -133,7 +180,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left">
 
                 <a href="upload.html">
 
@@ -143,7 +190,7 @@ function logout(){
 
             </li>
 
-            <li>
+            <li class="fade-left">
 
                 <a href="settings.html">
 
@@ -157,24 +204,30 @@ function logout(){
 
     </div>
 
-    <button class="logout-btn"
-            onclick="logout()">
+    <!-- Logout -->
+
+    <button
+
+        class="logout-btn hover-lift glow-hover"
+
+        onclick="logout()">
 
         Logout
 
     </button>
 
 </div>
-
 <!-- ==========================================
                 MAIN CONTENT
 ========================================== -->
 
 <main class="main-content">
 
-    <!-- Header -->
+    <!-- ======================================
+                HEADER
+    ======================================= -->
 
-    <div class="dashboard-header">
+    <div class="dashboard-header fade-up">
 
         <div>
 
@@ -201,10 +254,10 @@ function logout(){
     </div>
 
     <!-- ======================================
-            MONTH FILTER
+                MONTH FILTER
     ======================================= -->
 
-    <div class="section month-section">
+    <div class="section month-section fade-up delay-1 hover-lift glow-hover">
 
         <div>
 
@@ -229,12 +282,14 @@ function logout(){
     </div>
 
     <!-- ======================================
-            SUMMARY CARDS
+                SUMMARY CARDS
     ======================================= -->
 
     <div class="analytics-cards">
 
-        <div class="analytics-card">
+        <!-- Income -->
+
+        <div class="analytics-card fade-up delay-1 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -242,7 +297,11 @@ function logout(){
 
             </div>
 
-            <h3>Total Income</h3>
+            <h3>
+
+                Total Income
+
+            </h3>
 
             <h2 id="incomeCard">
 
@@ -252,7 +311,9 @@ function logout(){
 
         </div>
 
-        <div class="analytics-card">
+        <!-- Expense -->
+
+        <div class="analytics-card fade-up delay-2 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -260,7 +321,11 @@ function logout(){
 
             </div>
 
-            <h3>Total Expense</h3>
+            <h3>
+
+                Total Expense
+
+            </h3>
 
             <h2 id="expenseCard">
 
@@ -270,7 +335,9 @@ function logout(){
 
         </div>
 
-        <div class="analytics-card">
+        <!-- Average Expense -->
+
+        <div class="analytics-card fade-up delay-3 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -278,7 +345,11 @@ function logout(){
 
             </div>
 
-            <h3>Average Expense</h3>
+            <h3>
+
+                Average Expense
+
+            </h3>
 
             <h2 id="averageCard">
 
@@ -288,7 +359,9 @@ function logout(){
 
         </div>
 
-        <div class="analytics-card">
+        <!-- Top Category -->
+
+        <div class="analytics-card fade-up delay-4 hover-lift glow-hover">
 
             <div class="card-icon">
 
@@ -296,7 +369,11 @@ function logout(){
 
             </div>
 
-            <h3>Top Category</h3>
+            <h3>
+
+                Top Category
+
+            </h3>
 
             <h2 id="topCategoryCard">
 
@@ -309,12 +386,19 @@ function logout(){
     </div>
 
     <!-- ======================================
-            CHART GRID
+                CHART GRID
     ======================================= -->
+    <!-- ======================================
+            CHART GRID
+======================================= -->
 
-    <div class="chart-grid">
+<div class="chart-grid">
 
-        <div class="chart-card">
+    <!-- Budget vs Expense -->
+
+    <div class="chart-card fade-up delay-5 hover-lift glow-hover">
+
+        <div class="section-title">
 
             <h2>
 
@@ -322,11 +406,17 @@ function logout(){
 
             </h2>
 
-            <canvas id="budgetExpenseChart"></canvas>
-
         </div>
 
-        <div class="chart-card">
+        <canvas id="budgetExpenseChart"></canvas>
+
+    </div>
+
+    <!-- Category Comparison -->
+
+    <div class="chart-card fade-up delay-5 hover-lift glow-hover">
+
+        <div class="section-title">
 
             <h2>
 
@@ -334,12 +424,21 @@ function logout(){
 
             </h2>
 
-            <canvas id="groupedBarChart"></canvas>
-
         </div>
 
+        <canvas id="groupedBarChart"></canvas>
+
     </div>
-        <div class="chart-card full-width">
+
+</div>
+
+<!-- ======================================
+        MONTHLY CATEGORY EXPENSES
+======================================= -->
+
+<div class="chart-card full-width fade-up delay-5 hover-lift glow-hover">
+
+    <div class="section-title">
 
         <h2>
 
@@ -347,95 +446,108 @@ function logout(){
 
         </h2>
 
-        <canvas id="stackedBarChart"></canvas>
+        <p>
+
+            Compare spending across categories throughout the selected month.
+
+        </p>
 
     </div>
 
-    <!-- ======================================
+    <canvas id="stackedBarChart"></canvas>
+
+</div>
+
+<!-- ======================================
             CATEGORY SUMMARY
-    ======================================= -->
+======================================= -->
+<!-- ======================================
+            CATEGORY SUMMARY
+======================================= -->
 
-    <div class="section">
+<div class="section fade-up delay-5 hover-lift glow-hover">
 
-        <div class="section-title">
-
-            <div>
-
-                <h2>
-
-                    Category Summary
-
-                </h2>
-
-                <p>
-
-                    Overview of spending across all categories.
-
-                </p>
-
-            </div>
-
-        </div>
-
-        <div class="table-container">
-
-            <table class="analytics-table">
-
-                <thead>
-
-                    <tr>
-
-                        <th>Category</th>
-
-                        <th>Total Expense</th>
-
-                        <th>Transactions</th>
-
-                        <th>Average</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="categorySummaryBody">
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-    <!-- ======================================
-            AI INSIGHT CARD
-    ======================================= -->
-
-    <div class="section analytics-insight">
-
-        <div class="insight-icon">
-
-            🤖
-
-        </div>
+    <div class="section-title">
 
         <div>
 
             <h2>
 
-                AI Financial Insight
+                Category Summary
 
             </h2>
 
-            <p id="analyticsInsight">
+            <p>
 
-                Loading financial insights...
+                Overview of spending across all categories.
 
             </p>
 
         </div>
 
     </div>
+
+    <div class="table-container">
+
+        <table class="analytics-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Category</th>
+
+                    <th>Total Expense</th>
+
+                    <th>Transactions</th>
+
+                    <th>Average</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="categorySummaryBody">
+
+                <!-- Analytics JS loads rows here -->
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- ======================================
+            AI INSIGHT
+======================================= -->
+
+<div class="section analytics-insight fade-up delay-5 hover-lift glow-hover">
+
+    <div class="insight-icon">
+
+        🤖
+
+    </div>
+
+    <div>
+
+        <h2>
+
+            AI Financial Insight
+
+        </h2>
+
+        <p id="analyticsInsight">
+
+            Loading financial insights...
+
+        </p>
+
+    </div>
+
+</div>
 
 </main>
 

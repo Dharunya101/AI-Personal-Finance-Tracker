@@ -1,0 +1,214 @@
+/* ===========================================
+   PREMIUM ANIMATIONS
+=========================================== */
+
+/* ===========================================
+   FADE UP
+=========================================== */
+
+.fade-up{
+
+    opacity:0;
+
+    transform:translateY(40px);
+
+    animation:fadeUp .8s ease forwards;
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/* ===========================================
+   FADE LEFT
+=========================================== */
+
+.fade-left{
+
+    opacity:0;
+
+    transform:translateX(-40px);
+
+    animation:fadeLeft .8s ease forwards;
+
+}
+
+@keyframes fadeLeft{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+/* ===========================================
+   FADE RIGHT
+=========================================== */
+
+.fade-right{
+
+    opacity:0;
+
+    transform:translateX(40px);
+
+    animation:fadeRight .8s ease forwards;
+
+}
+
+@keyframes fadeRight{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(40px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(0);
+
+    }
+
+}
+
+/* ===========================================
+   ZOOM IN
+=========================================== */
+
+.zoom-in{
+
+    opacity:0;
+
+    transform:scale(.9);
+
+    animation:zoomIn .6s ease forwards;
+
+}
+
+@keyframes zoomIn{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+/* ===========================================
+   FLOAT HOVER
+=========================================== */
+
+.hover-lift{
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease;
+
+}
+
+.hover-lift:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 45px rgba(36,214,245,.25);
+
+}
+
+/* ===========================================
+   GLOW HOVER
+=========================================== */
+
+.glow-hover{
+
+    transition:
+        border-color .35s ease,
+        box-shadow .35s ease;
+
+}
+
+.glow-hover:hover{
+
+    border-color:var(--primary);
+
+    box-shadow:
+        0 0 25px rgba(36,214,245,.25);
+
+}
+
+/* ===========================================
+   STAGGER DELAYS
+=========================================== */
+
+.delay-1{
+
+    animation-delay:.15s;
+
+}
+
+.delay-2{
+
+    animation-delay:.30s;
+
+}
+
+.delay-3{
+
+    animation-delay:.45s;
+
+}
+
+.delay-4{
+
+    animation-delay:.60s;
+
+}
+
+.delay-5{
+
+    animation-delay:.75s;
+
+}

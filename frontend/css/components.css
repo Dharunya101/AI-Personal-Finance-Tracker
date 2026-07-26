@@ -379,3 +379,53 @@ select:focus{
     border:1px solid color-mix(in srgb, var(--primary) 30%, transparent);
 
 }
+.primary-card{
+
+    position:relative;
+
+    border-radius:24px;
+
+    border:1px solid rgba(35,213,255,.5);
+
+    box-shadow:
+        0 0 18px rgba(35,213,255,.45),
+        0 0 50px rgba(35,213,255,.18);
+
+    transition:.35s;
+    animation:cardGlow 3.5s ease-in-out infinite;
+
+}
+
+.primary-card:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 0 30px rgba(35,213,255,.75),
+        0 0 75px rgba(35,213,255,.25);
+
+}
+@keyframes cardGlow{
+
+    0%{
+
+        box-shadow:
+            0 0 18px rgba(36,214,245,.30);
+
+    }
+
+    50%{
+
+        box-shadow:
+            0 0 40px rgba(36,214,245,.75);
+
+    }
+
+    100%{
+
+        box-shadow:
+            0 0 18px rgba(36,214,245,.30);
+
+    }
+
+}

@@ -47,6 +47,7 @@
 </head>
 
 <body>
+    <div class="background-particles"></div>
 
     <script>
 const theme = localStorage.getItem("theme") || "dark";
@@ -57,11 +58,15 @@ document.body.setAttribute("data-theme", theme);
                 SIDEBAR
 =========================================== -->
 
-<div class="sidebar">
+<!-- ==========================================
+                SIDEBAR
+=========================================== -->
+
+<div class="sidebar fade-left">
 
     <div>
 
-        <div class="logo">
+        <div class="logo zoom-in">
 
             <div class="logo-icon">
 
@@ -81,9 +86,10 @@ document.body.setAttribute("data-theme", theme);
 
         <ul>
 
-            <li>
+            <li class="delay-1">
 
-                <a href="dashboard.html">
+                <a href="dashboard.html"
+                   class="hover-lift">
 
                     🏠 Dashboard
 
@@ -91,9 +97,10 @@ document.body.setAttribute("data-theme", theme);
 
             </li>
 
-            <li class="active">
+            <li class="active delay-2">
 
-                <a href="transactions.html">
+                <a href="transactions.html"
+                   class="hover-lift">
 
                     💳 Transactions
 
@@ -101,9 +108,10 @@ document.body.setAttribute("data-theme", theme);
 
             </li>
 
-            <li>
+            <li class="delay-3">
 
-                <a href="analytics.html">
+                <a href="analytics.html"
+                   class="hover-lift">
 
                     📊 Analytics
 
@@ -111,9 +119,10 @@ document.body.setAttribute("data-theme", theme);
 
             </li>
 
-            <li>
+            <li class="delay-4">
 
-                <a href="budget.html">
+                <a href="budget.html"
+                   class="hover-lift">
 
                     🎯 Budgets
 
@@ -121,9 +130,10 @@ document.body.setAttribute("data-theme", theme);
 
             </li>
 
-            <li>
+            <li class="delay-5">
 
-                <a href="insights.html">
+                <a href="insights.html"
+                   class="hover-lift">
 
                     🤖 AI Insights
 
@@ -133,7 +143,8 @@ document.body.setAttribute("data-theme", theme);
 
             <li>
 
-                <a href="report.html">
+                <a href="report.html"
+                   class="hover-lift">
 
                     📄 Reports
 
@@ -143,7 +154,8 @@ document.body.setAttribute("data-theme", theme);
 
             <li>
 
-                <a href="upload.html">
+                <a href="upload.html"
+                   class="hover-lift">
 
                     ⬆ Upload
 
@@ -153,7 +165,8 @@ document.body.setAttribute("data-theme", theme);
 
             <li>
 
-                <a href="settings.html">
+                <a href="settings.html"
+                   class="hover-lift">
 
                     ⚙ Settings
 
@@ -165,8 +178,11 @@ document.body.setAttribute("data-theme", theme);
 
     </div>
 
-    <button class="logout-btn"
-            onclick="logout()">
+    <button
+
+        class="logout-btn hover-lift glow-hover"
+
+        onclick="logout()">
 
         Logout
 
@@ -180,27 +196,54 @@ document.body.setAttribute("data-theme", theme);
 
 <main class="main-content">
 
-    <!-- Header -->
+    <div class="dashboard-header fade-up">
 
-    <div class="dashboard-header">
+    <div>
+
+        <p class="greeting">
+
+            💳 Transaction Manager
+
+        </p>
+
+        <h1>
+
+            Manage Transactions
+
+        </h1>
+
+        <p class="subtitle">
+
+            Add, edit, search and organize all your financial records with ease.
+
+        </p>
+
+    </div>
+
+</div>
+
+    <!-- ======================================
+            ADD TRANSACTION
+    ======================================= -->
+  <!-- ======================================
+        ADD TRANSACTION
+====================================== -->
+
+<div class="section glass-card fade-up primary-card">
+
+    <div class="section-header">
 
         <div>
 
-            <p class="greeting">
+            <h2>
 
-                💳 Transaction Manager
+                ➕ Add New Transaction
 
-            </p>
+            </h2>
 
-            <h1>
+            <p>
 
-                Transactions
-
-            </h1>
-
-            <p class="subtitle">
-
-                Add, edit and manage all your financial records.
+                Record your daily expenses quickly and keep your finances organized.
 
             </p>
 
@@ -208,78 +251,208 @@ document.body.setAttribute("data-theme", theme);
 
     </div>
 
-    <!-- ======================================
-            ADD TRANSACTION
-    ======================================= -->
+    <div class="transaction-form">
 
-    <div class="section">
+        <div class="input-group">
 
-        <h2>
+            <label>
 
-            Add Transaction
+                📝 Notes
 
-        </h2>
+            </label>
 
-        <input
-            type="text"
-            id="notes"
-            placeholder="Example: Swiggy Order"
-            required>
+            <input
 
-        <input
-            type="text"
-            id="payment_mode"
-            placeholder="UPI / Card / Cash"
-            required>
+                type="text"
 
-        <input
-            type="text"
-            id="location"
-            placeholder="City"
-            required>
+                id="notes"
 
-        <input
-            type="number"
-            id="amount"
-            placeholder="Amount (₹)"
-            required>
+                placeholder="Example: Swiggy Order"
 
-        <input
-            type="date"
-            id="date"
-            required>
+                required>
 
-        <button onclick="addTransaction()">
+        </div>
 
-            Add Transaction
+        <div class="input-group">
+
+            <label>
+
+                💳 Payment Mode
+
+            </label>
+
+            <input
+
+                type="text"
+
+                id="payment_mode"
+
+                placeholder="UPI / Card / Cash"
+
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+
+                📍 Location
+
+            </label>
+
+            <input
+
+                type="text"
+
+                id="location"
+
+                placeholder="City"
+
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+
+                💰 Amount
+
+            </label>
+
+            <input
+
+                type="number"
+
+                id="amount"
+
+                placeholder="Amount (₹)"
+
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>
+
+                📅 Date
+
+            </label>
+
+            <input
+
+                type="date"
+
+                id="date"
+
+                required>
+
+        </div>
+
+    </div>
+
+    <div class="form-actions">
+
+        <button
+
+            class="primary-btn glow-hover hover-lift"
+
+            onclick="addTransaction()">
+
+            ➕ Add Transaction
 
         </button>
 
     </div>
 
+</div>
+        
+
     <!-- ======================================
           TRANSACTION HISTORY
     ======================================= -->
+<!-- ======================================
+        TRANSACTION HISTORY
+====================================== -->
 
-    <div class="section">
+<div class="section glass-card fade-up">
 
-        <h2>
+    <div class="section-header">
 
-            Transaction History
+        <div>
 
-            <span id="transactionCount"></span>
+            <h2>
 
-        </h2>
+                📋 Transaction History
 
-        <div class="transaction-toolbar">
+            </h2>
+
+            <p>
+
+                Browse, search, edit and manage every transaction.
+
+            </p>
+
+        </div>
+
+        <div
+            class="transaction-count">
+
+            <span>
+
+                Total
+
+            </span>
+
+            <strong
+                id="transactionCount">
+
+                0
+
+            </strong>
+
+        </div>
+
+    </div>
+
+    <!-- ======================================
+                SEARCH & FILTER
+    ======================================= -->
+
+    <div class="transaction-toolbar">
+
+        <div class="search-box">
+
+            <span>
+
+                🔍
+
+            </span>
 
             <input
+
                 type="text"
+
                 id="searchTransaction"
-                placeholder="🔍 Search by category or location...">
+
+                placeholder="Search by category or location...">
+
+        </div>
+
+        <div class="sort-box">
+
+            <label>
+
+                Sort
+
+            </label>
 
             <select
+
                 id="sortDate"
+
                 onchange="sortTransactions()">
 
                 <option value="newest">
@@ -298,96 +471,272 @@ document.body.setAttribute("data-theme", theme);
 
         </div>
 
-        <div class="table-container">
+    </div>
 
-            <table>
+    <!-- ======================================
+                TABLE
+    ======================================= -->
 
-                <thead>
+    <div class="table-container">
 
-                    <tr>
+        <table class="transaction-table">
 
-                        <th>Date</th>
+            <thead>
 
-                        <th>Category</th>
+                <tr>
 
-                        <th>Amount</th>
+                    <th>
 
-                        <th>Location</th>
+                        📅 Date
 
-                        <th>Actions</th>
+                    </th>
 
-                    </tr>
+                    <th>
 
-                </thead>
+                        🏷 Category
 
-                <tbody id="transactionTable">
-                                    </tbody>
+                    </th>
 
-            </table>
+                    <th>
+
+                        💰 Amount
+
+                    </th>
+
+                    <th>
+
+                        📍 Location
+
+                    </th>
+
+                    <th>
+
+                        ⚙ Actions
+
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="transactionTable">
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!-- ======================================
+            EMPTY STATE
+    ======================================= -->
+
+    <div
+
+        id="emptyState"
+
+        class="empty-state"
+
+        style="display:none;">
+
+        <div class="empty-icon">
+
+            💳
 
         </div>
 
-        <div id="pagination"
-             class="pagination">
+        <h3>
+
+            No Transactions Found
+
+        </h3>
+
+        <p>
+
+            Add your first transaction or change the search filters.
+
+        </p>
+
+    </div>
+
+    <!-- ======================================
+            PAGINATION
+    ======================================= -->
+
+    <div
+        class="pagination-wrapper">
+
+        <div
+            id="pagination"
+
+            class="pagination">
 
         </div>
 
     </div>
 
-</main>
+</div>
 
 <!-- ==========================================
             EDIT TRANSACTION MODAL
 =========================================== -->
+<!-- ==========================================
+        EDIT TRANSACTION MODAL
+=========================================== -->
 
-<div id="editModal"
-     class="modal">
+<div
 
-    <div class="modal-content">
+    id="editModal"
 
-        <h2>
+    class="modal">
 
-            Edit Transaction
+    <div class="modal-content glass-card zoom-in">
 
-        </h2>
+        <div class="modal-header">
 
-        <input
-            type="hidden"
-            id="editId">
+            <div>
 
-        <input
-            type="text"
-            id="editNotes"
-            placeholder="Notes">
+                <h2>
 
-        <input
-            type="text"
-            id="editPaymentMode"
-            placeholder="Payment Mode">
+                    ✏ Edit Transaction
 
-        <input
-            type="text"
-            id="editLocation"
-            placeholder="Location">
+                </h2>
 
-        <input
-            type="number"
-            id="editAmount"
-            placeholder="Amount">
+                <p>
 
-        <input
-            type="date"
-            id="editDate">
+                    Update your transaction details below.
 
-        <div class="modal-buttons">
+                </p>
 
-            <button onclick="saveTransaction()">
+            </div>
 
-                Save
+            <button
+
+                class="modal-close"
+
+                onclick="closeModal()">
+
+                ✕
 
             </button>
 
-            <button onclick="closeModal()">
+        </div>
+
+        <input
+
+            type="hidden"
+
+            id="editId">
+
+        <div class="transaction-form">
+
+            <div class="input-group">
+
+                <label>
+
+                    📝 Notes
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    id="editNotes"
+
+                    placeholder="Transaction Notes">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+
+                    💳 Payment Mode
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    id="editPaymentMode"
+
+                    placeholder="UPI / Card / Cash">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+
+                    📍 Location
+
+                </label>
+
+                <input
+
+                    type="text"
+
+                    id="editLocation"
+
+                    placeholder="Location">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+
+                    💰 Amount
+
+                </label>
+
+                <input
+
+                    type="number"
+
+                    id="editAmount"
+
+                    placeholder="Amount">
+
+            </div>
+
+            <div class="input-group">
+
+                <label>
+
+                    📅 Date
+
+                </label>
+
+                <input
+
+                    type="date"
+
+                    id="editDate">
+
+            </div>
+
+        </div>
+
+        <div class="modal-buttons">
+
+            <button
+
+                class="primary-btn glow-hover hover-lift"
+
+                onclick="saveTransaction()">
+
+                💾 Save Changes
+
+            </button>
+
+            <button
+
+                class="secondary-btn hover-lift"
+
+                onclick="closeModal()">
 
                 Cancel
 
