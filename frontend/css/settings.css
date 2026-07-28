@@ -56,21 +56,29 @@
    SECTION CARD
 ========================================== */
 
+/* ==========================================
+   SETTINGS CARDS
+========================================== */
+
 .section{
+
+    position:relative;
+
+    overflow:hidden;
 
     background:var(--surface);
 
-    border:1px solid var(--border);
+    border:1px solid rgba(255,255,255,.08);
 
-    border-radius:24px;
+    border-radius:28px;
 
-    padding:35px;
+    padding:40px;
 
-    margin-bottom:30px;
+    margin-bottom:35px;
 
-    box-shadow:var(--shadow);
+    transition:all .35s ease;
 
-    transition:var(--transition);
+    box-shadow:0 10px 35px rgba(0,0,0,.25);
 
 }
 
@@ -760,5 +768,112 @@ button,
         break-inside:avoid;
 
     }
+
+}
+/* ==========================================
+   SETTINGS CARD GLOW
+========================================== */
+
+.settings-section,
+.setting-card,
+.section{
+
+    position: relative;
+    overflow: hidden;
+    transition: all .35s ease;
+
+}
+
+.settings-section:hover,
+.setting-card:hover,
+.section:hover{
+
+    transform: translateY(-6px);
+
+    border-color: #24d6f5;
+
+    box-shadow:
+        0 0 18px rgba(36,214,245,.30),
+        0 0 45px rgba(36,214,245,.20),
+        inset 0 0 10px rgba(36,214,245,.06);
+
+}
+.settings-section::before,
+.setting-card::before,
+.section::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:24px;
+
+    padding:1px;
+
+    background:linear-gradient(
+        135deg,
+        rgba(36,214,245,.7),
+        transparent,
+        rgba(124,92,255,.7)
+    );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+
+    opacity:0;
+
+    transition:.35s;
+
+}
+
+.settings-section:hover::before,
+.setting-card:hover::before,
+.section:hover::before{
+
+    opacity:1;
+
+}
+.settings-section:active,
+.setting-card:active,
+.section:active{
+
+    transform:scale(.99);
+
+    box-shadow:
+        0 0 28px rgba(36,214,245,.55),
+        0 0 70px rgba(36,214,245,.25);
+
+}
+.settings-section input:focus,
+.section input:focus{
+
+    border-color:#24d6f5;
+
+    box-shadow:
+        0 0 12px rgba(36,214,245,.45),
+        0 0 30px rgba(36,214,245,.18);
+
+}
+.section button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 20px rgba(36,214,245,.50),
+        0 0 45px rgba(124,92,255,.30);
+
+}.primary-card{
+
+    border:1px solid #24d6f5;
+
+    box-shadow:
+        0 0 22px rgba(36,214,245,.45),
+        0 0 55px rgba(36,214,245,.20);
 
 }
