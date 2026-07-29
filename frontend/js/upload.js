@@ -10,8 +10,7 @@ const progressFill = document.getElementById("progressFill");
 
 const progressText = document.getElementById("progressText");
 
-const status = document.getElementById("status");
-
+const status=document.getElementById("uploadStatus");
 // ======================================
 // Show Selected File
 // ======================================
