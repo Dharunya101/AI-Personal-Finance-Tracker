@@ -25,7 +25,7 @@
 
     --success:#22C55E;
 
-    --danger:#F43F5E;
+    --danger-dark:#B91C1C;
 
     --warning:#FBBF24;
 
@@ -124,7 +124,7 @@
 
 body[data-theme="light"]{
 
-    --bg:#F4F7FB;
+    --bg:#EAF3FF;
 
     --surface:#FFFFFF;
 
@@ -140,7 +140,7 @@ body[data-theme="light"]{
 
     --success:#16A34A;
 
-    --danger:#DC2626;
+    --danger-dark:#B91C1C;
 
     --warning:#D97706;
 

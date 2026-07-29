@@ -98,7 +98,7 @@
 
 .upload-zone h2{
 
-    color:white;
+    color:var(--text);
 
     font-size:30px;
 
@@ -186,13 +186,13 @@
 
     padding:8px 16px;
 
-    background:rgba(255,255,255,.05);
+    background:var(--surface-light);
+
+    color:var(--text);
 
     border:1px solid var(--border);
 
     border-radius:20px;
-
-    color:white;
 
     font-size:14px;
 
@@ -261,7 +261,7 @@
 
     margin-top:15px;
 
-    color:white;
+    color:var(--text);
 
     font-weight:600;
 
@@ -297,13 +297,13 @@
 
     padding:18px 22px;
 
-    background:rgba(255,255,255,.04);
-
     border:1px solid var(--border);
 
     border-radius:16px;
 
-    color:white;
+    background:var(--surface-light);
+
+    color:var(--text);
 
     transition:.3s;
 
@@ -433,7 +433,7 @@
 
 .analytics-card h2{
 
-    color:white;
+    color:var(--text);
 
     font-size:32px;
 
@@ -503,11 +503,11 @@
 
 .secondary-btn{
 
-    background:rgba(255,255,255,.05);
+    background:var(--surface-light);
+
+    color:var(--text);
 
     border:1px solid var(--border);
-
-    color:white;
 
 }
 

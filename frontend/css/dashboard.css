@@ -83,6 +83,26 @@
     color:var(--text-muted);
 
 }
+
+/* ==========================================
+   MONTH FILTER
+========================================== */
+
+#monthFilter{
+
+    color: var(--text);
+
+    -webkit-text-fill-color: var(--text);
+
+    background: var(--surface-light);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-md);
+
+    padding: 12px 16px;
+
+}
 /* ==========================================
    TRANSACTION TABLE
 ========================================== */
@@ -197,7 +217,7 @@ tbody td{
 
     cursor:pointer;
 
-    color:#fff;
+    color:var(--white);
 
     margin-right:10px;
 
@@ -207,13 +227,13 @@ tbody td{
 
 .edit-btn{
 
-    background:#2563EB;
+    background:var(--primary);
 
 }
 
 .edit-btn:hover{
 
-    background:#1D4ED8;
+    background:var(--primary-dark);
 
     transform:translateY(-3px);
 
@@ -229,7 +249,7 @@ tbody td{
 
 .delete-btn:hover{
 
-    background:#B91C1C;
+    background:var(--danger-dark);
 
     transform:translateY(-3px);
 
@@ -371,7 +391,7 @@ tbody td{
 
     background:var(--primary);
 
-    color:#fff;
+    color:var(--white);
 
     transform:translateY(-2px);
 
@@ -389,7 +409,7 @@ tbody td{
 
     );
 
-    color:#fff;
+    color:var(--white);
 
     border-color:transparent;
 
@@ -427,28 +447,26 @@ tbody td{
     animation:fadeIn .25s ease;
 
 }
-
 .modal-content{
 
-    width:550px;
+    width:min(700px,95vw);
 
-    max-width:92%;
+    max-height:90vh;
 
-    background:var(--surface);
+    overflow-y:auto;
 
     border:1px solid var(--border);
 
     border-radius:24px;
 
-    padding:32px;
+    background:var(--surface);
 
-    box-shadow:var(--shadow);
+    padding:35px;
 
-    animation:fadeUp .35s ease;
-
-    transition:var(--transition);
+    box-shadow:var(--shadow-lg);
 
 }
+
 
 .modal-content h2{
 
@@ -465,6 +483,38 @@ tbody td{
     width:100%;
 
     margin-bottom:18px;
+
+}
+.modal-content::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+.modal-content::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+.modal-content::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}
+.modal-header{
+
+    position:sticky;
+
+    top:0;
+
+    background:var(--surface);
+
+    z-index:10;
+
+    padding-bottom:20px;
 
 }
 
@@ -492,7 +542,7 @@ tbody td{
 
     border:none;
 
-    border-radius:14px;
+   border-radius:var(--radius-sm);
 
     cursor:pointer;
 
@@ -512,7 +562,7 @@ tbody td{
         var(--secondary)
     );
 
-    color:#fff;
+    color:var(--white);
 
 }
 

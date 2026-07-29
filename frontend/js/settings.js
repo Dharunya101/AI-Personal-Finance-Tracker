@@ -200,29 +200,49 @@ function togglePassword(id, element) {
 // DARK / LIGHT THEME
 // ======================================
 
-const themeToggle = document.getElementById("themeToggle");
+const toggle = document.getElementById("themeToggle");
 
 const savedTheme =
-    localStorage.getItem("theme") || "dark";
+localStorage.getItem("theme") || "dark";
 
-document.body.setAttribute("data-theme", savedTheme);
+document.body.setAttribute(
+    "data-theme",
+    savedTheme
+);
 
-if (themeToggle) {
+toggle.checked = savedTheme === "light";
 
-    themeToggle.checked = savedTheme === "dark";
+toggle.addEventListener("change",function(){
 
-    themeToggle.addEventListener("change", () => {
+    if(this.checked){
 
-        const theme =
-            themeToggle.checked ? "dark" : "light";
+        document.body.setAttribute(
+            "data-theme",
+            "light"
+        );
 
-        document.body.setAttribute("data-theme", theme);
+        localStorage.setItem(
+            "theme",
+            "light"
+        );
 
-        localStorage.setItem("theme", theme);
+    }
 
-    });
+    else{
 
-}
+        document.body.setAttribute(
+            "data-theme",
+            "dark"
+        );
+
+        localStorage.setItem(
+            "theme",
+            "dark"
+        );
+
+    }
+
+});
 
 // ======================================
 // PREFERENCES

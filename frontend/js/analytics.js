@@ -18,6 +18,24 @@ if (!email) {
 
 console.log("Logged In User:", email);
 
+  // =====================================================
+// Theme Colors
+// =====================================================
+
+const styles = getComputedStyle(document.body);
+
+const textColor =
+    styles.getPropertyValue("--text").trim();
+
+const textLight =
+    styles.getPropertyValue("--text-light").trim();
+
+const borderColor =
+    styles.getPropertyValue("--border").trim();
+
+const surface =
+    styles.getPropertyValue("--surface").trim();
+
 
 // =====================================================
 // DOM ELEMENTS
@@ -278,33 +296,37 @@ function commonChartOptions() {
 
                 labels: {
 
-                    color: "#ffffff",
+    color: textLight,
 
-                    font: {
+    font: {
 
-                        size: 13,
+        size: 13,
 
-                        weight: "600"
+        weight: "600"
 
-                    }
+    }
 
-                }
+}
 
             },
 
             tooltip: {
 
-                backgroundColor: "#111827",
+    backgroundColor: surface,
 
-                titleColor: "#ffffff",
+    titleColor: textColor,
 
-                bodyColor: "#CBD5E1",
+    bodyColor: textLight,
 
-                cornerRadius: 12,
+    borderColor: borderColor,
 
-                padding: 12
+    borderWidth: 1,
 
-            }
+    cornerRadius: 12,
+
+    padding: 12
+
+}
 
         }
 
@@ -710,11 +732,11 @@ function loadPageData() {
 
                         title: {
 
-                            display: true,
+    display: true,
 
-                            text: "Budget vs Expense",
+    text: "Budget vs Expense",
 
-                            color: "#ffffff",
+    color: textColor,
 
                             font: {
 
@@ -734,13 +756,13 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "#ffffff"
+                                color: textLight
 
                             },
 
                             grid: {
 
-                                color: "rgba(255,255,255,.08)"
+                                color: borderColor
 
                             }
 
@@ -752,13 +774,13 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "#ffffff"
+                                color: textLight
 
                             },
 
                             grid: {
 
-                                color: "rgba(255,255,255,.08)"
+                               color: borderColor
 
                             }
 
@@ -808,7 +830,7 @@ function loadPageData() {
 
                             text: "Category Expense Comparison",
 
-                            color: "#ffffff",
+                            color:textColor,
 
                             font: {
 
@@ -828,13 +850,13 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "#ffffff"
+                                color:textLight
 
                             },
 
                             grid: {
 
-                                color: "rgba(255,255,255,.08)"
+                                color:borderColor
 
                             }
 
@@ -845,14 +867,13 @@ function loadPageData() {
                             beginAtZero: true,
 
                             ticks: {
-
-                                color: "#ffffff"
+                                color:textLight
 
                             },
 
                             grid: {
 
-                                color: "rgba(255,255,255,.08)"
+                                color:borderColor
 
                             }
 
@@ -902,7 +923,7 @@ function loadPageData() {
 
                             text: "Monthly Category-wise Expenses",
 
-                            color: "#ffffff",
+                            color:textColor,
 
                             font: {
 
@@ -918,51 +939,52 @@ function loadPageData() {
 
                     scales: {
 
-                        x: {
+    x: {
 
-                            stacked: true,
+        stacked: true,
 
-                            ticks: {
+        ticks: {
 
-                                color: "#ffffff"
+            color: textLight
 
-                            },
+        },
 
-                            grid: {
+        grid: {
 
-                                color: "rgba(255,255,255,.08)"
+            color: borderColor
 
-                            }
+        }
 
-                        },
+    },
 
-                        y: {
+    y: {
 
-                            stacked: true,
+        stacked: true,
 
-                            beginAtZero: true,
+        beginAtZero: true,
 
-                            ticks: {
+        ticks: {
 
-                                color: "#ffffff"
+            color: textLight
 
-                            },
+        },
 
-                            grid: {
+        grid: {
 
-                                color: "rgba(255,255,255,.08)"
+            color: borderColor
 
-                            }
+        }
 
-                        }
+    }
 
-                    }
+}
 
                 }
 
             }
 
         );
+    
                 // =====================================================
         // Refresh Animations
         // =====================================================

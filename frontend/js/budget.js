@@ -216,31 +216,35 @@ async function loadBudgetStatus(){
 
             `;
 
-            progress.innerHTML += `
+            if (progress) {
 
-            <div class="progress-item">
+    progress.innerHTML += `
 
-                <div class="progress-header">
+    <div class="progress-item">
 
-                    <h3>${item.category}</h3>
+        <div class="progress-header">
 
-                    <span>${percentage.toFixed(0)}%</span>
+            <h3>${item.category}</h3>
 
-                </div>
+            <span>${percentage.toFixed(0)}%</span>
 
-                <div class="progress-bar">
+        </div>
 
-                    <div
-                        class="progress-fill"
-                        style="width:${displayPercentage}%">
+        <div class="progress-bar">
 
-                    </div>
-
-                </div>
+            <div
+                class="progress-fill"
+                style="width:${displayPercentage}%">
 
             </div>
 
-            `;
+        </div>
+
+    </div>
+
+    `;
+
+}
 
         });
 
