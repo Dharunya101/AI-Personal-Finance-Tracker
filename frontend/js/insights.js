@@ -15,6 +15,15 @@ const formatter = new Intl.NumberFormat("en-IN", {
     currency:"INR"
 
 });
+const styles = getComputedStyle(document.body);
+
+const textColor = styles.getPropertyValue("--text").trim();
+
+const textLight = styles.getPropertyValue("--text-light").trim();
+
+const borderColor = styles.getPropertyValue("--border").trim();
+
+const surface = styles.getPropertyValue("--surface").trim();
 
 let pieChart = null;
 
@@ -318,7 +327,7 @@ layout:{
 
                             labels:{
 
-                                color:"#ffffff",
+                                color: textColor,
 
                                 padding:20,
 
@@ -384,7 +393,7 @@ layout:{
 
                             labels:{
 
-                                color:"#ffffff",
+                                color: textColor,
 
                                 font:{
 
@@ -406,7 +415,7 @@ layout:{
 
                             ticks:{
 
-                                color:"#ffffff"
+                                color: textLight
 
                             },
 
@@ -422,13 +431,13 @@ layout:{
 
                             ticks:{
 
-                                color:"#ffffff"
+                                color: textLight
 
                             },
 
                             grid:{
 
-                                color:"rgba(255,255,255,.08)"
+                                color: borderColor
 
                             }
 
