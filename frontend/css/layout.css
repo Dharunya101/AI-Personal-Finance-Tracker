@@ -257,5 +257,7 @@ body{
     overflow-x:hidden;
 
     box-sizing:border-box;
+    
+    background:var(--bg);
 
 }

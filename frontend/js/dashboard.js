@@ -165,6 +165,23 @@ function destroyCharts() {
 function loadPageData() {
 
     const month = monthFilter.value;
+    // ==================================
+// Theme Colors
+// ==================================
+
+const styles = getComputedStyle(document.body);
+
+const textColor =
+    styles.getPropertyValue("--text").trim();
+
+const textLight =
+    styles.getPropertyValue("--text-light").trim();
+
+const borderColor =
+    styles.getPropertyValue("--border").trim();
+
+const surface =
+    styles.getPropertyValue("--surface").trim();
         // ==================================
     // Dashboard Insights
     // ==================================
@@ -343,7 +360,7 @@ function loadPageData() {
 
                             labels: {
 
-                                color: "#CBD5E1",
+                                color:textLight,
 
                                 padding: 20,
 
@@ -363,13 +380,17 @@ function loadPageData() {
 
                         },
 
-                        tooltip: {
+                        tooltip:{
 
-                            backgroundColor: "#111827",
+    backgroundColor:surface,
 
-                            titleColor: "#ffffff",
+    titleColor:textColor,
 
-                            bodyColor: "#CBD5E1",
+    bodyColor:textLight,
+
+    borderColor:borderColor,
+
+    borderWidth:1,
 
                             cornerRadius: 12,
 
@@ -483,13 +504,17 @@ function loadPageData() {
 
                         },
 
-                        tooltip: {
+                        tooltip:{
 
-                            backgroundColor: "#111827",
+    backgroundColor:surface,
 
-                            titleColor: "#ffffff",
+    titleColor:textColor,
 
-                            bodyColor: "#CBD5E1",
+    bodyColor:textLight,
+
+    borderColor:borderColor,
+
+    borderWidth:1,
 
                             cornerRadius: 12,
 
@@ -507,7 +532,7 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "#E2E8F0",
+                                color:textLight,
 
                                 font: {
 
@@ -521,7 +546,7 @@ function loadPageData() {
 
                             grid: {
 
-                                color: "rgba(255,255,255,.05)"
+                                color:borderColor
 
                             }
 
@@ -531,7 +556,7 @@ function loadPageData() {
 
                             ticks: {
 
-                                color: "#E2E8F0",
+                                color:textLight,
 
                                 font: {
 

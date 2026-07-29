@@ -548,7 +548,7 @@ body[data-theme="light"]
 
     );
 
-    color:white;
+    color:var(--text);
 
     padding:18px;
 
@@ -562,7 +562,7 @@ body[data-theme="light"]
 
     border-bottom:1px solid rgba(255,255,255,.08);
 
-    color:white;
+    color:var(--text);
 
 }
 
