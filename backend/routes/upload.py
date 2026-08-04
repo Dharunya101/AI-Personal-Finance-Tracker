@@ -4,6 +4,9 @@ import joblib
 import pdfplumber
 import io
 
+from PIL import Image
+import pytesseract
+
 from database import transactions_collection
 
 router = APIRouter(
@@ -51,7 +54,6 @@ async def upload_statement(
             predicted_category = model.predict([text])[0]
 
             transactions_collection.insert_one({
-
                 "user_email": user_email,
                 "date": date,
                 "notes": notes,
@@ -59,17 +61,13 @@ async def upload_statement(
                 "location": location,
                 "amount": amount,
                 "category": predicted_category
-
             })
 
             rows_inserted += 1
 
         return {
-
             "message": "CSV uploaded successfully",
-
             "rows_inserted": rows_inserted
-
         }
 
     # ======================================================
@@ -83,13 +81,9 @@ async def upload_statement(
         extracted_text = ""
 
         with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-
             for page in pdf.pages:
-
                 page_text = page.extract_text()
-
                 if page_text:
-
                     extracted_text += page_text + "\n"
 
         lines = extracted_text.split("\n")
@@ -123,31 +117,22 @@ async def upload_statement(
                 parts = line.split()
 
                 date = parts[0]
-
                 amount = float(parts[-1])
-
                 location = parts[-2]
 
                 remaining = " ".join(parts[1:-2])
 
                 payment_mode = ""
-
                 notes = ""
 
                 for mode in payment_modes:
-
                     if remaining.endswith(mode):
-
                         payment_mode = mode
-
                         notes = remaining[:-len(mode)].strip()
-
                         break
 
                 if payment_mode == "":
-
                     payment_mode = "Unknown"
-
                     notes = remaining
 
                 text = notes + " " + payment_mode + " " + location
@@ -155,7 +140,6 @@ async def upload_statement(
                 predicted_category = model.predict([text])[0]
 
                 transactions_collection.insert_one({
-
                     "user_email": user_email,
                     "date": date,
                     "notes": notes,
@@ -163,22 +147,100 @@ async def upload_statement(
                     "location": location,
                     "amount": amount,
                     "category": predicted_category
-
                 })
 
                 rows_inserted += 1
 
             except Exception as e:
-
-                print("Skipping line:", line)
+                print("Skipping PDF line:", line)
                 print(e)
 
         return {
-
             "message": "PDF uploaded successfully",
-
             "rows_inserted": rows_inserted
+        }
 
+    # ======================================================
+    # IMAGE UPLOAD (JPG / JPEG / PNG)
+    # ======================================================
+
+    elif filename.endswith((".jpg", ".jpeg", ".png")):
+
+        image_bytes = await file.read()
+
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+
+        extracted_text = pytesseract.image_to_string(image)
+
+        print("OCR OUTPUT")
+        print(extracted_text)
+
+        lines = extracted_text.split("\n")
+
+        rows_inserted = 0
+
+        payment_modes = [
+            "Credit Card",
+            "Debit Card",
+            "UPI",
+            "Cash",
+            "Net Banking",
+            "Bank Transfer"
+        ]
+
+        for line in lines:
+
+            line = line.strip()
+
+            if line == "":
+                continue
+
+            try:
+
+                parts = line.split()
+
+                date = parts[0]
+                amount = float(parts[-1])
+                location = parts[-2]
+
+                remaining = " ".join(parts[1:-2])
+
+                payment_mode = ""
+                notes = ""
+
+                for mode in payment_modes:
+                    if remaining.endswith(mode):
+                        payment_mode = mode
+                        notes = remaining[:-len(mode)].strip()
+                        break
+
+                if payment_mode == "":
+                    payment_mode = "Unknown"
+                    notes = remaining
+
+                text = notes + " " + payment_mode + " " + location
+
+                predicted_category = model.predict([text])[0]
+
+                transactions_collection.insert_one({
+                    "user_email": user_email,
+                    "date": date,
+                    "notes": notes,
+                    "payment_mode": payment_mode,
+                    "location": location,
+                    "amount": amount,
+                    "category": predicted_category
+                })
+
+                rows_inserted += 1
+
+            except Exception as e:
+                print("Skipping OCR line:", line)
+                print(e)
+
+        return {
+            "message": "Image uploaded successfully",
+            "rows_inserted": rows_inserted
         }
 
     # ======================================================
@@ -188,11 +250,8 @@ async def upload_statement(
     else:
 
         raise HTTPException(
-
             status_code=400,
-
-            detail="Only CSV and PDF files are supported."
-
+            detail="Only CSV, PDF, JPG, JPEG and PNG files are supported."
         )
 
 
@@ -200,7 +259,5 @@ async def upload_statement(
 def upload_history():
 
     return {
-
         "message": "Upload History will appear here."
-
     }
